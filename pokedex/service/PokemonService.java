@@ -24,11 +24,11 @@ public class PokemonService {
     }
     public int gerarNovoId() {
         return repository
-                .listar()
-                .stream()
-                .mapToInt(Pokemon::getId)
-                .max()
-                .orElse(0) + 1;
+                    .listar()
+                    .stream()
+                    .mapToInt(Pokemon::getId)
+                    .max()
+                    .orElse(0) + 1;
     }
     public void cadastrarPokemon(int id, String nome, List<Typing> tipos, Stats stats) throws DadoInvalidoException {
         if (!repository.existe(nome)) {
@@ -76,13 +76,13 @@ public class PokemonService {
     public Pokemon maiorStat(String optionStat) throws PokemonNaoEncontradoException, DadoInvalidoException {
         if (pokemons.isEmpty()) throw new PokemonNaoEncontradoException("Lista de Pokemons vazia!");
         Pokemon maior = pokemons.getFirst();
-        for (Pokemon p : pokemons) if (p.statFromString(optionStat) > maior.statFromString(optionStat)) maior = p;
+        for (Pokemon p : pokemons) if (p.getStatFromString(optionStat) > maior.getStatFromString(optionStat)) maior = p;
         return maior;
     }
     public Pokemon menorStat(String optionStat) throws PokemonNaoEncontradoException, DadoInvalidoException {
         if (pokemons.isEmpty()) throw new PokemonNaoEncontradoException("Lista de Pokemons vazia!");
         Pokemon menor = pokemons.getFirst();
-        for (Pokemon p : pokemons) if (p.statFromString(optionStat) < menor.statFromString(optionStat)) menor = p;
+        for (Pokemon p : pokemons) if (p.getStatFromString(optionStat) < menor.getStatFromString(optionStat)) menor = p;
         return menor;
     }
 }

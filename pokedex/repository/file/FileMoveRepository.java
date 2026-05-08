@@ -23,10 +23,10 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     }
     @Override
     public boolean existe(String nome) {
-        for (Move m : moves.values()) {
-            if (m.getName().equalsIgnoreCase(nome)) return true;
-        }
-        return false;
+        return moves
+                .values()
+                .stream()
+                .anyMatch(m -> m.getName().equalsIgnoreCase(nome));
     }
     @Override
     public void salvar(Move m) {
@@ -34,8 +34,7 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     }
     @Override
     public List<Move> listar() {
-        List<Move> listaGolpes = new ArrayList<>(moves.values());
-        return listaGolpes;
+        return new ArrayList<>(moves.values());
     }
     @Override
     public Move buscarPorNome(String nome) {
@@ -66,16 +65,14 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     }
     public void escreverArquivo(List<Move> moves) throws IOException {
         List<String> linhas = new ArrayList<>();
-        String linha;
         for (Move m : moves) {
-            linha = m.toFileString();
+            String linha = m.toFileString();
             linhas.add(linha);
         }
         FileUtils.escrever(filePath, linhas);
     }
     public List<Move> lerArquivo() {
-        List<Move> listaMove = loader.carregar(filePath);
-        return listaMove;
+        return loader.carregar(filePath);
     }
     public void limparArquivo() throws IOException {
         FileUtils.limpar(filePath);

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import pokedex.builder.StatsBuilder;
 import pokedex.domain.enums.Nature;
 import pokedex.domain.enums.Typing;
 import pokedex.exception.DadoInvalidoException;
@@ -16,14 +15,14 @@ public class Pokemon {
     private String name;
     private List<Typing> types;
     private Stats baseStats;
-    private Stats stats;
+    private Stats ownStats;
     private Nature nature;
     private int level;
     private List<Move> moves;
     public Pokemon() {
         this.types = new ArrayList<>();
         this.baseStats = new Stats();
-        this.stats = new Stats();
+        this.ownStats = new Stats();
         this.moves = new ArrayList<>();
     }
     public int getId() {
@@ -53,46 +52,11 @@ public class Pokemon {
     public void setBaseStats(Stats baseStats) {
         this.baseStats = baseStats;
     }
-    public Stats getStats() {
-        return stats;
+    public Stats getOwnStats() {
+        return ownStats;
     }
-    public void setStats(Stats baseStats, Nature nature, int nivel) throws DadoInvalidoException {
-        int hpBase = baseStats.getHp();
-        int atkBase = baseStats.getAttack();
-        int defBase = baseStats.getDefense();
-        int spAtkBase = baseStats.getSpecialAttack();
-        int spDefBase = baseStats.getSpecialDefense();
-        int speedBase = baseStats.getSpeed();
-        int hp = (int) Math.floor((((hpBase * 2) + 31) * nivel) / 100) + nivel + 10;
-        int atk = (int) Math.floor((((atkBase * 2) + 31) * nivel) / 100) + 5;
-        int def = (int) Math.floor((((defBase * 2) + 31) * nivel) / 100) + 5;
-        int spAtk = (int) Math.floor((((spAtkBase * 2) + 31) * nivel) / 100) + 5;
-        int spDef = (int) Math.floor((((spDefBase * 2) + 31) * nivel) / 100) + 5;
-        int speed = (int) Math.floor((((speedBase * 2) + 31) * nivel) / 100) + 5;
-        switch (nature) {
-            case HARDY: case DOCILE: case SERIOUS: case BASHFUL: case QUIRKY: break;
-            case LONELY: case ADAMANT: case NAUGHTY: case BRAVE: atk += atk / 10; break;
-            case BOLD: case IMPISH: case LAX: case RELAXED: def += def / 10; break;
-            case MODEST: case MILD: case RASH: case QUIET: spAtk += spAtk / 10; break;
-            case CALM: case GENTLE: case CAREFUL: case SASSY: spDef += spDef / 10; break;
-            case TIMID: case HASTY: case JOLLY: case NAIVE: speed += speed / 10; break;
-        }
-        switch (nature) {
-            case HARDY: case DOCILE: case SERIOUS: case BASHFUL: case QUIRKY: break;
-            case BOLD: case MODEST: case CALM: case TIMID: atk -= atk / 10; break;
-            case LONELY: case MILD: case GENTLE: case HASTY: def -= def / 10; break;
-            case ADAMANT: case IMPISH: case CAREFUL: case JOLLY: spAtk -= spAtk / 10; break;
-            case NAUGHTY: case LAX: case RASH: case NAIVE: spDef -= spDef / 10; break;
-            case BRAVE: case RELAXED: case QUIET: case SASSY: speed -= speed / 10; break;
-        }
-        stats = new StatsBuilder()
-                    .hp(hp)
-                    .ataque(atk)
-                    .defesa(def)
-                    .ataqueEspecial(spAtk)
-                    .defesaEspecial(spDef)
-                    .velocidade(speed)
-                    .build();
+    public void setOwnStats(int level, Nature nature) throws DadoInvalidoException {
+        ownStats = baseStats.computeNewStats(level, nature);
     }
     public Nature getNature() {
         return nature;
@@ -119,16 +83,8 @@ public class Pokemon {
     public int getBST() {
         return baseStats.baseStatTotal();
     }
-    public int statFromString(String valor) throws DadoInvalidoException {
-        switch (valor.toLowerCase()) {
-            case "hp": return baseStats.getHp();
-            case "ataque": case "attack": return baseStats.getAttack();
-            case "defesa": case "defense": return baseStats.getDefense();
-            case "ataque especial": case "special attack": return baseStats.getSpecialAttack();
-            case "defesa especial": case "special defense": return baseStats.getSpecialDefense();
-            case "velocidade": case "speed": return baseStats.getSpeed();
-            default: throw new DadoInvalidoException("Stat inexistente!");
-        }
+    public int getStatFromString(String value) throws DadoInvalidoException {
+        return baseStats.statFromString(value);
     }
     public String toFileString() {
         return PokemonSerializer.serializePokemon(this);

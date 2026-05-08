@@ -27,10 +27,10 @@ public class CsvParser {
     }
     public List<Typing> parseTypes(String types) {
         return Arrays
-            .stream(types.split("\\|"))
-            .map(String::trim)
-            .map(Typing::valueOf)
-            .toList();
+                .stream(types.split("\\|"))
+                .map(String::trim)
+                .map(Typing::valueOf)
+                .toList();
     }
     public Stats parseStats(String stats) throws DadoInvalidoException {
         String[] statsString = stats.split("\\|");

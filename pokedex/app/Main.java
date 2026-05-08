@@ -57,7 +57,7 @@ public class Main {
             }
         }
         do {
-            Menu.exibirMenuPrincipal(10);
+            Menu.exibirMenuPrincipal(5);
             optionMenu = InputUtils.lerInt("Insira uma das opcoes acima: ", sc);
             switch (optionMenu) {
                 case 1:
@@ -173,7 +173,7 @@ public class Main {
                                         .tipos(tipos)
                                         .statsBase(stats)
                                         .build();
-                        pokemons.add(p);
+                        if (pokemons == null || pokemons.isEmpty()) pokemons.add(p);
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats);
                         OutputUtils.slowPrint("Pokemon " + p.getName() + " cadastrado com sucesso!", 50);
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
@@ -353,7 +353,7 @@ public class Main {
                                             .dano(dano)
                                             .categoria(categoria)
                                             .build();
-                        moves.add(m);
+                        if (moves == null || moves.isEmpty()) moves.add(m);
                         servMove.registrarMove(id, nome, tipo, dano, categoria);
                         OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
                         System.out.println("Tipo: " + m.getType());
@@ -440,6 +440,7 @@ public class Main {
                                     } catch (DadoInvalidoException e) {
                                         System.out.println(e.getMessage());
                                     }
+                                    break;
                                 case 3:
                                     int novoDanoBase = InputUtils.lerInt("Insira o novo dano base do golpe: ", sc);
                                     try {
@@ -459,6 +460,7 @@ public class Main {
                                     } catch (DadoInvalidoException e) {
                                         System.out.println(e.getMessage());
                                     }
+                                    break;
                                 case 0: break;
                                 default: System.out.println("Opcao invalida!");
                             }
@@ -541,12 +543,12 @@ public class Main {
                             p1.setMoves(movesP1);
                             p1.setNature(natureP1);
                             p1.setLevel(nivelP1);
-                            p1.setStats(p1.getBaseStats(), p1.getNature(), p1.getLevel());
+                            p1.setOwnStats(p1.getLevel(), p1.getNature());
                             Nature natureP2 = Nature.fromString(nature2);
                             p2.setMoves(movesP2);
                             p2.setNature(natureP2);
                             p2.setLevel(nivelP2);
-                            p2.setStats(p2.getBaseStats(), p2.getNature(), p2.getLevel());
+                            p2.setOwnStats(p2.getLevel(), p2.getNature());
                             Pokemon vencedor = servBattle.batalhar(p1, p2, sc);
                             OutputUtils.slowPrint("O Pokemon vencedor foi " + vencedor.getName() + "!", 50);
                         } catch (DadoInvalidoException e) {
@@ -558,20 +560,22 @@ public class Main {
                     }
                     break;
                 case 14:
+                    if (pokemons == null || pokemons.isEmpty()) {
+                        System.out.println("Nao ha Pokemons para analisar estatisticas!\n(Operacao abortada)");
+                        break;
+                    }
                     int optionStatistics = -1;
-                    String optionStat;
-                    Pokemon pkmn;
                     do {
                         Menu.exibirMenuEstatisticas(20);
                         optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
                         switch (optionStatistics) {
                             case 1:
                                 sc.nextLine();
-                                optionStat = InputUtils.lerString("Insira o stat desejado: ", sc);
+                                String optionStat = InputUtils.lerString("Insira o stat desejado: ", sc);
                                 try {
-                                    pkmn = servPkmn.maiorStat(optionStat);
+                                    Pokemon pkmn = servPkmn.maiorStat(optionStat);
                                     System.out.println("Pokemon de maior " + optionStat.toLowerCase() + ": " + pkmn.getName());
-                                    System.out.println("Valor do stat " + optionStat.toLowerCase() + ": " + pkmn.statFromString(optionStat));
+                                    System.out.println("Valor do stat " + optionStat.toLowerCase() + ": " + pkmn.getStatFromString(optionStat));
                                 } catch (PokemonNaoEncontradoException e) {
                                     System.out.println(e.getMessage());
                                 } catch (DadoInvalidoException e) {
@@ -582,9 +586,9 @@ public class Main {
                                 sc.nextLine();
                                 optionStat = InputUtils.lerString("Insira o stat desejado: ", sc);
                                 try {
-                                    pkmn = servPkmn.menorStat(optionStat);
+                                    Pokemon pkmn = servPkmn.menorStat(optionStat);
                                     System.out.println("Pokemon de menor " + optionStat.toLowerCase() + ": " + pkmn.getName());
-                                    System.out.println("Valor do stat " + optionStat.toLowerCase() + ": " + pkmn.statFromString(optionStat));
+                                    System.out.println("Valor do stat " + optionStat.toLowerCase() + ": " + pkmn.getStatFromString(optionStat));
                                 } catch (PokemonNaoEncontradoException e) {
                                     System.out.println(e.getMessage());
                                 } catch (DadoInvalidoException e) {

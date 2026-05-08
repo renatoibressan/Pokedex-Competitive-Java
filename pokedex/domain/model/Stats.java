@@ -1,5 +1,7 @@
 package pokedex.domain.model;
 
+import pokedex.builder.StatsBuilder;
+import pokedex.domain.enums.Nature;
 import pokedex.exception.DadoInvalidoException;
 
 public class Stats {
@@ -51,7 +53,50 @@ public class Stats {
         if (speed < 1) throw new DadoInvalidoException("Stat de velocidade invalido!");
         this.speed = speed;
     }
+    public Stats computeNewStats(int level, Nature nature) throws DadoInvalidoException {
+        int newHp = (int) Math.floor((((hp * 2) + 31) * level) / 100) + level + 10;
+        int newAtk = (int) Math.floor((((attack * 2) + 31) * level) / 100) + 5;
+        int newDef = (int) Math.floor((((defense * 2) + 31) * level) / 100) + 5;
+        int newSpAtk = (int) Math.floor((((specialAttack * 2) + 31) * level) / 100) + 5;
+        int newSpDef = (int) Math.floor((((specialDefense * 2) + 31) * level) / 100) + 5;
+        int newSpeed = (int) Math.floor((((speed * 2) + 31) * level) / 100) + 5;
+        switch (nature) {
+            case HARDY: case DOCILE: case SERIOUS: case BASHFUL: case QUIRKY: break;
+            case LONELY: case ADAMANT: case NAUGHTY: case BRAVE: newAtk += newAtk / 10; break;
+            case BOLD: case IMPISH: case LAX: case RELAXED: newDef += newDef / 10; break;
+            case MODEST: case MILD: case RASH: case QUIET: newSpAtk += newSpAtk / 10; break;
+            case CALM: case GENTLE: case CAREFUL: case SASSY: newSpDef += newSpDef / 10; break;
+            case TIMID: case HASTY: case JOLLY: case NAIVE: newSpeed += newSpeed / 10; break;
+        }
+        switch (nature) {
+            case HARDY: case DOCILE: case SERIOUS: case BASHFUL: case QUIRKY: break;
+            case BOLD: case MODEST: case CALM: case TIMID: newAtk -= newAtk / 10; break;
+            case LONELY: case MILD: case GENTLE: case HASTY: newDef -= newDef / 10; break;
+            case ADAMANT: case IMPISH: case CAREFUL: case JOLLY: newSpAtk -= newSpAtk / 10; break;
+            case NAUGHTY: case LAX: case RASH: case NAIVE: newSpDef -= newSpDef / 10; break;
+            case BRAVE: case RELAXED: case QUIET: case SASSY: newSpeed -= newSpeed / 10; break;
+        }
+        return new StatsBuilder()
+                            .hp(newHp)
+                            .ataque(newAtk)
+                            .defesa(newDef)
+                            .ataqueEspecial(newSpAtk)
+                            .defesaEspecial(newSpDef)
+                            .velocidade(newSpeed)
+                            .build();
+    }
     public int baseStatTotal() {
         return hp + attack + defense + specialAttack + specialDefense + speed;
+    }
+    public int statFromString(String value) throws DadoInvalidoException {
+        switch (value.toLowerCase()) {
+            case "hp": return hp;
+            case "ataque": case "attack": return attack;
+            case "defesa": case "defense": return defense;
+            case "ataque especial": case "special attack": return specialAttack;
+            case "defesa especial": case "special defense": return specialDefense;
+            case "velocidade": case "speed": return speed;
+            default: throw new DadoInvalidoException("Stat inexistente!");
+        }
     }
 }

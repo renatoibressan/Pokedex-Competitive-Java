@@ -25,17 +25,15 @@ public class TypeEffectivenessService {
     }
     public void extrairDeArquivo() throws IOException {
         List<String> linhas = FileUtils.ler(filePath);
-        Typing atacante, defensor;
-        double multiplicador;
         int linhaNumero = 0;
         for (String linha : linhas) {
             linhaNumero++;
             try {
                 String[] partes = linha.split(";");
                 if (partes.length != 3) throw new IllegalArgumentException("Formato invalido!");
-                atacante = Typing.fromString(partes[0]);
-                defensor = Typing.fromString(partes[1]);
-                multiplicador = Double.parseDouble(partes[2]);
+                Typing atacante = Typing.fromString(partes[0]);
+                Typing defensor = Typing.fromString(partes[1]);
+                double multiplicador = Double.parseDouble(partes[2]);
                 effectiveness
                     .computeIfAbsent(atacante, k -> new HashMap<>())
                     .put(defensor, multiplicador);

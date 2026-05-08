@@ -23,10 +23,10 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
     }
     @Override
     public boolean existe(String nome) {
-        for (Pokemon p : pkmns.values()) {
-            if (p.getName().equalsIgnoreCase(nome)) return true;
-        }
-        return false;
+        return pkmns
+                .values()
+                .stream()
+                .anyMatch(p -> p.getName().equalsIgnoreCase(nome));
     }
     @Override
     public void salvar(Pokemon p) {
@@ -34,8 +34,7 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
     }
     @Override
     public List<Pokemon> listar() {
-        List<Pokemon> listaPokemon = new ArrayList<>(pkmns.values());
-        return listaPokemon;
+        return new ArrayList<>(pkmns.values());
     }
     @Override
     public Pokemon buscarPorNome(String nome) {
@@ -66,16 +65,14 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
     }
     public void escreverArquivo(List<Pokemon> pokemons) throws IOException {
         List<String> linhas = new ArrayList<>();
-        String linha;
         for (Pokemon p : pokemons) {
-            linha = p.toFileString();
+            String linha = p.toFileString();
             linhas.add(linha);
         }
         FileUtils.escrever(filePath, linhas);
     }
     public List<Pokemon> lerArquivo() {
-        List<Pokemon> listaPokemon = loader.carregar(filePath);
-        return listaPokemon;
+        return loader.carregar(filePath);
     }
     public void limparArquivo() throws IOException {
         FileUtils.limpar(filePath);

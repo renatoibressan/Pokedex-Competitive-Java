@@ -33,7 +33,7 @@ public class Move {
         return damage;
     }
     public void setDamage(int damage) throws DadoInvalidoException {
-        if (damage < 0 || damage % 5 != 0) throw new DadoInvalidoException("Dano base invalido!");
+        if (damage < 0) throw new DadoInvalidoException("Dano base invalido!");
         this.damage = damage;
     }
     public MoveCategory getCategory() {

@@ -24,11 +24,11 @@ public class MoveService {
     }
     public int gerarNovoId() {
         return repository
-                .listar()
-                .stream()
-                .mapToInt(Move::getId)
-                .max()
-                .orElse(0) + 1;
+                    .listar()
+                    .stream()
+                    .mapToInt(Move::getId)
+                    .max()
+                    .orElse(0) + 1;
     }
     public void registrarMove(int id, String nome, Typing tipo, int dano, MoveCategory categoria) throws DadoInvalidoException {
         if (!repository.existe(nome)) {
