@@ -41,7 +41,7 @@ public class Main {
         }
         if (arquivoMove.exists() && arquivoMove.length() > 0) {
             moves = repoMove.lerArquivo();
-            repoMove.inserirGolpes(moves);
+            repoMove.inserirMoves(moves);
             servMove.putMoves(moves);
         }
         if (arquivoPkmn.exists() && arquivoPkmn.length() > 0) {
@@ -225,7 +225,7 @@ public class Main {
                                 for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
                                 OutputUtils.slowPrint("\n---------------------------------------------------------", 20);
                             }
-                            OutputUtils.slowPrint(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!", 50);
+                            OutputUtils.slowPrint(listaPkmns.size() + " Pokemons listados com sucesso!", 50);
                         } else System.out.println("Nao ha Pokemons de tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
@@ -244,6 +244,9 @@ public class Main {
                                 case 1:
                                     sc.nextLine();
                                     String novoNome = InputUtils.lerString("Insira o novo nome do Pokemon: ", sc);
+                                    while (novoNome == null || novoNome.isEmpty()) {
+                                        novoNome = InputUtils.lerString("Entrada invalida!\nInsira o novo nome do Pokemon: ", sc);
+                                    }
                                     novoNome = novoNome
                                                     .substring(0, 1)
                                                     .toUpperCase() + novoNome.substring(1);
@@ -404,7 +407,7 @@ public class Main {
                                 System.out.println("Categoria: " + move.getCategory());
                                 OutputUtils.slowPrint("---------------------------------------------------------", 30);
                             }
-                            OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
+                            OutputUtils.slowPrint(listaMoves.size() + " golpes listados com sucesso!", 50);
                         } else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
@@ -423,6 +426,9 @@ public class Main {
                                 case 1:
                                     sc.nextLine();
                                     String novoNome = InputUtils.lerString("Insira o novo nome do golpe: ", sc);
+                                    while (novoNome == null || novoNome.isEmpty()) {
+                                        novoNome = InputUtils.lerString("Entrada invalida!\nInsira o novo nome do golpe: ", sc);
+                                    }
                                     novoNome = Pattern
                                                     .compile("\\b(\\w)")
                                                     .matcher(novoNome)

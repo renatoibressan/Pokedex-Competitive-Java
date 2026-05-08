@@ -55,12 +55,12 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     public void remover(int id) {
         moves.remove(id);
     }
-    public void inserirGolpes(List<Move> move) {
+    public void inserirMoves(List<Move> move) {
         for (Move m : move) {
             moves.put(m.getId(), m);
         }
     }
-    public int contarGolpes() {
+    public int contarMoves() {
         return moves.size();
     }
     public void escreverArquivo(List<Move> moves) throws IOException {
