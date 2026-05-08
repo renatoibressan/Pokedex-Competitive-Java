@@ -163,7 +163,7 @@ public class Main {
                                             .ataque(atk)
                                             .defesa(def)
                                             .ataqueEspecial(spAtk)
-                                            .defesa(spDef)
+                                            .defesaEspecial(spDef)
                                             .velocidade(speed)
                                             .build();
                         int id = servPkmn.gerarNovoId();
@@ -173,6 +173,7 @@ public class Main {
                                         .tipos(tipos)
                                         .statsBase(stats)
                                         .build();
+                        pokemons.add(p);
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats);
                         OutputUtils.slowPrint("Pokemon " + p.getName() + " cadastrado com sucesso!", 50);
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
@@ -211,6 +212,7 @@ public class Main {
                     }
                     break;
                 case 4:
+                    sc.nextLine();
                     String tipoBusca = InputUtils.lerString("Insira o tipo para listar os Pokemons: ", sc);
                     try {
                         Typing tipo = Typing.fromString(tipoBusca);
@@ -338,6 +340,7 @@ public class Main {
                                 .replaceAll(m -> m.group(1).toUpperCase());
                     String tipoMove = InputUtils.lerString("Insira o tipo desejado para o golpe: ", sc);
                     int dano = InputUtils.lerInt("Insira o dano base do golpe: ", sc);
+                    sc.nextLine();
                     String categoriaMove = InputUtils.lerString("Insira a categoria do golpe (fisico/especial): ", sc);
                     try {
                         Typing tipo = Typing.fromString(tipoMove);
@@ -350,6 +353,7 @@ public class Main {
                                             .dano(dano)
                                             .categoria(categoria)
                                             .build();
+                        moves.add(m);
                         servMove.registrarMove(id, nome, tipo, dano, categoria);
                         OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
                         System.out.println("Tipo: " + m.getType());
@@ -365,10 +369,10 @@ public class Main {
                         OutputUtils.slowPrint("---------------------------------------------------------", 20);
                         for (Move move : listaMoves) {
                             System.out.println("Dados do golpe " + move.getName() + ":");
-                            System.out.println("Tipo de " + move.getName() + ": " + move.getType());
-                            System.out.println("dano base de " + move.getName() + ": " + move.getDamage());
-                            System.out.println("Categoria de " + move.getName() + ": " + move.getCategory());
-                            OutputUtils.slowPrint("\n---------------------------------------------------------", 20);
+                            System.out.println("Tipo: " + move.getType());
+                            System.out.println("Dano base: " + move.getDamage());
+                            System.out.println("Categoria: " + move.getCategory());
+                            OutputUtils.slowPrint("---------------------------------------------------------", 20);
                         }
                         OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
                     } else System.out.println("Nao ha golpes para listar!");
@@ -386,6 +390,7 @@ public class Main {
                     }
                     break;
                 case 10:
+                    sc.nextLine();
                     tipoBusca = InputUtils.lerString("Insira o tipo para listar os golpes: ", sc);
                     try {
                         Typing tipo = Typing.fromString(tipoBusca);
@@ -394,13 +399,13 @@ public class Main {
                             OutputUtils.slowPrint("---------------------------------------------------------", 30);
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
-                                System.out.println("Tipo de " + move.getName() + ": " + move.getType());
-                                System.out.println("dano base de " + move.getName() + ": " + move.getDamage());
-                                System.out.println("Categoria de " + move.getName() + ": " + move.getCategory());
-                                OutputUtils.slowPrint("\n---------------------------------------------------------", 30);
+                                System.out.println("Tipo: " + move.getType());
+                                System.out.println("Dano base: " + move.getDamage());
+                                System.out.println("Categoria: " + move.getCategory());
+                                OutputUtils.slowPrint("---------------------------------------------------------", 30);
                             }
                             OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
-                        }  else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
+                        } else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
                     }

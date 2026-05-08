@@ -18,10 +18,10 @@ public class PokemonSerializer {
                 .getTypes() 
                 .stream() 
                 .map(Typing::name) 
-                .collect(Collectors.joining("\\|"));
+                .collect(Collectors.joining("|"));
     }
     public static String serializeStats(Pokemon pokemon) {
-        return String.join("\\|", 
+        return String.join("|", 
                 String.valueOf(pokemon.getBaseStats().getHp()), 
                 String.valueOf(pokemon.getBaseStats().getAttack()), 
                 String.valueOf(pokemon.getBaseStats().getDefense()), 

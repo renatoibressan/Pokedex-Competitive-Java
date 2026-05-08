@@ -17,7 +17,6 @@ public class CsvParser {
         List<String[]> colunas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String linha;
-            reader.readLine();
             while ((linha = reader.readLine()) != null) {
                 colunas.add(linha.split(";"));
             }
