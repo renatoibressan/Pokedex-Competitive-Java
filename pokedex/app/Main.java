@@ -218,12 +218,12 @@ public class Main {
                         Typing tipo = Typing.fromString(tipoBusca);
                         listaPkmns = servPkmn.buscarPorTipo(tipo);
                         if (!listaPkmns.isEmpty()) {
-                            OutputUtils.slowPrint("---------------------------------------------------------", 20);
+                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
                             for (Pokemon pkmn : listaPkmns) {
                                 System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
                                 System.out.print("Tipo(s) de " + pkmn.getName() + ":");
                                 for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
-                                OutputUtils.slowPrint("\n---------------------------------------------------------", 20);
+                                OutputUtils.slowPrint("\n---------------------------------------------------------", 10);
                             }
                             OutputUtils.slowPrint(listaPkmns.size() + " Pokemons listados com sucesso!", 50);
                         } else System.out.println("Nao ha Pokemons de tipo " + tipo + " para listar!");
@@ -369,13 +369,13 @@ public class Main {
                 case 8:
                     List<Move> listaMoves= servMove.listarMoves();
                     if (!listaMoves.isEmpty()) {
-                        OutputUtils.slowPrint("---------------------------------------------------------", 20);
+                        OutputUtils.slowPrint("---------------------------------------------------------", 10);
                         for (Move move : listaMoves) {
                             System.out.println("Dados do golpe " + move.getName() + ":");
                             System.out.println("Tipo: " + move.getType());
                             System.out.println("Dano base: " + move.getDamage());
                             System.out.println("Categoria: " + move.getCategory());
-                            OutputUtils.slowPrint("---------------------------------------------------------", 20);
+                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
                         }
                         OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
                     } else System.out.println("Nao ha golpes para listar!");
@@ -399,13 +399,13 @@ public class Main {
                         Typing tipo = Typing.fromString(tipoBusca);
                         listaMoves = servMove.buscarPorTipo(tipo);
                         if (!listaMoves.isEmpty()) {
-                            OutputUtils.slowPrint("---------------------------------------------------------", 30);
+                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
                                 System.out.println("Dano base: " + move.getDamage());
                                 System.out.println("Categoria: " + move.getCategory());
-                                OutputUtils.slowPrint("---------------------------------------------------------", 30);
+                                OutputUtils.slowPrint("---------------------------------------------------------", 10);
                             }
                             OutputUtils.slowPrint(listaMoves.size() + " golpes listados com sucesso!", 50);
                         } else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
