@@ -22,11 +22,11 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
         this.filePath = filePath;
     }
     @Override
-    public boolean existe(String nome) {
+    public boolean existe(String name) {
         return pkmns
                 .values()
                 .stream()
-                .anyMatch(p -> p.getName().equalsIgnoreCase(nome));
+                .anyMatch(p -> p.getName().equalsIgnoreCase(name));
     }
     @Override
     public void salvar(Pokemon p) {
@@ -37,18 +37,18 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
         return new ArrayList<>(pkmns.values());
     }
     @Override
-    public Pokemon buscarPorNome(String nome) {
+    public Pokemon buscarPorNome(String name) {
         return pkmns.values()
                     .stream()
-                    .filter(p -> p.getName().equalsIgnoreCase(nome))
+                    .filter(p -> p.getName().equalsIgnoreCase(name))
                     .findFirst()
                     .orElse(null);
     }
     @Override
-    public List<Pokemon> buscarPorTipo(Typing tipo) {
+    public List<Pokemon> buscarPorTipo(Typing type) {
         return pkmns.values()
                     .stream()
-                    .filter(p -> p.getTypes().contains(tipo))
+                    .filter(p -> p.getTypes().contains(type))
                     .collect(Collectors.toList());
     }
     @Override

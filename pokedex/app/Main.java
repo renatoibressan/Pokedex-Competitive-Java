@@ -383,7 +383,10 @@ public class Main {
                 case 9:
                     sc.nextLine();
                     nomeBusca = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
-                    nomeBusca = nomeBusca.substring(0, 1).toUpperCase() + nomeBusca.substring(1);
+                    nomeBusca = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeBusca)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Move move = servMove.buscarPorNome(nomeBusca);
                         Menu.exibirMenuGolpe(move, 50);

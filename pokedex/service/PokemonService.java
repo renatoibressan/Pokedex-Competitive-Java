@@ -30,19 +30,19 @@ public class PokemonService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void cadastrarPokemon(int id, String nome, List<Typing> tipos, Stats stats) throws DadoInvalidoException {
-        if (!repository.existe(nome)) {
+    public void cadastrarPokemon(int id, String name, List<Typing> types, Stats stats) throws DadoInvalidoException {
+        if (!repository.existe(name)) {
             Pokemon p = new PokemonBuilder()
                             .id(id)
-                            .nome(nome)
-                            .tipos(tipos)
+                            .nome(name)
+                            .tipos(types)
                             .statsBase(stats)
                             .build();
             repository.salvar(p);
             pokemons.add(p);
             return;
         }
-        throw new DadoInvalidoException("Ja existe um Pokemon com o nome " + nome + "!");
+        throw new DadoInvalidoException("Ja existe um Pokemon com o nome " + name + "!");
     }
     public List<Pokemon> listarPokemons() {
         return repository
@@ -51,17 +51,17 @@ public class PokemonService {
                 .sorted(Comparator.comparingInt(Pokemon::getId))
                 .toList();
     }
-    public Pokemon buscarPorNome(String nome) throws PokemonNaoEncontradoException {
-        Pokemon pkmn = repository.buscarPorNome(nome);
+    public Pokemon buscarPorNome(String name) throws PokemonNaoEncontradoException {
+        Pokemon pkmn = repository.buscarPorNome(name);
         if (pkmn == null) throw new PokemonNaoEncontradoException("Pokemon nao encontrado!");
         return pkmn;
     }
-    public List<Pokemon> buscarPorTipo(Typing tipo) {
-        return repository.buscarPorTipo(tipo);
+    public List<Pokemon> buscarPorTipo(Typing type) {
+        return repository.buscarPorTipo(type);
     }
-    public void removerPokemon(String nome) throws PokemonNaoEncontradoException {
+    public void removerPokemon(String name) throws PokemonNaoEncontradoException {
         for (Pokemon p : pokemons) {
-            if (p.getName().equalsIgnoreCase(nome)) {
+            if (p.getName().equalsIgnoreCase(name)) {
                 int id = p.getId();
                 repository.remover(id);
                 pokemons.remove(p);

@@ -22,11 +22,11 @@ public class FileMoveRepository implements ObjectRepository<Move> {
         this.filePath = filePath;
     }
     @Override
-    public boolean existe(String nome) {
+    public boolean existe(String name) {
         return moves
                 .values()
                 .stream()
-                .anyMatch(m -> m.getName().equalsIgnoreCase(nome));
+                .anyMatch(m -> m.getName().equalsIgnoreCase(name));
     }
     @Override
     public void salvar(Move m) {
@@ -37,18 +37,18 @@ public class FileMoveRepository implements ObjectRepository<Move> {
         return new ArrayList<>(moves.values());
     }
     @Override
-    public Move buscarPorNome(String nome) {
+    public Move buscarPorNome(String name) {
         return moves.values()
                     .stream()
-                    .filter(m -> m.getName().equalsIgnoreCase(nome))
+                    .filter(m -> m.getName().equalsIgnoreCase(name))
                     .findFirst()
                     .orElse(null);
     }
     @Override
-    public List<Move> buscarPorTipo(Typing tipo) {
+    public List<Move> buscarPorTipo(Typing type) {
         return moves.values()
                     .stream()
-                    .filter(m -> m.getType() == tipo)
+                    .filter(m -> m.getType() == type)
                     .collect(Collectors.toList());
     }
     @Override

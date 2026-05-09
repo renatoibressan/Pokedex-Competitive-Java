@@ -82,27 +82,27 @@ public class BattleService {
             }
         }
     }
-    public double calcularEficaciaDeTipo(Typing atacante, List<Typing> defensor) {
+    public double calcularEficaciaDeTipo(Typing attacker, List<Typing> defender) {
         double multiplicador = 1.0;
-        for (Typing t : defensor) {
-            multiplicador *= effect.getMultiplicador(atacante, t);
+        for (Typing t : defender) {
+            multiplicador *= effect.getMultiplicador(attacker, t);
         }
         return multiplicador;
     }
-    public double calcularSTAB(Pokemon atacante, Move golpe, double dano) {
-        for (Typing t : atacante.getTypes()) {
-            if (golpe.getType() == t) return dano * 0.5;
+    public double calcularSTAB(Pokemon attacker, Move move, double damage) {
+        for (Typing t : attacker.getTypes()) {
+            if (move.getType() == t) return damage * 0.5;
         }
         return 0.0;
     }
-    public double calcularDanoFisico(Pokemon atacante, Pokemon defensor, Move golpe) {
-        double d1 = ((2 * atacante.getLevel()) / 5) + 2;
-        double d2 = (golpe.getDamage() * atacante.getOwnStats().getAttack()) / defensor.getOwnStats().getDefense();
+    public double calcularDanoFisico(Pokemon attacker, Pokemon defender, Move move) {
+        double d1 = ((2 * attacker.getLevel()) / 5) + 2;
+        double d2 = (move.getDamage() * attacker.getOwnStats().getAttack()) / defender.getOwnStats().getDefense();
         return ((d1 * d2) / 50) + 2;
     }
-    public double calcularDanoEspecial(Pokemon atacante, Pokemon defensor, Move golpe) {
-        double d1 = ((2 * atacante.getLevel()) / 5) + 2;
-        double d2 = (golpe.getDamage() * atacante.getOwnStats().getSpecialAttack()) / defensor.getOwnStats().getSpecialDefense();
+    public double calcularDanoEspecial(Pokemon attacker, Pokemon defender, Move move) {
+        double d1 = ((2 * attacker.getLevel()) / 5) + 2;
+        double d2 = (move.getDamage() * attacker.getOwnStats().getSpecialAttack()) / defender.getOwnStats().getSpecialDefense();
         return ((d1 * d2) / 50) + 2;
     }
     public Pokemon definirPrimeiro(Pokemon p1, Pokemon p2) {

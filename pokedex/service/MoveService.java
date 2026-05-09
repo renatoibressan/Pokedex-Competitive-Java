@@ -30,20 +30,20 @@ public class MoveService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void registrarMove(int id, String nome, Typing tipo, int dano, MoveCategory categoria) throws DadoInvalidoException {
-        if (!repository.existe(nome)) {
+    public void registrarMove(int id, String name, Typing type, int damage, MoveCategory category) throws DadoInvalidoException {
+        if (!repository.existe(name)) {
             Move m = new MoveBuilder()
                         .id(id)
-                        .nome(nome)
-                        .tipo(tipo)
-                        .dano(dano)
-                        .categoria(categoria)
+                        .nome(name)
+                        .tipo(type)
+                        .dano(damage)
+                        .categoria(category)
                         .build();
             repository.salvar(m);
             moves.add(m);
             return;
         }
-        throw new DadoInvalidoException("Ja existe um golpe com o nome " + nome + "!");
+        throw new DadoInvalidoException("Ja existe um golpe com o nome " + name + "!");
     }
     public List<Move> listarMoves() {
         return repository
@@ -52,17 +52,17 @@ public class MoveService {
                 .sorted(Comparator.comparingInt(Move::getId))
                 .toList();
     }
-    public Move buscarPorNome(String nome) throws MoveNaoEncontradoException {
-        Move move = repository.buscarPorNome(nome);
+    public Move buscarPorNome(String name) throws MoveNaoEncontradoException {
+        Move move = repository.buscarPorNome(name);
         if (move == null) throw new MoveNaoEncontradoException("Golpe nao encontrado!");
         return move;
     }
-    public List<Move> buscarPorTipo(Typing tipo) {
-        return repository.buscarPorTipo(tipo);
+    public List<Move> buscarPorTipo(Typing type) {
+        return repository.buscarPorTipo(type);
     }
-    public void removerMove(String nome) throws MoveNaoEncontradoException {
+    public void removerMove(String name) throws MoveNaoEncontradoException {
         for (Move m : moves) {
-            if (m.getName().equalsIgnoreCase(nome)) {
+            if (m.getName().equalsIgnoreCase(name)) {
                 int id = m.getId();
                 repository.remover(id);
                 moves.remove(m);
