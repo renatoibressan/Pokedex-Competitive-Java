@@ -19,8 +19,8 @@ import pokedex.util.OutputUtils;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        OutputUtils.slowPrint("=============== POKEDEX MODULAR ===============", 40);
-        OutputUtils.slowPrint("Desenvolvido por: Renato Ikeda Bressan", 40);
+        // TFD: POO c/ Prof. Dirson, CC, INF-UFG, 2026.1
+        Menu.exibirMenuInicial(15);
         Scanner sc = new Scanner(System.in);
         int optionMenu = -1;
         String optionArquivo;
@@ -639,7 +639,7 @@ public class Main {
             }
         } while (optionMenu != 0);
         sc.nextLine();
-        optionArquivo = InputUtils.lerString("Deseja salvar os Pokemons e golpes nos respectivos arquivos? (S/N): ", sc);
+        optionArquivo = InputUtils.lerString("\nDeseja salvar os Pokemons e golpes nos respectivos arquivos? (S/N): ", sc);
         while (!optionArquivo.equalsIgnoreCase("s") && !optionArquivo.equalsIgnoreCase("n")) {
             optionArquivo = InputUtils.lerString("Opcao invalida!\nDeseja salvar os Pokemons e golpes nos respectivos arquivos? (S/N): ", sc);
         }
@@ -655,6 +655,7 @@ public class Main {
         System.out.print("Encerrando o programa");
         Thread.sleep(500);
         OutputUtils.slowPrint("...", 150);
+        System.out.println();
         sc.close();
     }
 }
