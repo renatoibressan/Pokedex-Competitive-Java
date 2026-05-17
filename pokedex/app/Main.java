@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import pokedex.builder.*;
 import pokedex.domain.enums.*;
-import pokedex.domain.interfaces.MoveCategory;
+import pokedex.domain.interfaces.*;
 import pokedex.domain.models.*;
 import pokedex.exception.*;
 import pokedex.repository.file.*;
@@ -379,6 +379,10 @@ public class Main {
                     } 
                     break;
                 case 11:
+                    if (pokemons == null || pokemons.isEmpty()) {
+                        System.out.println("Nao ha Pokemons para simular a batalha!\n(Operacao abortada)");
+                        break;
+                    }
                     if (moves == null || moves.isEmpty()) {
                         System.out.println("Nao ha golpes para simular a batalha!\n(Operacao abortada)");
                         break;

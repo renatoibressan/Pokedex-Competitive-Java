@@ -28,12 +28,17 @@ public class BattleService {
         Pokemon second = definirSegundo(p1, p2);
         Pokemon primeiro = new Pokemon(first);
         Pokemon segundo = new Pokemon(second);
-        int vidaP1 = primeiro.getOwnStats().getHp();
-        int vidaP2 = segundo.getOwnStats().getHp();
         OutputUtils.slowPrint("---------------------------------------------------------", 50);
         OutputUtils.slowPrint("Batalha entre " + primeiro.getName() + " e " + segundo.getName() + " iniciada!", 50);
         while (true) {
             turnos++;
+            if (primeiro.getOwnStats().getSpeed() < segundo.getOwnStats().getSpeed()) {
+                Pokemon temp = primeiro;
+                primeiro = segundo;
+                segundo = temp;
+            }
+            int vidaP1 = primeiro.getOwnStats().getHp();
+            int vidaP2 = segundo.getOwnStats().getHp();
             System.out.print("\n");
             System.out.println(primeiro.getName() + " Lv." + primeiro.getLevel() + ": " + vidaP1 + " / " + primeiro.getOwnStats().getHp());
             System.out.println(segundo.getName() + " Lv." + segundo.getLevel() + ": " + vidaP2 + " / " + segundo.getOwnStats().getHp());
@@ -107,7 +112,7 @@ public class BattleService {
                     else OutputUtils.slowPrint("\nAtaque de " + target.getName() + " aumentado em " + valor + " estagios!", 50);
                 } else if (novoAtk < atkBase) {
                     if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir o ataque de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque de " + target.getName() + " reduzido em " + valor + " estagios!", 50);
+                    else OutputUtils.slowPrint("\nAtaque de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!", 50);
                 }
                 break;
             case DEFENSE:
@@ -121,7 +126,7 @@ public class BattleService {
                     else OutputUtils.slowPrint("\nDefesa de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
                 } else if (novaDef < defBase) {
                     if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a defesa de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa de " + target.getName() + " reduzida em " + valor + " estagios!", 50);
+                    else OutputUtils.slowPrint("\nDefesa de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
                 }
                 break;
             case SPECIAL_ATTACK:
@@ -135,7 +140,7 @@ public class BattleService {
                     else OutputUtils.slowPrint("\nAtaque especial de " + target.getName() + " aumentado em " + valor + " estagios!", 50);
                 } else if (novoSpAtk < spAtkBase) {
                     if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir o ataque especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque especial de " + target.getName() + " reduzido em " + valor + " estagios!", 50);
+                    else OutputUtils.slowPrint("\nAtaque especial de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!", 50);
                 }
                 break;
             case SPECIAL_DEFENSE:
@@ -149,30 +154,49 @@ public class BattleService {
                     else OutputUtils.slowPrint("\nDefesa especial de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
                 } else if (novaSpDef < spDefBase) {
                     if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a defesa especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa especial de " + target.getName() + " reduzida em " + valor + " estagios!", 50);
+                    else OutputUtils.slowPrint("\nDefesa especial de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
+                }
+                break;
+            case SPEED:
+                anterior = stats.getStages().getSpeedStage();
+                stats.getStages().addSpeedStage(valor);
+                int speedBase = stats.getSpeed();
+                int novaSpeed = novaVelocidade(stats.getStages(), speedBase);
+                stats.setSpeed(novaSpeed);
+                if (novaSpeed > speedBase) {
+                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar a velocidade de " + target.getName() + "!", 50);
+                    else OutputUtils.slowPrint("\nVelocidade de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
+                } else if (novaSpeed < speedBase) {
+                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a velocidade de " + target.getName() + "!", 50);
+                    else OutputUtils.slowPrint("\nVelocidade de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
                 }
                 break;
         }
     }
-    public int novoAtaque(StatStages stages, int attack) {
+    public int novoAtaque(StatStages stages, int ataque) {
         return (stages.getAttackStage() >= 0) ? 
-                (int)(attack * ((2.0 + stages.getAttackStage()) / 2.0)) : 
-                (int)(attack * (2.0 / (2.0 - stages.getAttackStage())));
+                (int)(ataque * ((2.0 + stages.getAttackStage()) / 2.0)) : 
+                (int)(ataque * (2.0 / (2.0 - stages.getAttackStage())));
     }
-    public int novaDefesa(StatStages stages, int defense) {
+    public int novaDefesa(StatStages stages, int defesa) {
         return (stages.getDefenseStage() >= 0) ? 
-                (int)(defense * ((2.0 + stages.getDefenseStage()) / 2.0)) : 
-                (int)(defense * (2.0 / (2.0 - stages.getDefenseStage())));
+                (int)(defesa * ((2.0 + stages.getDefenseStage()) / 2.0)) : 
+                (int)(defesa * (2.0 / (2.0 - stages.getDefenseStage())));
     }
-    public int novoAtaqueEspecial(StatStages stages, int specialAttack) {
+    public int novoAtaqueEspecial(StatStages stages, int ataqueEspecial) {
         return (stages.getSpecialAttackStage() >= 0) ? 
-                (int)(specialAttack * ((2.0 + stages.getSpecialAttackStage()) / 2.0)) : 
-                (int)(specialAttack * (2.0 / (2.0 - stages.getSpecialAttackStage())));
+                (int)(ataqueEspecial * ((2.0 + stages.getSpecialAttackStage()) / 2.0)) : 
+                (int)(ataqueEspecial * (2.0 / (2.0 - stages.getSpecialAttackStage())));
     }
-    public int novaDefesaEspecial(StatStages stages, int specialDefense) {
+    public int novaDefesaEspecial(StatStages stages, int defesaEspecial) {
         return (stages.getSpecialDefenseStage() >= 0) ? 
-                (int)(specialDefense * ((2.0 + stages.getSpecialDefenseStage()) / 2.0)) : 
-                (int)(specialDefense * (2.0 / (2.0 - stages.getSpecialDefenseStage())));
+                (int)(defesaEspecial * ((2.0 + stages.getSpecialDefenseStage()) / 2.0)) : 
+                (int)(defesaEspecial * (2.0 / (2.0 - stages.getSpecialDefenseStage())));
+    }
+    public int novaVelocidade(StatStages stages, int velocidade) {
+        return (stages.getSpeedStage() >= 0) ? 
+                (int)(velocidade * ((2.0 + stages.getSpeedStage()) / 2.0)) : 
+                (int)(velocidade * (2.0 / (2.0 - stages.getSpeedStage())));
     }
     public double calcularDanoCompleto(Pokemon attacker, Pokemon defender, DamagingMove move) throws InterruptedException {
         double dano = (move.getCategory() == DamagingMoveCategory.PHYSICAL) ? calcularDanoFisico(attacker, defender, move) : calcularDanoEspecial(attacker, defender, move);

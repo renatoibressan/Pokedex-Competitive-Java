@@ -5,11 +5,13 @@ public class StatStages {
     private int defenseStage;
     private int specialAttackStage;
     private int specialDefenseStage;
+    private int speedStage;
     public StatStages() {
         this.attackStage = 0;
         this.defenseStage = 0;
         this.specialAttackStage = 0;
         this.specialDefenseStage = 0;
+        this.speedStage = 0;
     }
     public int getAttackStage() {
         return attackStage;
@@ -34,5 +36,11 @@ public class StatStages {
     }
     public void addSpecialDefenseStage(int value) {
         this.specialDefenseStage = Math.max(-6, Math.min(6, this.specialDefenseStage + value)); 
+    }
+    public int getSpeedStage() {
+        return speedStage;
+    }
+    public void addSpeedStage(int value) {
+        this.speedStage = Math.max(-6, Math.min(6, this.speedStage + value));
     }
 }
