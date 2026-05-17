@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import pokedex.dataset.loader.MoveDatasetLoader;
 import pokedex.domain.enums.Typing;
-import pokedex.domain.model.Move;
+import pokedex.domain.models.Move;
 import pokedex.repository.interfaces.ObjectRepository;
 import pokedex.util.FileUtils;
 

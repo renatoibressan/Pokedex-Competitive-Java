@@ -1,4 +1,4 @@
-package pokedex.domain.model;
+package pokedex.domain.models;
 
 import pokedex.builder.StatsBuilder;
 import pokedex.domain.enums.Nature;
@@ -11,6 +11,19 @@ public class Stats {
     private int specialAttack;
     private int specialDefense;
     private int speed;
+    private StatStages stages;
+    public Stats() {
+        this.stages = new StatStages();
+    }
+    public Stats(Stats original) {
+        this.hp = original.hp;
+        this.attack = original.attack;
+        this.defense = original.defense;
+        this.specialAttack = original.specialAttack;
+        this.specialDefense = original.specialDefense;
+        this.speed = original.speed;
+        this.stages = new StatStages();
+    }
     public int getHp() {
         return hp;
     }
@@ -53,6 +66,12 @@ public class Stats {
         if (speed < 1) throw new DadoInvalidoException("Stat de velocidade invalido!");
         this.speed = speed;
     }
+    public StatStages getStages() {
+        return stages;
+    }
+    public int baseStatTotal() {
+        return hp + attack + defense + specialAttack + specialDefense + speed;
+    }
     public Stats computeNewStats(int level, Nature nature) throws DadoInvalidoException {
         int newHp = (int) Math.floor((((hp * 2) + 31) * level) / 100) + level + 10;
         int newAtk = (int) Math.floor((((attack * 2) + 31) * level) / 100) + 5;
@@ -77,16 +96,13 @@ public class Stats {
             case BRAVE: case RELAXED: case QUIET: case SASSY: newSpeed -= newSpeed / 10; break;
         }
         return new StatsBuilder()
-                            .hp(newHp)
-                            .ataque(newAtk)
-                            .defesa(newDef)
-                            .ataqueEspecial(newSpAtk)
-                            .defesaEspecial(newSpDef)
-                            .velocidade(newSpeed)
-                            .build();
-    }
-    public int baseStatTotal() {
-        return hp + attack + defense + specialAttack + specialDefense + speed;
+        .hp(newHp)
+        .ataque(newAtk)
+        .defesa(newDef)
+        .ataqueEspecial(newSpAtk)
+        .defesaEspecial(newSpDef)
+        .velocidade(newSpeed)
+        .build();
     }
     public int statFromString(String value) throws DadoInvalidoException {
         switch (value.toLowerCase()) {

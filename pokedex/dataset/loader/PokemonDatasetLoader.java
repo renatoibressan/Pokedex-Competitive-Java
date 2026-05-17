@@ -5,7 +5,8 @@ import java.util.List;
 
 import pokedex.builder.PokemonBuilder;
 import pokedex.dataset.parser.CsvParser;
-import pokedex.domain.model.Pokemon;
+import pokedex.domain.models.Pokemon;
+import pokedex.dto.PokemonDTO;
 import pokedex.exception.DadoInvalidoException;
 
 public class PokemonDatasetLoader {
@@ -19,12 +20,17 @@ public class PokemonDatasetLoader {
         int linhaNumero = 0;
         for (String[] coluna : colunas) {
             linhaNumero++;
+            Integer id = Integer.parseInt(coluna[0]);
+            String name = coluna[1];
+            String types = coluna[2];
+            String baseStats = coluna[3];
+            PokemonDTO dto = new PokemonDTO(id, name, types, baseStats);
             try {
                 Pokemon pokemon = new PokemonBuilder()
-                                        .id(Integer.parseInt(coluna[0]))
-                                        .nome(coluna[1])
-                                        .tipos(parser.parseTypes(coluna[2]))
-                                        .statsBase(parser.parseStats(coluna[3]))
+                                        .id(dto.id())
+                                        .nome(dto.name())
+                                        .tipos(parser.parseTypes(dto.types()))
+                                        .statsBase(parser.parseStats(dto.stats()))
                                         .build();
                 listaPokemons.add(pokemon);
             } catch (DadoInvalidoException e) {

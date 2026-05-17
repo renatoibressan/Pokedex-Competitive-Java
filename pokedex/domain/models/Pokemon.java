@@ -1,4 +1,4 @@
-package pokedex.domain.model;
+package pokedex.domain.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,16 @@ public class Pokemon {
         this.baseStats = new Stats();
         this.ownStats = new Stats();
         this.moves = new ArrayList<>();
+    }
+    public Pokemon(Pokemon original) {
+        this.id = original.id;
+        this.name = original.name;
+        this.types = original.types;
+        this.baseStats = new Stats(original.baseStats);
+        this.ownStats = new Stats(original.ownStats);
+        this.nature = original.nature;
+        this.level = original.level;
+        this.moves = original.moves;
     }
     public int getId() {
         return id;

@@ -1,6 +1,6 @@
 package pokedex.builder;
 
-import pokedex.domain.model.Stats;
+import pokedex.domain.models.Stats;
 import pokedex.exception.DadoInvalidoException;
 
 public class StatsBuilder {

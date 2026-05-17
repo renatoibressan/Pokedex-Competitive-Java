@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 
 import pokedex.builder.*;
 import pokedex.domain.enums.*;
-import pokedex.domain.model.*;
+import pokedex.domain.interfaces.MoveCategory;
+import pokedex.domain.models.*;
 import pokedex.exception.*;
 import pokedex.repository.file.*;
 import pokedex.service.*;
@@ -233,86 +234,6 @@ public class Main {
                     break;
                 case 5:
                     sc.nextLine();
-                    String nomeEdicao = InputUtils.lerString("Insira o nome do Pokemon para procura: ", sc);
-                    try {
-                        Pokemon pkmn = servPkmn.buscarPorNome(nomeEdicao);
-                        int edicao = -1;
-                        do {
-                            Menu.exibirMenuEdicaoPokemon(20);
-                            edicao = InputUtils.lerInt("Insira a opcao de edicao desejada: ", sc);
-                            switch (edicao) {
-                                case 1:
-                                    sc.nextLine();
-                                    String novoNome = InputUtils.lerString("Insira o novo nome do Pokemon: ", sc);
-                                    while (novoNome == null || novoNome.isEmpty()) {
-                                        novoNome = InputUtils.lerString("Entrada invalida!\nInsira o novo nome do Pokemon: ", sc);
-                                    }
-                                    novoNome = novoNome
-                                                    .substring(0, 1)
-                                                    .toUpperCase() + novoNome.substring(1);
-                                    pkmn.setName(novoNome);
-                                    OutputUtils.slowPrint("Nome alterado com sucesso!", 50);
-                                    break;
-                                case 2:
-                                    sc.nextLine();
-                                    String novoTipo1 = InputUtils.lerString("Insira o novo tipo principal do Pokemon: ", sc);
-                                    List<Typing> novosTiposPkmn = new ArrayList<>();
-                                    try {
-                                        Typing novoTipoPkmn1 = Typing.fromString(novoTipo1);
-                                        novosTiposPkmn.add(novoTipoPkmn1);
-                                        String optionTipoSec = InputUtils.lerString("Deseja inserir/modificar um tipo secundario? (S/N): ", sc);
-                                        while (!optionTipoSec.equalsIgnoreCase("s") && !optionTipoSec.equalsIgnoreCase("n")) {
-                                            optionTipoSec = InputUtils.lerString("Opcao invalida!\nDeseja inserir um tipo secundario? (S/N): ", sc);
-                                        }
-                                        if (optionTipoSec.equalsIgnoreCase("s")) {
-                                            String novoTipo2 = InputUtils.lerString("Insira o novo tipo secundario do Pokemon: ", sc);
-                                            Typing novoTipoPkmn2 = Typing.fromString(novoTipo2);
-                                            novosTiposPkmn.add(novoTipoPkmn2);
-                                        }
-                                        pkmn.setTypes(novosTiposPkmn);
-                                        OutputUtils.slowPrint("Tipo(s) alterado(s) com sucesso!", 50);
-                                    } catch (DadoInvalidoException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 3:
-                                    int novoHp = InputUtils.lerInt("Insira o novo HP base: ", sc);
-                                    int novoAtaque = InputUtils.lerInt("Insira o novo ataque base: ", sc);
-                                    int novaDefesa = InputUtils.lerInt("Insira a nova defesa base: ", sc);
-                                    int novoAtaqueEspecial = InputUtils.lerInt("Insira o novo ataque especial base: ", sc);
-                                    int novaDefesaEspecial = InputUtils.lerInt("Insira a nova defesa especial base: ", sc);
-                                    int novaVelocidade = InputUtils.lerInt("Insira a nova velocidade base: ", sc);
-                                    try {
-                                        Stats novosBaseStats = new StatsBuilder()
-                                                                            .hp(novoHp)
-                                                                            .ataque(novoAtaque)
-                                                                            .defesa(novaDefesa)
-                                                                            .ataqueEspecial(novoAtaqueEspecial)
-                                                                            .defesaEspecial(novaDefesaEspecial)
-                                                                            .velocidade(novaVelocidade)
-                                                                            .build();
-                                        pkmn.setBaseStats(novosBaseStats);
-                                        OutputUtils.slowPrint("Stats base alterados com sucesso!", 50);
-                                    } catch (DadoInvalidoException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 0: break;
-                                default: System.out.println("Opcao invalida!");
-                            }
-                        } while (edicao != 0);
-                        int i = 0;
-                        for (Pokemon p : pokemons) {
-                            if (p.getId() == pkmn.getId()) break;
-                            i++;
-                        }
-                        pokemons.set(i, pkmn);
-                    } catch (PokemonNaoEncontradoException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 6:
-                    sc.nextLine();
                     String nomeRemocao = InputUtils.lerString("Insira o nome do Pokemon para procura: ", sc);
                     nomeRemocao = nomeRemocao
                                         .substring(0, 1)
@@ -331,56 +252,76 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 7:
+                case 6:
                     sc.nextLine();
                     nome = InputUtils.lerString("Insira o nome do golpe: ", sc);
                     while (nome == null || nome.isEmpty()) {
                         nome = InputUtils.lerString("Entrada invalida!\nInsira o nome do golpe: ", sc);
                     }
                     nome = Pattern
-                                .compile("\\b(\\w)")
-                                .matcher(nome)
-                                .replaceAll(m -> m.group(1).toUpperCase());
+                    .compile("\\b(\\w)")
+                    .matcher(nome)
+                    .replaceAll(m -> m.group(1).toUpperCase());
                     String tipoMove = InputUtils.lerString("Insira o tipo desejado para o golpe: ", sc);
-                    int dano = InputUtils.lerInt("Insira o dano base do golpe: ", sc);
-                    sc.nextLine();
-                    String categoriaMove = InputUtils.lerString("Insira a categoria do golpe (fisico/especial): ", sc);
+                    String categoriaMove = InputUtils.lerString("Insira a categoria do golpe (physical/special/status): ", sc);
                     try {
                         Typing tipo = Typing.fromString(tipoMove);
                         MoveCategory categoria = MoveCategory.fromString(categoriaMove);
-                        int id = servMove.gerarNovoId();
-                        Move m = new MoveBuilder()
-                                            .id(id)
-                                            .nome(nome)
-                                            .tipo(tipo)
-                                            .dano(dano)
-                                            .categoria(categoria)
-                                            .build();
-                        if (moves == null || moves.isEmpty()) moves.add(m);
-                        servMove.registrarMove(id, nome, tipo, dano, categoria);
-                        OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
-                        System.out.println("Tipo: " + m.getType());
-                        System.out.println("Dano base: " + m.getDamage());
-                        System.out.println("Categoria: " + m.getCategory());
+                        if (categoria instanceof DamagingMoveCategory) {
+                            int dano = InputUtils.lerInt("Insira o dano base do golpe: ", sc);
+                            int id = servMove.gerarNovoId();
+                            DamagingMove m = new DamagingMoveBuilder()
+                                                .id(id)
+                                                .nome(nome)
+                                                .tipo(tipo)
+                                                .categoria(categoria)
+                                                .dano(dano)
+                                                .build();
+                            if (moves == null || moves.isEmpty()) moves.add(m);
+                            servMove.registrarDamagingMove(id, nome, tipo, categoria, dano);
+                            OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
+                            System.out.println("Tipo: " + m.getType());
+                            System.out.println("Categoria: " + m.getCategory());
+                            System.out.println("Dano base: " + m.getDamage());
+                        } else if (categoria instanceof StatusMoveCategory) {
+                            String alvoMove = InputUtils.lerString("Insira o alvo do golpe (self/foe): ", sc);
+                            Target alvo = Target.fromString(alvoMove);
+                            String atributoMove = InputUtils.lerString("Insira o atributo modificado pelo golpe: ", sc);
+                            StatType atributo = StatType.fromString(atributoMove);
+                            int modificador = InputUtils.lerInt("Insira a quantidade de estagios de modificador do golpe: ", sc);
+                            int id = servMove.gerarNovoId();
+                            StatusMove m = new StatusMoveBuilder()
+                                                .id(id)
+                                                .nome(nome)
+                                                .tipo(tipo)
+                                                .categoria(categoria)
+                                                .conjuntoEfeito(alvo, atributo, modificador)
+                                                .build();
+                            if (moves == null || moves.isEmpty()) moves.add(m);
+                            servMove.registrarStatusMove(id, nome, tipo, categoria, alvo, atributo, modificador);
+                            OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
+                            System.out.println("Tipo: " + m.getType());
+                            System.out.println("Categoria: " + m.getCategory());
+                        }
                     } catch (DadoInvalidoException e) {
                             System.out.println("Nao foi possivel registrar o golpe: " + e.getMessage());
                     }
                     break;
-                case 8:
+                case 7:
                     List<Move> listaMoves= servMove.listarMoves();
                     if (!listaMoves.isEmpty()) {
                         OutputUtils.slowPrint("---------------------------------------------------------", 10);
                         for (Move move : listaMoves) {
                             System.out.println("Dados do golpe " + move.getName() + ":");
                             System.out.println("Tipo: " + move.getType());
-                            System.out.println("Dano base: " + move.getDamage());
                             System.out.println("Categoria: " + move.getCategory());
+                            if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
                             OutputUtils.slowPrint("---------------------------------------------------------", 10);
                         }
                         OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
                     } else System.out.println("Nao ha golpes para listar!");
                     break;
-                case 9:
+                case 8:
                     sc.nextLine();
                     nomeBusca = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
                     nomeBusca = Pattern
@@ -395,7 +336,7 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 10:
+                case 9:
                     sc.nextLine();
                     tipoBusca = InputUtils.lerString("Insira o tipo para listar os golpes: ", sc);
                     try {
@@ -406,7 +347,7 @@ public class Main {
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
-                                System.out.println("Dano base: " + move.getDamage());
+                                if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
                                 System.out.println("Categoria: " + move.getCategory());
                                 OutputUtils.slowPrint("---------------------------------------------------------", 10);
                             }
@@ -416,75 +357,7 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 11:
-                    sc.nextLine();
-                    nomeEdicao = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
-                    try {
-                        Move move = servMove.buscarPorNome(nomeEdicao);
-                        int edicao = -1;
-                        do {
-                            Menu.exibirMenuEdicaoGolpe(15);
-                            edicao = InputUtils.lerInt("Insira a opcao de edicao desejada: ", sc);
-                            switch (edicao) {
-                                case 1:
-                                    sc.nextLine();
-                                    String novoNome = InputUtils.lerString("Insira o novo nome do golpe: ", sc);
-                                    while (novoNome == null || novoNome.isEmpty()) {
-                                        novoNome = InputUtils.lerString("Entrada invalida!\nInsira o novo nome do golpe: ", sc);
-                                    }
-                                    novoNome = Pattern
-                                                    .compile("\\b(\\w)")
-                                                    .matcher(novoNome)
-                                                    .replaceAll(m -> m.group(1).toUpperCase());
-                                    move.setName(novoNome);
-                                    OutputUtils.slowPrint("Nome alterado com sucesso!", 50);
-                                    break;
-                                case 2:
-                                    sc.nextLine();
-                                    String novoTipo = InputUtils.lerString("Insira o novo tipo do golpe: ", sc);
-                                    try {
-                                        Typing novoTipoMove = Typing.fromString(novoTipo);
-                                        move.setType(novoTipoMove);
-                                        OutputUtils.slowPrint("Tipo alterado com sucesso!", 50);
-                                    } catch (DadoInvalidoException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 3:
-                                    int novoDanoBase = InputUtils.lerInt("Insira o novo dano base do golpe: ", sc);
-                                    try {
-                                        move.setDamage(novoDanoBase);
-                                        OutputUtils.slowPrint("Dano base alterado com sucesso!", 50);
-                                    } catch (DadoInvalidoException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 4:
-                                    sc.nextLine();
-                                    String novaCategoria = InputUtils.lerString("Insira a nova categoria do golpe: ", sc);
-                                    try {
-                                        MoveCategory novaCategoriaMove = MoveCategory.fromString(novaCategoria);
-                                        move.setCategory(novaCategoriaMove);
-                                        OutputUtils.slowPrint("Categoria alterada com sucesso!", 50);
-                                    } catch (DadoInvalidoException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 0: break;
-                                default: System.out.println("Opcao invalida!");
-                            }
-                        } while (edicao != 0);
-                        int i = 0;
-                        for (Move m : moves) {
-                            if (m.getId() == move.getId()) break;
-                            i++;
-                        }
-                        moves.set(i, move);
-                    } catch (MoveNaoEncontradoException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 12:
+                case 10:
                     sc.nextLine();
                     nomeRemocao = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
                     nomeRemocao = Pattern
@@ -505,7 +378,7 @@ public class Main {
                         System.out.println(e.getMessage());
                     } 
                     break;
-                case 13:
+                case 11:
                     if (moves == null || moves.isEmpty()) {
                         System.out.println("Nao ha golpes para simular a batalha!\n(Operacao abortada)");
                         break;
@@ -568,7 +441,7 @@ public class Main {
                         System.out.println("Nao foi possivel executar a batalha: " + e.getMessage());
                     }
                     break;
-                case 14:
+                case 12:
                     if (pokemons == null || pokemons.isEmpty()) {
                         System.out.println("Nao ha Pokemons para analisar estatisticas!\n(Operacao abortada)");
                         break;
@@ -609,7 +482,7 @@ public class Main {
                         }
                     } while (optionStatistics != 0);
                     break;
-                case 15:
+                case 13:
                      try {
                         String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
                         while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {

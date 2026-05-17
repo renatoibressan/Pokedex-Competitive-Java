@@ -9,7 +9,7 @@ import java.util.List;
 
 import pokedex.builder.StatsBuilder;
 import pokedex.domain.enums.Typing;
-import pokedex.domain.model.Stats;
+import pokedex.domain.models.Stats;
 import pokedex.exception.DadoInvalidoException;
 
 public class CsvParser {

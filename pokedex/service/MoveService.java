@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import pokedex.builder.MoveBuilder;
-import pokedex.domain.enums.MoveCategory;
+import pokedex.builder.DamagingMoveBuilder;
+import pokedex.builder.StatusMoveBuilder;
+import pokedex.domain.enums.StatType;
+import pokedex.domain.enums.Target;
 import pokedex.domain.enums.Typing;
-import pokedex.domain.model.Move;
+import pokedex.domain.interfaces.MoveCategory;
+import pokedex.domain.models.Move;
 import pokedex.exception.DadoInvalidoException;
 import pokedex.exception.MoveNaoEncontradoException;
 import pokedex.repository.interfaces.ObjectRepository;
@@ -30,14 +33,30 @@ public class MoveService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void registrarMove(int id, String name, Typing type, int damage, MoveCategory category) throws DadoInvalidoException {
+    public void registrarDamagingMove(int id, String name, Typing type, MoveCategory category, int damage) throws DadoInvalidoException {
         if (!repository.existe(name)) {
-            Move m = new MoveBuilder()
+            Move m = new DamagingMoveBuilder()
                         .id(id)
                         .nome(name)
                         .tipo(type)
-                        .dano(damage)
                         .categoria(category)
+                        .dano(damage)
+                        .build();
+            repository.salvar(m);
+            moves.add(m);
+            return;
+        }
+        throw new DadoInvalidoException("Ja existe um golpe com o nome " + name + "!");
+    }
+    public void registrarStatusMove(int id, String name, Typing type, MoveCategory category, 
+                                    Target target, StatType stat, int modifier) throws DadoInvalidoException {
+        if (!repository.existe(name)) {
+            Move m = new StatusMoveBuilder()
+                        .id(id)
+                        .nome(name)
+                        .tipo(type)
+                        .categoria(category)
+                        .conjuntoEfeito(target, stat, modifier)
                         .build();
             repository.salvar(m);
             moves.add(m);

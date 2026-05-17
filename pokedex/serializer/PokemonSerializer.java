@@ -3,7 +3,7 @@ package pokedex.serializer;
 import java.util.stream.Collectors;
 
 import pokedex.domain.enums.Typing;
-import pokedex.domain.model.Pokemon;
+import pokedex.domain.models.Pokemon;
 
 public class PokemonSerializer {
     public static String serializePokemon(Pokemon pokemon) {
