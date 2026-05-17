@@ -33,7 +33,7 @@ public class CsvParser {
                 .toList();
     }
     public Stats parseStats(String stats) throws DadoInvalidoException {
-        String[] statsString = stats.split("\\|");
+        String[] statsString = stats.split(",");
         Stats baseStats = new StatsBuilder()
                                 .hp(Integer.parseInt(statsString[0]))
                                 .ataque(Integer.parseInt(statsString[1]))

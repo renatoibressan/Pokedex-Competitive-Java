@@ -21,7 +21,7 @@ public class PokemonSerializer {
                 .collect(Collectors.joining("|"));
     }
     public static String serializeStats(Pokemon pokemon) {
-        return String.join("|", 
+        return String.join(",", 
                 String.valueOf(pokemon.getBaseStats().getHp()), 
                 String.valueOf(pokemon.getBaseStats().getAttack()), 
                 String.valueOf(pokemon.getBaseStats().getDefense()), 
