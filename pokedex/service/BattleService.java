@@ -28,8 +28,8 @@ public class BattleService {
         Pokemon second = definirSegundo(p1, p2);
         Pokemon primeiro = new Pokemon(first);
         Pokemon segundo = new Pokemon(second);
-        OutputUtils.slowPrint("---------------------------------------------------------", 50);
-        OutputUtils.slowPrint("Batalha entre " + primeiro.getName() + " e " + segundo.getName() + " iniciada!", 50);
+        OutputUtils.slowPrintln("---------------------------------------------------------", 50);
+        System.out.println("Batalha entre " + primeiro.getName() + " e " + segundo.getName() + " iniciada!");
         while (true) {
             turnos++;
             if (primeiro.getOwnStats().getSpeed() < segundo.getOwnStats().getSpeed()) {
@@ -67,13 +67,13 @@ public class BattleService {
             if (golpeP1 instanceof DamagingMove golpeDano) {
                 double dano = calcularDanoCompleto(primeiro, segundo, golpeDano);
                 int hpPerdido = (vidaP2 < (int)dano) ? vidaP2 : (int)dano;
-                if (hpPerdido == 0) OutputUtils.slowPrint("\nO golpe " + golpeP1.getName() + " nao fez efeito em " + segundo.getName() + "!", 50);
-                else OutputUtils.slowPrint("\nO Pokemon " + segundo.getName() + " perdeu " + hpPerdido + " pontos de vida!", 50);
+                if (hpPerdido == 0) System.out.println("\nO golpe " + golpeP1.getName() + " nao fez efeito em " + segundo.getName() + "!");
+                else System.out.println("\nO Pokemon " + segundo.getName() + " perdeu " + hpPerdido + " pontos de vida!");
                 vidaP2 -= (int)dano;
                 if (vidaP2 <= 0) {
-                    if (hpPerdido == segundo.getOwnStats().getHp()) OutputUtils.slowPrint("\nO golpe " + golpeP1.getName() + " foi um OH-KO!", 50);
-                    if (turnos > 1) OutputUtils.slowPrint("\nO Pokemon " + segundo.getName() + " desmaiou em " + turnos + " turnos!", 50);
-                    OutputUtils.slowPrint("---------------------------------------------------------", 50);
+                    if (hpPerdido == segundo.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP1.getName() + " foi um OH-KO!");
+                    if (turnos > 1) System.out.println("\nO Pokemon " + segundo.getName() + " desmaiou em " + turnos + " turnos!");
+                    OutputUtils.slowPrintln("---------------------------------------------------------", 50);
                     return primeiro;
                 }
             } else if (golpeP1 instanceof StatusMove golpeStatus) {
@@ -82,13 +82,13 @@ public class BattleService {
             if (golpeP2 instanceof DamagingMove golpeDano) {
                 double dano = calcularDanoCompleto(segundo, primeiro, golpeDano);
                 int hpPerdido = (vidaP1 < (int)dano) ? vidaP1 : (int)dano;
-                if (hpPerdido == 0) OutputUtils.slowPrint("\nO golpe " + golpeP2.getName() + " nao fez efeito em " + primeiro.getName() + "!", 50);
-                else OutputUtils.slowPrint("\nO Pokemon " + primeiro.getName() + " perdeu " + hpPerdido + " pontos de vida!", 50);
+                if (hpPerdido == 0) System.out.println("\nO golpe " + golpeP2.getName() + " nao fez efeito em " + primeiro.getName() + "!");
+                else System.out.println("\nO Pokemon " + primeiro.getName() + " perdeu " + hpPerdido + " pontos de vida!");
                 vidaP1 -= (int)dano;
                 if (vidaP1 <= 0) {
-                    if (hpPerdido == primeiro.getOwnStats().getHp()) OutputUtils.slowPrint("\nO golpe " + golpeP2.getName() + " foi um OH-KO!", 50);
-                    if (turnos > 1) OutputUtils.slowPrint("\nO Pokemon " + primeiro.getName() + " desmaiou em " + turnos + " turnos!", 50);
-                    OutputUtils.slowPrint("---------------------------------------------------------", 50);
+                    if (hpPerdido == primeiro.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP2.getName() + " foi um OH-KO!");
+                    if (turnos > 1) System.out.println("\nO Pokemon " + primeiro.getName() + " desmaiou em " + turnos + " turnos!");
+                    OutputUtils.slowPrintln("---------------------------------------------------------", 50);
                     return segundo;
                 }
             } else if (golpeP2 instanceof StatusMove golpeStatus) {
@@ -108,11 +108,11 @@ public class BattleService {
                 int novoAtk = novoAtaque(stats.getStages(), atkBase);
                 stats.setAttack(novoAtk);
                 if (novoAtk > atkBase) {
-                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar o ataque de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque de " + target.getName() + " aumentado em " + valor + " estagios!", 50);
+                    if (anterior + valor > 6) System.out.println("\nNao foi possivel aumentar o ataque de " + target.getName() + "!");
+                    else System.out.println("\nAtaque de " + target.getName() + " aumentado em " + valor + " estagios!");
                 } else if (novoAtk < atkBase) {
-                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir o ataque de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!", 50);
+                    if (anterior + valor < -6) System.out.println("\nNao foi possivel reduzir o ataque de " + target.getName() + "!");
+                    else System.out.println("\nAtaque de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!");
                 }
                 break;
             case DEFENSE:
@@ -122,11 +122,11 @@ public class BattleService {
                 int novaDef = novaDefesa(stats.getStages(), defBase);
                 stats.setDefense(novaDef);
                 if (novaDef > defBase) {
-                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar a defesa de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
+                    if (anterior + valor > 6) System.out.println("\nNao foi possivel aumentar a defesa de " + target.getName() + "!");
+                    else System.out.println("\nDefesa de " + target.getName() + " aumentada em " + valor + " estagios!");
                 } else if (novaDef < defBase) {
-                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a defesa de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
+                    if (anterior + valor < -6) System.out.println("\nNao foi possivel reduzir a defesa de " + target.getName() + "!");
+                    else System.out.println("\nDefesa de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!");
                 }
                 break;
             case SPECIAL_ATTACK:
@@ -136,11 +136,11 @@ public class BattleService {
                 int novoSpAtk = novoAtaqueEspecial(stats.getStages(), spAtkBase);
                 stats.setSpecialAttack(novoSpAtk);
                 if (novoSpAtk > spAtkBase) {
-                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar o ataque especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque especial de " + target.getName() + " aumentado em " + valor + " estagios!", 50);
+                    if (anterior + valor > 6) System.out.println("\nNao foi possivel aumentar o ataque especial de " + target.getName() + "!");
+                    else System.out.println("\nAtaque especial de " + target.getName() + " aumentado em " + valor + " estagios!");
                 } else if (novoSpAtk < spAtkBase) {
-                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir o ataque especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nAtaque especial de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!", 50);
+                    if (anterior + valor < -6) System.out.println("\nNao foi possivel reduzir o ataque especial de " + target.getName() + "!");
+                    else System.out.println("\nAtaque especial de " + target.getName() + " reduzido em " + (-1 * valor) + " estagios!");
                 }
                 break;
             case SPECIAL_DEFENSE:
@@ -150,11 +150,11 @@ public class BattleService {
                 int novaSpDef = novaDefesaEspecial(stats.getStages(), spDefBase);
                 stats.setSpecialDefense(novaSpDef);
                 if (novaSpDef > spDefBase) {
-                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar a defesa especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa especial de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
+                    if (anterior + valor > 6) System.out.println("\nNao foi possivel aumentar a defesa especial de " + target.getName() + "!");
+                    else System.out.println("\nDefesa especial de " + target.getName() + " aumentada em " + valor + " estagios!");
                 } else if (novaSpDef < spDefBase) {
-                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a defesa especial de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nDefesa especial de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
+                    if (anterior + valor < -6) System.out.println("\nNao foi possivel reduzir a defesa especial de " + target.getName() + "!");
+                    else System.out.println("\nDefesa especial de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!");
                 }
                 break;
             case SPEED:
@@ -164,11 +164,11 @@ public class BattleService {
                 int novaSpeed = novaVelocidade(stats.getStages(), speedBase);
                 stats.setSpeed(novaSpeed);
                 if (novaSpeed > speedBase) {
-                    if (anterior + valor > 6) OutputUtils.slowPrint("\nNao foi possivel aumentar a velocidade de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nVelocidade de " + target.getName() + " aumentada em " + valor + " estagios!", 50);
+                    if (anterior + valor > 6) System.out.println("\nNao foi possivel aumentar a velocidade de " + target.getName() + "!");
+                    else System.out.println("\nVelocidade de " + target.getName() + " aumentada em " + valor + " estagios!");
                 } else if (novaSpeed < speedBase) {
-                    if (anterior + valor < -6) OutputUtils.slowPrint("\nNao foi possivel reduzir a velocidade de " + target.getName() + "!", 50);
-                    else OutputUtils.slowPrint("\nVelocidade de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!", 50);
+                    if (anterior + valor < -6) System.out.println("\nNao foi possivel reduzir a velocidade de " + target.getName() + "!");
+                    else System.out.println("\nVelocidade de " + target.getName() + " reduzida em " + (-1 * valor) + " estagios!");
                 }
                 break;
         }
@@ -202,8 +202,8 @@ public class BattleService {
         double dano = (move.getCategory() == DamagingMoveCategory.PHYSICAL) ? calcularDanoFisico(attacker, defender, move) : calcularDanoEspecial(attacker, defender, move);
         dano += calcularSTAB(attacker, move, dano);
         dano *= calcularEficaciaDeTipo(move.getType(), defender.getTypes());
-        if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) <= 0.5) OutputUtils.slowPrint("\nO golpe " + move.getName() + " nao foi muito eficaz!", 50);
-        else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) >= 2) OutputUtils.slowPrint("\nO golpe " + move.getName() + " foi super-eficaz!", 50);
+        if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) <= 0.5) System.out.println("\nO golpe " + move.getName() + " nao foi muito eficaz!");
+        else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) >= 2) System.out.println("\nO golpe " + move.getName() + " foi super-eficaz!");
         return dano;
     }
     public double calcularEficaciaDeTipo(Typing attacker, List<Typing> defender) {

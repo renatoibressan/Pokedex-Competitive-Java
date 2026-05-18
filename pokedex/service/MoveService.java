@@ -91,6 +91,6 @@ public class MoveService {
         throw new MoveNaoEncontradoException("Golpe nao encontrado!");
     }
     public int contarListaMoves() {
-        return moves.size();
+        return repository.contarQuantidade();
     }
 }

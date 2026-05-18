@@ -66,7 +66,7 @@ public class TeamService {
         throw new TeamNaoEncontradoException("Equipe nao encontrada!");
     }
     public int contarListaTeams() {
-        return teams.size();
+        return repository.contarQuantidade();
     }
     public Team maiorBaseStatTotalMedio() throws TeamNaoEncontradoException {
         if (teams.isEmpty()) throw new TeamNaoEncontradoException("Lista de equipes vazia!");

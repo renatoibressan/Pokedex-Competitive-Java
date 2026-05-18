@@ -22,7 +22,7 @@ import pokedex.util.OutputUtils;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         // TFD: POO c/ Prof. Dirson, CC, INF-UFG, 2026.1
-        Menu.exibirMenuInicial(15);
+        Menu.exibirMenuInicial();
         Scanner sc = new Scanner(System.in);
         int optionMenu = -1;
         List<Pokemon> pokemons = new ArrayList<>();
@@ -48,22 +48,22 @@ public class Main {
             moves = repoMove.lerArquivo();
             repoMove.inserirLista(moves);
             servMove.putMoves(moves);
-            OutputUtils.slowPrint(repoMove.contarQuantidade() + " golpes foram carregados com sucesso!", 20);
+            System.out.println(repoMove.contarQuantidade() + " golpes foram carregados com sucesso!");
         }
         if (arquivoPkmn.exists() && arquivoPkmn.length() > 0) {
             pokemons = repoPkmn.lerArquivo();
             repoPkmn.inserirLista(pokemons);
             servPkmn.putPokemons(pokemons);
-            OutputUtils.slowPrint(repoPkmn.contarQuantidade() + " Pokemons foram carregados com sucesso!", 20);
+            System.out.println(repoPkmn.contarQuantidade() + " Pokemons foram carregados com sucesso!");
             if (arquivoTeam.exists() && arquivoTeam.length() > 0) {
                 teams = repoTeam.lerArquivo();
                 repoTeam.inserirLista(teams);
                 servTeam.putTeams(teams);
-                OutputUtils.slowPrint(repoTeam.contarQuantidade() + " equipes foram carregadas com sucesso!", 20);
+                System.out.println(repoTeam.contarQuantidade() + " equipes foram carregadas com sucesso!");
             }
         }
         do {
-            Menu.exibirMenuPrincipal(5);
+            Menu.exibirMenuPrincipal();
             optionMenu = InputUtils.lerInt("Insira uma das opcoes acima: ", sc);
             switch (optionMenu) {
                 case 1:
@@ -80,10 +80,11 @@ public class Main {
                     boolean tipoValido = false;
                     if (!pokemons.isEmpty()) {
                         Pokemon anterior = pokemons.getLast();
-                        String txt1 = "Deseja utilizar o tipo " + anterior.getTypes().getFirst() + " do Pokemon " + anterior.getName() + "? (S/N): ";
-                        String optionTipoAnterior1 = InputUtils.lerString(txt1, sc);
+                        String optionTipoAnterior1 = InputUtils.lerString("Deseja utilizar o tipo " + anterior.getTypes().getFirst() 
+                                                        + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
                         while (!optionTipoAnterior1.equalsIgnoreCase("s") && !optionTipoAnterior1.equalsIgnoreCase("n")) {
-                            optionTipoAnterior1 = InputUtils.lerString("Opcao invalida!\n" + txt1, sc);
+                            optionTipoAnterior1 = InputUtils.lerString("Opcao invalida!\nDeseja utilizar o tipo " + anterior.getTypes().getFirst() 
+                                                        + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
                         }
                         if (optionTipoAnterior1.equalsIgnoreCase("s")) {
                             Typing tipoAnterior1 = anterior.getTypes().getFirst();
@@ -100,10 +101,11 @@ public class Main {
                             }
                         }
                         if (anterior.getTypes().size() == 2 && !tipos.contains(anterior.getTypes().getLast())) {
-                            String txt2 = "Deseja utilizar o tipo " + anterior.getTypes().getLast() + " do Pokemon " + anterior.getName() + "? (S/N): ";
-                            String optionTipoAnterior2 = InputUtils.lerString(txt2, sc);
+                            String optionTipoAnterior2 = InputUtils.lerString("Deseja utilizar o tipo " + anterior.getTypes().getLast() 
+                                                            + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
                             while (!optionTipoAnterior2.equalsIgnoreCase("s") && !optionTipoAnterior2.equalsIgnoreCase("n")) {
-                                optionTipoAnterior2 = InputUtils.lerString("Opcao invalida!\n" + txt2, sc);
+                                optionTipoAnterior2 = InputUtils.lerString("Opcao invalida!\nDeseja utilizar o tipo " + anterior.getTypes().getLast() 
+                                                            + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
                             }
                             if (optionTipoAnterior2.equalsIgnoreCase("s")) {
                                 Typing tipoAnterior2 = anterior.getTypes().getLast();
@@ -182,7 +184,7 @@ public class Main {
                                         .build();
                         if (pokemons == null || pokemons.isEmpty()) pokemons.add(p);
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats);
-                        OutputUtils.slowPrint("Pokemon " + p.getName() + " cadastrado com sucesso!", 50);
+                        System.out.println("Pokemon " + p.getName() + " cadastrado com sucesso!");
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
                         System.out.print("Tipo(s):");
                         for (Typing t : p.getTypes()) {
@@ -196,14 +198,14 @@ public class Main {
                 case 2:
                     List<Pokemon> listaPkmns = servPkmn.listarPokemons();
                      if (!listaPkmns.isEmpty()) {
-                        OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         for (Pokemon pkmn : listaPkmns) {
                             System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
                             System.out.print("Tipo(s) de " + pkmn.getName() + ":");
                             for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
-                            OutputUtils.slowPrint("\n---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
                         }
-                        OutputUtils.slowPrint(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!", 50);
+                        System.out.println(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!");
                     } else System.out.println("Nao ha Pokemons para listar!");
                     break;
                 case 3:
@@ -216,7 +218,7 @@ public class Main {
                     try {
                         Pokemon pkmn = servPkmn.buscarPorNome(nomeBusca);
                         Menu.exibirMenuPokemon(pkmn, 50);
-                        OutputUtils.slowPrint("Pokemon " + nomeBusca + " encontrado com sucesso!", 50);
+                        System.out.println("Pokemon " + nomeBusca + " encontrado com sucesso!");
                     } catch (PokemonNaoEncontradoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -228,14 +230,14 @@ public class Main {
                         Typing tipo = Typing.fromString(tipoBusca);
                         listaPkmns = servPkmn.buscarPorTipo(tipo);
                         if (!listaPkmns.isEmpty()) {
-                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             for (Pokemon pkmn : listaPkmns) {
                                 System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
                                 System.out.print("Tipo(s) de " + pkmn.getName() + ":");
                                 for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
-                                OutputUtils.slowPrint("\n---------------------------------------------------------", 10);
+                                OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
                             }
-                            OutputUtils.slowPrint(listaPkmns.size() + " Pokemons listados com sucesso!", 50);
+                            System.out.println(listaPkmns.size() + " Pokemons listados com sucesso!");
                         } else System.out.println("Nao ha Pokemons de tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
@@ -255,8 +257,9 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + pkmn.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
+                            pokemons.remove(pkmn);
                             servPkmn.removerPokemon(pkmn.getName());
-                            OutputUtils.slowPrint("Pokemon " + nomeRemocao + " removido com sucesso!", 50);
+                            System.out.println("Pokemon " + nomeRemocao + " removido com sucesso!");
                         }
                     } catch (PokemonNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -289,7 +292,7 @@ public class Main {
                                                 .build();
                             if (moves == null || moves.isEmpty()) moves.add(m);
                             servMove.registrarDamagingMove(id, nome, tipo, categoria, dano);
-                            OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
+                            System.out.println("Golpe " + m.getName() + " registrado com sucesso!");
                             System.out.println("Tipo: " + m.getType());
                             System.out.println("Categoria: " + m.getCategory());
                             System.out.println("Dano base: " + m.getDamage());
@@ -309,7 +312,7 @@ public class Main {
                                                 .build();
                             if (moves == null || moves.isEmpty()) moves.add(m);
                             servMove.registrarStatusMove(id, nome, tipo, categoria, alvo, atributo, modificador);
-                            OutputUtils.slowPrint("Golpe " + m.getName() + " registrado com sucesso!", 50);
+                            System.out.println("Golpe " + m.getName() + " registrado com sucesso!");
                             System.out.println("Tipo: " + m.getType());
                             System.out.println("Categoria: " + m.getCategory());
                         }
@@ -320,15 +323,15 @@ public class Main {
                 case 7:
                     List<Move> listaMoves= servMove.listarMoves();
                     if (!listaMoves.isEmpty()) {
-                        OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         for (Move move : listaMoves) {
                             System.out.println("Dados do golpe " + move.getName() + ":");
                             System.out.println("Tipo: " + move.getType());
                             System.out.println("Categoria: " + move.getCategory());
                             if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
-                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         }
-                        OutputUtils.slowPrint(servMove.contarListaMoves() + " golpes listados com sucesso!", 50);
+                        System.out.println(servMove.contarListaMoves() + " golpes listados com sucesso!");
                     } else System.out.println("Nao ha golpes para listar!");
                     break;
                 case 8:
@@ -341,7 +344,7 @@ public class Main {
                     try {
                         Move move = servMove.buscarPorNome(nomeBusca);
                         Menu.exibirMenuGolpe(move, 50);
-                        OutputUtils.slowPrint("Golpe " + nomeBusca + " encontrado com sucesso!", 50);
+                        System.out.println("Golpe " + nomeBusca + " encontrado com sucesso!");
                     } catch (MoveNaoEncontradoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -353,15 +356,15 @@ public class Main {
                         Typing tipo = Typing.fromString(tipoBusca);
                         listaMoves = servMove.buscarPorTipo(tipo);
                         if (!listaMoves.isEmpty()) {
-                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
                                 System.out.println("Categoria: " + move.getCategory());
                                 if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
-                                OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                                OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             }
-                            OutputUtils.slowPrint(listaMoves.size() + " golpes listados com sucesso!", 50);
+                            System.out.println(listaMoves.size() + " golpes listados com sucesso!");
                         } else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
@@ -381,8 +384,9 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + move.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
+                            moves.remove(move);
                             servMove.removerMove(move.getName());
-                            OutputUtils.slowPrint("Pokemon " + nomeRemocao + " removido com sucesso!", 50);
+                            System.out.println("Pokemon " + nomeRemocao + " removido com sucesso!");
                         }
                     } catch (MoveNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -420,7 +424,7 @@ public class Main {
                                         .build();
                         if (teams == null || teams.isEmpty()) teams.add(t);
                         servTeam.criarTeam(id, nome, membros);
-                        OutputUtils.slowPrint("Equipe " + t.getName() + " criada com sucesso!", 50);
+                        System.out.println("Equipe " + t.getName() + " criada com sucesso!");
                         System.out.println("Pokemons membros:");
                         int i = 0;
                         for (Pokemon pkmn: t.getPokemons()) {
@@ -436,7 +440,7 @@ public class Main {
                 case 12:
                     List<Team> listaTeams = servTeam.listarTeams();
                     if (!listaTeams.isEmpty()) {
-                        OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         for (Team team : listaTeams) {
                             System.out.println("Dados da equipe " + team.getName() + ":");
                             System.out.println("Pokemons membros:");
@@ -447,8 +451,9 @@ public class Main {
                                 i++;
                             }
                             System.out.println("\nBST medio: " + team.baseStatTotalMedio());
-                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         }
+                        System.out.println(servTeam.contarListaTeams() + " equipes listadas com sucesso!");
                     } else System.out.println("Nao ha equipes para listar!");
                     break;
                 case 13:
@@ -461,7 +466,7 @@ public class Main {
                     try {
                         Team team = servTeam.buscarPorNome(nomeBusca);
                         Menu.exibirMenuEquipe(team, 50);
-                        OutputUtils.slowPrint("Equipe " + nomeBusca + " encontrada com sucesso!", 50);                  
+                        System.out.println("Equipe " + nomeBusca + " encontrada com sucesso!");               
                     } catch (TeamNaoEncontradoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -476,7 +481,7 @@ public class Main {
                     try {
                         Team team = servTeam.buscarPorNome(nomeEquipe);                    
                         while (true) {
-                            Menu.exibirMenuModificacaoEquipe(20);
+                            Menu.exibirMenuModificacaoEquipe();
                             boolean flag = false;
                             String optionModify = InputUtils.lerString("Insira a opcao desejada desejado: ", sc);
                             switch (optionModify.toUpperCase()) {
@@ -529,8 +534,9 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + team.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
+                            teams.remove(team);
                             servTeam.removerTeam(team.getName());
-                            OutputUtils.slowPrint("Equipe " + nomeRemocao + " removida com sucesso!", 50);
+                            System.out.println("Equipe " + nomeRemocao + " removida com sucesso!");
                         }                  
                     } catch (TeamNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -594,7 +600,7 @@ public class Main {
                             p2.setLevel(nivelP2);
                             p2.setOwnStats(p2.getLevel(), p2.getNature());
                             Pokemon vencedor = servBattle.batalhar(p1, p2, sc);
-                            OutputUtils.slowPrint("O Pokemon vencedor foi " + vencedor.getName() + "!", 50);
+                            System.out.println("O Pokemon vencedor foi " + vencedor.getName() + "!");
                         } catch (DadoInvalidoException e) {
                             System.out.println("Nao foi possivel executar a batalha: " + e.getMessage());
                             break;
@@ -610,7 +616,7 @@ public class Main {
                     }
                     int optionStatistics = -1;
                     do {
-                        Menu.exibirMenuEstatisticasPokemons(20);
+                        Menu.exibirMenuEstatisticasPokemons();
                         optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
                         switch (optionStatistics) {
                             case 1:
@@ -651,7 +657,7 @@ public class Main {
                     }
                     optionStatistics = -1;
                     do {
-                        Menu.exibirMenuEstatisticasEquipes(20);
+                        Menu.exibirMenuEstatisticasEquipes();
                         optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
                         switch (optionStatistics) {
                             case 1:
@@ -712,8 +718,9 @@ public class Main {
                         if (optionDelete.equalsIgnoreCase("s")) {
                             repoPkmn.limparArquivo();
                             repoMove.limparArquivo();
-                            String txt = servPkmn.contarListaPokemons() + " Pokemons e " + servMove.contarListaMoves() + " golpes foram removidos com sucesso!";
-                            OutputUtils.slowPrint(txt, 50);
+                            repoTeam.limparArquivo();
+                            System.out.println(servPkmn.contarListaPokemons() + " Pokemons, " + servMove.contarListaMoves() + " golpes e " +
+                                                servTeam.contarListaTeams() + " equipes foram removidos com sucesso!");
                         }
                     } catch (IOException e) {
                         System.out.println("Nao foi possivel limpar o arquivo!");
@@ -722,28 +729,28 @@ public class Main {
                 case 0:
                     System.out.print("Retornando ao inicio");
                     Thread.sleep(500);
-                    OutputUtils.slowPrint("...", 150);
+                    OutputUtils.slowPrintln("...", 150);
                     break;
                 default:
                     System.out.println("Opcao invalida!");
                     sc.nextLine();
                     System.out.print("Retornando ao menu do programa principal");
                     Thread.sleep(500);
-                    OutputUtils.slowPrint("...", 150);
+                    OutputUtils.slowPrintln("...", 150);
             }
         } while (optionMenu != 0);
         try {
             repoPkmn.escreverArquivo(pokemons);
             repoMove.escreverArquivo(moves);
             repoTeam.escreverArquivo(teams);
-            OutputUtils.slowPrint(servPkmn.contarListaPokemons() + " Pokemons, " + servMove.contarListaMoves() + " golpes e " + 
-                                    servTeam.contarListaTeams() + " equipes foram salvos com sucesso!", 50);
+            System.out.println(servPkmn.contarListaPokemons() + " Pokemons, " + servMove.contarListaMoves() + " golpes e " + 
+                                servTeam.contarListaTeams() + " equipes foram salvos com sucesso!");
         } catch (IOException e) {
             System.out.println("Nao foi possivel escrever nos arquivos!");
         }
         System.out.print("Encerrando o programa");
         Thread.sleep(500);
-        OutputUtils.slowPrint("...", 150);
+        OutputUtils.slowPrintln("...", 150);
         System.out.println();
         sc.close();
     }

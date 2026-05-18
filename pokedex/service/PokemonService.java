@@ -71,7 +71,7 @@ public class PokemonService {
         throw new PokemonNaoEncontradoException("Pokemon nao encontrado!");
     }
     public int contarListaPokemons() {
-        return pokemons.size();
+        return repository.contarQuantidade();
     }
     public Pokemon maiorStat(String optionStat) throws PokemonNaoEncontradoException, DadoInvalidoException {
         if (pokemons.isEmpty()) throw new PokemonNaoEncontradoException("Lista de Pokemons vazia!");
