@@ -35,7 +35,7 @@ public class Menu {
         System.out.println("| 13. Buscar equipe por nome                              |");
         System.out.println("| 14. Adicionar a/remover da equipe                       |");
         System.out.println("| 15. Remover equipe                                      |");
-        System.out.println("| 16. Simular batalha (1 x 1)                             |");
+        System.out.println("| 16. Simular batalha 1v1                                 |");
         System.out.println("| 17. Estatisticas de Pokemons                            |");
         System.out.println("| 18. Estatisticas de equipes                             |");
         System.out.println("| 19. Limpar os arquivos                                  |");
@@ -48,8 +48,13 @@ public class Menu {
         OutputUtils.slowPrintln("---------------------------------------------------------", delay);
         System.out.println("Nome: " + pkmn.getName());
         System.out.println("Numero de Pokedex: #" + String.format("%04d", pkmn.getId()));
-        System.out.print("Tipo(s):");
-        for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
+        System.out.println("Tipo(s):");
+        int i = 0;
+        for (Typing t : pkmn.getTypes()) {
+            if (i > 0) System.out.print("/");
+            System.out.print(t);
+            i++;
+        }
         System.out.println("\nBase stats:");
         System.out.println("HP: " + pkmn.getBaseStats().getHp());
         System.out.println("Ataque: " + pkmn.getBaseStats().getAttack());
@@ -78,7 +83,7 @@ public class Menu {
         System.out.println("Pokemons membros:");
         int i = 0;
         for (Pokemon pkmn : team.getPokemons()) {
-            if (i > 0) System.out.print("/");
+            if (i > 0) System.out.print(" / ");
             System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
             i++;
         }

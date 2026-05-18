@@ -189,9 +189,12 @@ public class Main {
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats);
                         System.out.println("Pokemon " + p.getName() + " cadastrado com sucesso!");
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
-                        System.out.print("Tipo(s):");
+                        System.out.println("Tipo(s):");
+                        int i = 0;
                         for (Typing t : p.getTypes()) {
-                            System.out.print(" " + t);
+                            if (i > 0) System.out.print("/");
+                            System.out.print(t);
+                            i++;
                         }
                         System.out.println("\nBST: " + p.getBST());
                     } catch (DadoInvalidoException e) {
@@ -204,8 +207,13 @@ public class Main {
                         OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                         for (Pokemon pkmn : listaPkmns) {
                             System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
-                            System.out.print("Tipo(s) de " + pkmn.getName() + ":");
-                            for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
+                            System.out.println("Tipo(s):");
+                            int i = 0;
+                            for (Typing t : pkmn.getTypes()) {
+                                if (i > 0) System.out.print("/");
+                                System.out.print(t);
+                                i++;
+                            }
                             OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
                         }
                         System.out.println(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!");
@@ -236,8 +244,13 @@ public class Main {
                             OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             for (Pokemon pkmn : listaPkmns) {
                                 System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
-                                System.out.print("Tipo(s) de " + pkmn.getName() + ":");
-                                for (Typing t : pkmn.getTypes()) System.out.print(" " + t);
+                                System.out.println("Tipo(s):");
+                                int i = 0;
+                                for (Typing t : pkmn.getTypes()) {
+                                    if (i > 0) System.out.print("/");
+                                    System.out.print(t);
+                                    i++;
+                                }
                                 OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
                             }
                             System.out.println(listaPkmns.size() + " Pokemons listados com sucesso!");
@@ -431,7 +444,7 @@ public class Main {
                         System.out.println("Pokemons membros:");
                         int i = 0;
                         for (Pokemon pkmn: t.getPokemons()) {
-                            if (i > 0) System.out.print("/");
+                            if (i > 0) System.out.print(" / ");
                             System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
                             i++;
                         }
@@ -449,7 +462,7 @@ public class Main {
                             System.out.println("Pokemons membros:");
                             int i = 0;
                             for (Pokemon pkmn: team.getPokemons()) {
-                                if (i > 0) System.out.print("/");
+                                if (i > 0) System.out.print(" / ");
                                 System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
                                 i++;
                             }
