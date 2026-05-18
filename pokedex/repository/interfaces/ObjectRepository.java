@@ -1,5 +1,6 @@
 package pokedex.repository.interfaces;
 
+import java.util.Collections;
 import java.util.List;
 
 import pokedex.domain.enums.Typing;
@@ -9,6 +10,8 @@ public interface ObjectRepository<T> {
     public void salvar(T valor);
     public List<T> listar();
     public T buscarPorNome(String nome);
-    public List<T> buscarPorTipo(Typing tipo);
+    default List<T> buscarPorTipo(Typing tipo) { return Collections.emptyList(); }
     public void remover(int id);
+    public void inserirLista(List<T> lista);
+    public int contarQuantidade();
 }

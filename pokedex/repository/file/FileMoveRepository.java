@@ -46,21 +46,24 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     }
     @Override
     public List<Move> buscarPorTipo(Typing type) {
-        return moves.values()
-                    .stream()
-                    .filter(m -> m.getType() == type)
-                    .collect(Collectors.toList());
+        List<Move> lista = moves.values()
+                                .stream()
+                                .filter(m -> m.getType() == type)
+                                .collect(Collectors.toList());
+        return lista.isEmpty() ? ObjectRepository.super.buscarPorTipo(type) : lista;
     }
     @Override
     public void remover(int id) {
         moves.remove(id);
     }
-    public void inserirMoves(List<Move> move) {
+    @Override
+    public void inserirLista(List<Move> move) {
         for (Move m : move) {
             moves.put(m.getId(), m);
         }
     }
-    public int contarMoves() {
+    @Override
+    public int contarQuantidade() {
         return moves.size();
     }
     public void escreverArquivo(List<Move> moves) throws IOException {

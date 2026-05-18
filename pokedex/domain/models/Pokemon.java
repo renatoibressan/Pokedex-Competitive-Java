@@ -51,8 +51,8 @@ public class Pokemon {
         return Collections.unmodifiableList(types);
     }
     public void setTypes(List<Typing> types) throws DadoInvalidoException {
-        if (types == null || types.isEmpty()) throw new DadoInvalidoException("Pokemon deve ter pelo menos 1 tipo!");
-        if (types.size() > 2) throw new DadoInvalidoException("Pokemon nao pode ter mais de 2 tipos!");
+        if (types == null || types.isEmpty()) throw new DadoInvalidoException("O Pokemon deve ter pelo menos 1 tipo!");
+        if (types.size() > 2) throw new DadoInvalidoException("O Pokemon nao pode ter mais de 2 tipos!");
         if (new HashSet<>(types).size() != types.size()) throw new DadoInvalidoException("Tipos duplicados nao sao permitidos!");
         this.types = types;
     }
@@ -78,15 +78,15 @@ public class Pokemon {
         return level;
     }
     public void setLevel(int level) throws DadoInvalidoException {
-        if (level < 1 || level > 100) throw new DadoInvalidoException("Pokemon deve ser de nivel 1 a 100!");
+        if (level < 1 || level > 100) throw new DadoInvalidoException("O Pokemon deve ser de nivel 1 a 100!");
         this.level = level;
     }
     public List<Move> getMoves() {
         return moves;
     }
     public void setMoves(List<Move> moves) throws DadoInvalidoException {
-        if (moves == null || moves.isEmpty()) throw new DadoInvalidoException("Pokemon deve ter pelo menos 1 golpe!");
-        if (moves.size() > 4) throw new DadoInvalidoException("Pokemon nao pode ter mais de 4 golpes!");
+        if (moves == null || moves.isEmpty()) throw new DadoInvalidoException("O Pokemon deve ter pelo menos 1 golpe!");
+        if (moves.size() > 4) throw new DadoInvalidoException("O Pokemon nao pode ter mais de 4 golpes!");
         if (new HashSet<>(moves).size() != moves.size()) throw new DadoInvalidoException("Golpes duplicados nao sao permitidos!");
         this.moves = moves;
     }

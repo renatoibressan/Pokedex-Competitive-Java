@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import pokedex.builder.*;
+import pokedex.dataset.loader.TeamDatasetLoader;
 import pokedex.domain.enums.*;
 import pokedex.domain.interfaces.*;
 import pokedex.domain.models.*;
@@ -24,15 +25,18 @@ public class Main {
         Menu.exibirMenuInicial(15);
         Scanner sc = new Scanner(System.in);
         int optionMenu = -1;
-        String optionArquivo;
         List<Pokemon> pokemons = new ArrayList<>();
         List<Move> moves = new ArrayList<>();
+        List<Team> teams = new ArrayList<>();
         File arquivoPkmn = new File("pokedex/dataset/files/pokemons.csv");
         File arquivoMove = new File("pokedex/dataset/files/moves.csv");
+        File arquivoTeam = new File("pokedex/dataset/files/teams.csv");
         FilePokemonRepository repoPkmn = new FilePokemonRepository("pokedex/dataset/files/pokemons.csv");
         FileMoveRepository repoMove = new FileMoveRepository("pokedex/dataset/files/moves.csv");
+        FileTeamRepository repoTeam = new FileTeamRepository("pokedex/dataset/files/teams.csv", new TeamDatasetLoader(repoPkmn));
         PokemonService servPkmn = new PokemonService(repoPkmn);
         MoveService servMove = new MoveService(repoMove);
+        TeamService servTeam = new TeamService(repoTeam);
         TypeEffectivenessService effect = new TypeEffectivenessService("pokedex/repository/data/matchups.txt");
         BattleService servBattle = new BattleService(effect);
         try {
@@ -42,19 +46,20 @@ public class Main {
         }
         if (arquivoMove.exists() && arquivoMove.length() > 0) {
             moves = repoMove.lerArquivo();
-            repoMove.inserirMoves(moves);
+            repoMove.inserirLista(moves);
             servMove.putMoves(moves);
+            OutputUtils.slowPrint(repoMove.contarQuantidade() + " golpes foram carregados com sucesso!", 20);
         }
         if (arquivoPkmn.exists() && arquivoPkmn.length() > 0) {
-            optionArquivo = InputUtils.lerString("Deseja carregar os Pokemons do arquivo? (S/N): ", sc);
-            while (!optionArquivo.equalsIgnoreCase("s") && !optionArquivo.equalsIgnoreCase("n")) {
-                optionArquivo = InputUtils.lerString("Opcao invalida!\nDeseja carregar os Pokemons do arquivo? (S/N): ", sc);
-            }
-            if (optionArquivo.equalsIgnoreCase("s")) {
-                pokemons = repoPkmn.lerArquivo();
-                repoPkmn.inserirPokemons(pokemons);
-                servPkmn.putPokemons(pokemons);
-                OutputUtils.slowPrint(repoPkmn.contarPokemons() + " Pokemons foram carregados com sucesso!", 50);
+            pokemons = repoPkmn.lerArquivo();
+            repoPkmn.inserirLista(pokemons);
+            servPkmn.putPokemons(pokemons);
+            OutputUtils.slowPrint(repoPkmn.contarQuantidade() + " Pokemons foram carregados com sucesso!", 20);
+            if (arquivoTeam.exists() && arquivoTeam.length() > 0) {
+                teams = repoTeam.lerArquivo();
+                repoTeam.inserirLista(teams);
+                servTeam.putTeams(teams);
+                OutputUtils.slowPrint(repoTeam.contarQuantidade() + " equipes foram carregadas com sucesso!", 20);
             }
         }
         do {
@@ -67,10 +72,11 @@ public class Main {
                     while (nome == null || nome.isEmpty()) {
                         nome = InputUtils.lerString("Entrada invalida!\nInsira o nome do Pokemon: ", sc);
                     }
-                    nome = nome
-                            .substring(0, 1)
-                            .toUpperCase() + nome.substring(1);
-                            List<Typing> tipos = new ArrayList<>();
+                    nome = Pattern
+                                .compile("\\b(\\w)")
+                                .matcher(nome)
+                                .replaceAll(m -> m.group(1).toUpperCase());
+                    List<Typing> tipos = new ArrayList<>();
                     boolean tipoValido = false;
                     if (!pokemons.isEmpty()) {
                         Pokemon anterior = pokemons.getLast();
@@ -203,7 +209,10 @@ public class Main {
                 case 3:
                     sc.nextLine();
                     String nomeBusca = InputUtils.lerString("Insira o nome do Pokemon para procura: ", sc);
-                    nomeBusca = nomeBusca.substring(0, 1).toUpperCase() + nomeBusca.substring(1);
+                    nomeBusca = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeBusca)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Pokemon pkmn = servPkmn.buscarPorNome(nomeBusca);
                         Menu.exibirMenuPokemon(pkmn, 50);
@@ -235,9 +244,10 @@ public class Main {
                 case 5:
                     sc.nextLine();
                     String nomeRemocao = InputUtils.lerString("Insira o nome do Pokemon para procura: ", sc);
-                    nomeRemocao = nomeRemocao
-                                        .substring(0, 1)
-                                        .toUpperCase() + nomeRemocao.substring(1);
+                    nomeRemocao = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeRemocao)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Pokemon pkmn = servPkmn.buscarPorNome(nomeRemocao);
                         String optionRemocao = InputUtils.lerString("Certeza que deseja remover " + pkmn.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
@@ -259,9 +269,9 @@ public class Main {
                         nome = InputUtils.lerString("Entrada invalida!\nInsira o nome do golpe: ", sc);
                     }
                     nome = Pattern
-                    .compile("\\b(\\w)")
-                    .matcher(nome)
-                    .replaceAll(m -> m.group(1).toUpperCase());
+                                .compile("\\b(\\w)")
+                                .matcher(nome)
+                                .replaceAll(m -> m.group(1).toUpperCase());
                     String tipoMove = InputUtils.lerString("Insira o tipo desejado para o golpe: ", sc);
                     String categoriaMove = InputUtils.lerString("Insira a categoria do golpe (physical/special/status): ", sc);
                     try {
@@ -347,8 +357,8 @@ public class Main {
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
-                                if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
                                 System.out.println("Categoria: " + move.getCategory());
+                                if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
                                 OutputUtils.slowPrint("---------------------------------------------------------", 10);
                             }
                             OutputUtils.slowPrint(listaMoves.size() + " golpes listados com sucesso!", 50);
@@ -361,9 +371,9 @@ public class Main {
                     sc.nextLine();
                     nomeRemocao = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
                     nomeRemocao = Pattern
-                                        .compile("\\b(\\w)")
-                                        .matcher(nomeRemocao)
-                                        .replaceAll(m -> m.group(1).toUpperCase());
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeRemocao)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Move move = servMove.buscarPorNome(nomeRemocao);
                         String optionRemocao = InputUtils.lerString("Certeza que deseja remover " + move.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
@@ -376,9 +386,157 @@ public class Main {
                         }
                     } catch (MoveNaoEncontradoException e) {
                         System.out.println(e.getMessage());
-                    } 
+                    }
                     break;
                 case 11:
+                    sc.nextLine();
+                    nome = InputUtils.lerString("Insira o nome da equipe: ", sc);
+                    while (nome == null || nome.isEmpty()) {
+                        nome = InputUtils.lerString("Entrada invalida!\nInsira o nome do golpe: ", sc);
+                    }
+                    nome = Pattern
+                                .compile("\\b(\\w)")
+                                .matcher(nome)
+                                .replaceAll(m -> m.group(1).toUpperCase());
+                    List<Pokemon> membros = new ArrayList<>();
+                    for (int i = 1; i <= 6;) {
+                        String nomePkmn = InputUtils.lerString("Insira o nome do Pokemon desejado ou 0 para fechar a lista de Pokemons (min.1, max.6): ", sc);
+                        if (nomePkmn.equalsIgnoreCase("0") && !membros.isEmpty()) break;
+                        try {
+                            Pokemon pokemon = servPkmn.buscarPorNome(nomePkmn);
+                            membros.add(pokemon);
+                            System.out.println("Pokemon " + pokemon.getName() + " adicionado a equipe com sucesso!");
+                            i++;
+                        } catch (PokemonNaoEncontradoException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    int id = servTeam.gerarNovoId();
+                    try {
+                        Team t = new TeamBuilder()
+                                        .id(id)
+                                        .nome(nome)
+                                        .pokemons(membros)
+                                        .build();
+                        if (teams == null || teams.isEmpty()) teams.add(t);
+                        servTeam.registrarTeam(id, nome, membros);
+                        OutputUtils.slowPrint("Equipe " + t.getName() + " registrada com sucesso!", 50);
+                        System.out.println("Pokemons membros:");
+                        int i = 0;
+                        for (Pokemon pkmn: t.getPokemons()) {
+                            if (i > 0) System.out.print("/");
+                            System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
+                            i++;
+                        }
+                        System.out.println("\nBST medio: " + t.baseStatTotalMedio());
+                    } catch (DadoInvalidoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 12:
+                    List<Team> listaTeams = servTeam.listarTeams();
+                    if (!listaTeams.isEmpty()) {
+                        OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                        for (Team team : listaTeams) {
+                            System.out.println("Dados da equipe " + team.getName() + ":");
+                            System.out.println("Pokemons membros:");
+                            int i = 0;
+                            for (Pokemon pkmn: team.getPokemons()) {
+                                if (i > 0) System.out.print("/");
+                                System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
+                                i++;
+                            }
+                            System.out.println("\nBST medio: " + team.baseStatTotalMedio());
+                            OutputUtils.slowPrint("---------------------------------------------------------", 10);
+                        }
+                    } else System.out.println("Nao ha equipes para listar!");
+                    break;
+                case 13:
+                    sc.nextLine();
+                    nomeBusca = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
+                    nomeBusca = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeBusca)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
+                    try {
+                        Team team = servTeam.buscarPorNome(nomeBusca);
+                        Menu.exibirMenuEquipe(team, 50);
+                        OutputUtils.slowPrint("Equipe " + nomeBusca + " encontrada com sucesso!", 50);                  
+                    } catch (TeamNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 14:
+                    sc.nextLine();
+                    String nomeModificacao = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
+                    nomeModificacao = Pattern
+                                        .compile("\\b(\\w)")
+                                        .matcher(nomeModificacao)
+                                        .replaceAll(m -> m.group(1).toUpperCase());
+                    try {
+                        Team team = servTeam.buscarPorNome(nomeModificacao);                    
+                        while (true) {
+                            Menu.exibirMenuModificacaoEquipe(20);
+                            boolean flag = false;
+                            String optionModify = InputUtils.lerString("Insira a opcao desejada desejado: ", sc);
+                            switch (optionModify.toUpperCase()) {
+                                case "A":
+                                    String nomePkmn = InputUtils.lerString("Insira o nome do Pokemon a ser adicionado: ", sc);
+                                    try {
+                                        Pokemon pokemon = servPkmn.buscarPorNome(nomePkmn);
+                                        team.addPokemon(pokemon);
+                                        System.out.println("Pokemon " + pokemon.getName() + " adicionado a equipe com sucesso!");
+                                    } catch (PokemonNaoEncontradoException e) {
+                                        System.out.println(e.getMessage());
+                                    } catch (DadoInvalidoException e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                    break;
+                                case "B":
+                                    nomePkmn = InputUtils.lerString("Insira o nome do Pokemon a ser removido: ", sc);
+                                    try {
+                                        Pokemon pokemon = servPkmn.buscarPorNome(nomePkmn);
+                                        team.removePokemon(pokemon.getName());
+                                        System.out.println("Pokemon " + pokemon.getName() + " removido da equipe com sucesso!");
+                                    } catch (PokemonNaoEncontradoException e) {
+                                        System.out.println(e.getMessage());
+                                    } catch (DadoInvalidoException e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                    break;
+                                case "0":
+                                    flag = true;
+                                    break;
+                                default: System.out.println("Opcao invalida!");
+                            }
+                            if (flag) break;
+                        }
+                    } catch (TeamNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 15:
+                    sc.nextLine();
+                    nomeRemocao = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
+                    nomeRemocao = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeRemocao)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
+                    try {
+                        Team team = servTeam.buscarPorNome(nomeRemocao);  
+                        String optionRemocao = InputUtils.lerString("Certeza que deseja remover " + team.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
+                        while (!optionRemocao.equalsIgnoreCase("s") && !optionRemocao.equalsIgnoreCase("n")) {
+                            optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + team.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
+                        }
+                        if (optionRemocao.equalsIgnoreCase("s")) {
+                            servTeam.removerTeam(team.getName());
+                            OutputUtils.slowPrint("Equipe " + nomeRemocao + " removida com sucesso!", 50);
+                        }                  
+                    } catch (TeamNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 16:
                     if (pokemons == null || pokemons.isEmpty()) {
                         System.out.println("Nao ha Pokemons para simular a batalha!\n(Operacao abortada)");
                         break;
@@ -397,7 +555,7 @@ public class Main {
                         List<Move> movesP2 = new ArrayList<>();
                         for (int i = 1; i <= 4;) {
                             String move1 = InputUtils.lerString("Insira o " + i + "o golpe de " + p1.getName() + " ou 0 para fechar a lista de golpes (min.1, max.4): ", sc);
-                            if (move1.equalsIgnoreCase("0") && !move1.isEmpty()) break;
+                            if (move1.equalsIgnoreCase("0") && !movesP1.isEmpty()) break;
                             try {
                                 Move moveP1 = servMove.buscarPorNome(move1);
                                 movesP1.add(moveP1);
@@ -412,7 +570,7 @@ public class Main {
                         sc.nextLine();
                         for (int i = 1; i <= 4;) {
                             String move2 = InputUtils.lerString("Insira o " + i + "o golpe de " + p2.getName() + " ou 0 para fechar a lista de golpes (min.1, max.4): ", sc);
-                            if (move2.equalsIgnoreCase("0") && !move2.isEmpty()) break;
+                            if (move2.equalsIgnoreCase("0") && !movesP2.isEmpty()) break;
                             try {
                                 Move moveP2 = servMove.buscarPorNome(move2);
                                 movesP2.add(moveP2);
@@ -445,14 +603,14 @@ public class Main {
                         System.out.println("Nao foi possivel executar a batalha: " + e.getMessage());
                     }
                     break;
-                case 12:
+                case 17:
                     if (pokemons == null || pokemons.isEmpty()) {
                         System.out.println("Nao ha Pokemons para analisar estatisticas!\n(Operacao abortada)");
                         break;
                     }
                     int optionStatistics = -1;
                     do {
-                        Menu.exibirMenuEstatisticas(20);
+                        Menu.exibirMenuEstatisticasPokemons(20);
                         optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
                         switch (optionStatistics) {
                             case 1:
@@ -486,7 +644,30 @@ public class Main {
                         }
                     } while (optionStatistics != 0);
                     break;
-                case 13:
+                case 18:
+                    if (teams == null || teams.isEmpty()) {
+                        System.out.println("Nao ha equipes para analisar estatisticas!\n(Operacao abortada)");
+                        break;
+                    }
+                    optionStatistics = -1;
+                    do {
+                        Menu.exibirMenuEstatisticasEquipes(20);
+                        optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
+                        switch (optionStatistics) {
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            case 0: break;
+                            default: System.out.println("Opcao invalida!");
+                        }
+                    } while (optionStatistics != 0);
+                    break;
+                case 19:
                      try {
                         String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
                         while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {
@@ -515,19 +696,14 @@ public class Main {
                     OutputUtils.slowPrint("...", 150);
             }
         } while (optionMenu != 0);
-        sc.nextLine();
-        optionArquivo = InputUtils.lerString("\nDeseja salvar os Pokemons e golpes nos respectivos arquivos? (S/N): ", sc);
-        while (!optionArquivo.equalsIgnoreCase("s") && !optionArquivo.equalsIgnoreCase("n")) {
-            optionArquivo = InputUtils.lerString("Opcao invalida!\nDeseja salvar os Pokemons e golpes nos respectivos arquivos? (S/N): ", sc);
-        }
-        if (optionArquivo.equalsIgnoreCase("s")) {
-            try {
-                repoPkmn.escreverArquivo(pokemons);
-                repoMove.escreverArquivo(moves);
-                OutputUtils.slowPrint(servPkmn.contarListaPokemons() + " Pokemons e " + servMove.contarListaMoves() + " golpes foram salvos com sucesso!", 50);
-            } catch (IOException e) {
-                System.out.println("Nao foi possivel escrever nos arquivos!");
-            }
+        try {
+            repoPkmn.escreverArquivo(pokemons);
+            repoMove.escreverArquivo(moves);
+            repoTeam.escreverArquivo(teams);
+            OutputUtils.slowPrint(servPkmn.contarListaPokemons() + " Pokemons, " + servMove.contarListaMoves() + " golpes e " + 
+                                    servTeam.contarListaTeams() + " equipes foram salvos com sucesso!", 50);
+        } catch (IOException e) {
+            System.out.println("Nao foi possivel escrever nos arquivos!");
         }
         System.out.print("Encerrando o programa");
         Thread.sleep(500);

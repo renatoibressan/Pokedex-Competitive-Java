@@ -39,10 +39,10 @@ public class BattleService {
             }
             int vidaP1 = primeiro.getOwnStats().getHp();
             int vidaP2 = segundo.getOwnStats().getHp();
-            System.out.print("\n");
+            System.out.println();
             System.out.println(primeiro.getName() + " Lv." + primeiro.getLevel() + ": " + vidaP1 + " / " + primeiro.getOwnStats().getHp());
             System.out.println(segundo.getName() + " Lv." + segundo.getLevel() + ": " + vidaP2 + " / " + segundo.getOwnStats().getHp());
-            System.out.print("\n");
+            System.out.println();
             System.out.println("Golpes de " + primeiro.getName() + ":");
             int i = 1;
             for (Move m : primeiro.getMoves()) {
@@ -53,7 +53,7 @@ public class BattleService {
             while (opcaoGolpe < 1 || opcaoGolpe > 4) opcaoGolpe = InputUtils.lerInt("Opcao invalida!\nInsira uma das opcoes acima: ", sc);
             int indexGolpes = opcaoGolpe - 1;
             Move golpeP1 = primeiro.getMoves().get(indexGolpes);
-            System.out.print("\n");
+            System.out.println();
             System.out.println("Golpes de " + segundo.getName() + ":");
             i = 1;
             for (Move m : segundo.getMoves()) {

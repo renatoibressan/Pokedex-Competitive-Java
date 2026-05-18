@@ -46,21 +46,24 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
     }
     @Override
     public List<Pokemon> buscarPorTipo(Typing type) {
-        return pkmns.values()
-                    .stream()
-                    .filter(p -> p.getTypes().contains(type))
-                    .collect(Collectors.toList());
+        List<Pokemon> lista = pkmns.values()
+                                    .stream()
+                                    .filter(p -> p.getTypes().contains(type))
+                                    .collect(Collectors.toList());
+        return lista.isEmpty() ? ObjectRepository.super.buscarPorTipo(type) : lista;
     }
     @Override
     public void remover(int id) {
         pkmns.remove(id);
     }
-    public void inserirPokemons(List<Pokemon> pokemons) {
+    @Override
+    public void inserirLista(List<Pokemon> pokemons) {
         for (Pokemon p : pokemons) {
             pkmns.put(p.getId(), p);
         }
     }
-    public int contarPokemons() {
+    @Override
+    public int contarQuantidade() {
         return pkmns.size();
     }
     public void escreverArquivo(List<Pokemon> pokemons) throws IOException {

@@ -25,6 +25,12 @@ public class CsvParser {
         }
         return colunas;
     }
+    public List<String> parsePokemonNames(String pokemons) {
+        return Arrays
+                .stream(pokemons.split("\\|"))
+                .map(String::trim)
+                .toList();
+    }
     public List<Typing> parseTypes(String types) {
         return Arrays
                 .stream(types.split("\\|"))

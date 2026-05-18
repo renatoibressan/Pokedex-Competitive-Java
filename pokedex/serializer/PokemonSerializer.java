@@ -20,7 +20,7 @@ public class PokemonSerializer {
                 .map(Typing::name) 
                 .collect(Collectors.joining("|"));
     }
-    public static String serializeStats(Pokemon pokemon) {
+    private static String serializeStats(Pokemon pokemon) {
         return String.join(",", 
                 String.valueOf(pokemon.getBaseStats().getHp()), 
                 String.valueOf(pokemon.getBaseStats().getAttack()), 

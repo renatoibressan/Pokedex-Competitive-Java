@@ -1,0 +1,48 @@
+package pokedex.dataset.loader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import pokedex.builder.TeamBuilder;
+import pokedex.dataset.parser.CsvParser;
+import pokedex.domain.models.Pokemon;
+import pokedex.domain.models.Team;
+import pokedex.exception.DadoInvalidoException;
+import pokedex.repository.file.FilePokemonRepository;
+
+public class TeamDatasetLoader {
+    private final CsvParser parser;
+    private final FilePokemonRepository repository;
+    public TeamDatasetLoader(FilePokemonRepository repository) {
+        this.parser = new CsvParser();
+        this.repository = repository;
+    }
+    public List<Team> carregar(String filePath) {
+        List<String[]> colunas = parser.parse(filePath);
+        List<Team> listaTeams = new ArrayList<>();
+        int linhaNumero = 0;
+        for (String[] coluna : colunas) {
+            linhaNumero++;
+            Integer id = Integer.parseInt(coluna[0]);
+            String name = coluna[1];
+            List<String> pkmnNames = parser.parsePokemonNames(coluna[2]);
+            List<Pokemon> pokemons = pkmnNames
+                                        .stream()
+                                        .map(repository::buscarPorNome)
+                                        .filter(Objects::nonNull)
+                                        .toList();
+            try {
+                Team team = new TeamBuilder()
+                                .id(id)
+                                .nome(name)
+                                .pokemons(pokemons)
+                                .build();
+                listaTeams.add(team);
+            } catch (DadoInvalidoException e) {
+                System.out.println(e.getMessage() + " (Linha " + linhaNumero + " invalida!)");
+            }
+        }
+        return listaTeams;
+    }
+}
