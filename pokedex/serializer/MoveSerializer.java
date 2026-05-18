@@ -10,7 +10,7 @@ public class MoveSerializer {
         return serializeStatusMove((StatusMove) move);
     }
     public static String serializeDamagingMove(DamagingMove move) {
-        return String.join(";", 
+        return String.join(",", 
                 nullable(move.getId()), 
                 nullable(move.getName()), 
                 nullable(move.getType()), 
@@ -21,7 +21,7 @@ public class MoveSerializer {
                 "");
     }
     public static String serializeStatusMove(StatusMove move) {
-        return String.join(";", nullable(move.getId()), 
+        return String.join(",", nullable(move.getId()), 
                 nullable(move.getName()), 
                 nullable(move.getType()), 
                 nullable(move.getCategory()),

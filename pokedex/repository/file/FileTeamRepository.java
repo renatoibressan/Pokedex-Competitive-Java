@@ -58,6 +58,7 @@ public class FileTeamRepository implements ObjectRepository<Team> {
     }
     public void escreverArquivo(List<Team> teams) throws IOException {
         List<String> linhas = new ArrayList<>();
+        linhas.add("id,nome,pokemons");
         for (Team t : teams) {
             String linha = t.toFileString();
             linhas.add(linha);

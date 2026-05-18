@@ -7,7 +7,7 @@ import pokedex.domain.models.Team;
 
 public class TeamSerializer {
     public static String serializeTeam(Team team) {
-        return String.join(";", 
+        return String.join(",", 
                 String.valueOf(team.getId()), 
                 team.getName(), 
                 serializePokemons(team));

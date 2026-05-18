@@ -68,6 +68,7 @@ public class FileMoveRepository implements ObjectRepository<Move> {
     }
     public void escreverArquivo(List<Move> moves) throws IOException {
         List<String> linhas = new ArrayList<>();
+        linhas.add("id,nome,tipo,categoria,dano,alvo,atributo,modificador");
         for (Move m : moves) {
             String linha = m.toFileString();
             linhas.add(linha);

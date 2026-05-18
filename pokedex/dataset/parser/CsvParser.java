@@ -16,9 +16,10 @@ public class CsvParser {
     public List<String[]> parse(String filePath) {
         List<String[]> colunas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            reader.readLine();
             String linha;
             while ((linha = reader.readLine()) != null) {
-                colunas.add(linha.split(";"));
+                colunas.add(linha.split(","));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +40,7 @@ public class CsvParser {
                 .toList();
     }
     public Stats parseStats(String stats) throws DadoInvalidoException {
-        String[] statsString = stats.split(",");
+        String[] statsString = stats.split(";");
         Stats baseStats = new StatsBuilder()
                                 .hp(Integer.parseInt(statsString[0]))
                                 .ataque(Integer.parseInt(statsString[1]))

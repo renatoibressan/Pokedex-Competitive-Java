@@ -7,7 +7,7 @@ import pokedex.domain.models.Pokemon;
 
 public class PokemonSerializer {
     public static String serializePokemon(Pokemon pokemon) {
-        return String.join(";", 
+        return String.join(",", 
                 String.valueOf(pokemon.getId()), 
                 pokemon.getName(), 
                 serializeTypes(pokemon), 
@@ -21,7 +21,7 @@ public class PokemonSerializer {
                 .collect(Collectors.joining("|"));
     }
     private static String serializeStats(Pokemon pokemon) {
-        return String.join(",", 
+        return String.join(";", 
                 String.valueOf(pokemon.getBaseStats().getHp()), 
                 String.valueOf(pokemon.getBaseStats().getAttack()), 
                 String.valueOf(pokemon.getBaseStats().getDefense()), 
