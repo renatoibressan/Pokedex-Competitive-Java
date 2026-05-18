@@ -49,7 +49,7 @@ public class Menu {
         OutputUtils.slowPrintln("---------------------------------------------------------", delay);
         System.out.println("Nome: " + pkmn.getName());
         System.out.println("Numero de Pokedex: #" + String.format("%04d", pkmn.getId()));
-        System.out.println("Tipo(s):");
+        System.out.print("Tipo(s): ");
         int i = 0;
         for (Typing t : pkmn.getTypes()) {
             if (i > 0) System.out.print("/");

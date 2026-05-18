@@ -187,7 +187,7 @@ public class Main {
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats);
                         System.out.println("Pokemon " + p.getName() + " cadastrado com sucesso!");
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
-                        System.out.println("Tipo(s):");
+                        System.out.print("Tipo(s): ");
                         int i = 0;
                         for (Typing t : p.getTypes()) {
                             if (i > 0) System.out.print("/");
@@ -202,17 +202,17 @@ public class Main {
                 case 2:
                     List<Pokemon> listaPkmns = servPkmn.listarPokemons();
                      if (!listaPkmns.isEmpty()) {
-                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 5);
                         for (Pokemon pkmn : listaPkmns) {
                             System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
-                            System.out.println("Tipo(s):");
+                            System.out.print("Tipo(s): ");
                             int i = 0;
                             for (Typing t : pkmn.getTypes()) {
                                 if (i > 0) System.out.print("/");
                                 System.out.print(t);
                                 i++;
                             }
-                            OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
+                            OutputUtils.slowPrintln("\n---------------------------------------------------------", 5);
                         }
                         System.out.println(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!");
                     } else System.out.println("Nao ha Pokemons para listar!");
@@ -242,7 +242,7 @@ public class Main {
                             OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             for (Pokemon pkmn : listaPkmns) {
                                 System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
-                                System.out.println("Tipo(s):");
+                                System.out.print("Tipo(s): ");
                                 int i = 0;
                                 for (Typing t : pkmn.getTypes()) {
                                     if (i > 0) System.out.print("/");
@@ -271,11 +271,19 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + pkmn.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
+                            for (Team t : teams) {
+                                if (t.getPokemons().contains(pkmn)) {
+                                    servTeam.removerTeam(t.getName());
+                                    teams.remove(t);
+                                }
+                            }
                             servPkmn.removerPokemon(pkmn.getName());
                             pokemons.remove(pkmn);
                             System.out.println("Pokemon " + nomeRemocao + " removido com sucesso!");
                         }
                     } catch (PokemonNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    } catch (TeamNaoEncontradoException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
