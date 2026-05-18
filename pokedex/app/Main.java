@@ -37,7 +37,7 @@ public class Main {
         PokemonService servPkmn = new PokemonService(repoPkmn);
         MoveService servMove = new MoveService(repoMove);
         TeamService servTeam = new TeamService(repoTeam);
-        TypeEffectivenessService effect = new TypeEffectivenessService("pokedex/repository/data/matchups.txt");
+        TypeEffectivenessService effect = new TypeEffectivenessService("pokedex/repository/matchups/matchups.txt");
         BattleService servBattle = new BattleService(effect);
         try {
             effect.extrairDeArquivo();
