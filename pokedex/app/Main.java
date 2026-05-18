@@ -419,8 +419,8 @@ public class Main {
                                         .pokemons(membros)
                                         .build();
                         if (teams == null || teams.isEmpty()) teams.add(t);
-                        servTeam.registrarTeam(id, nome, membros);
-                        OutputUtils.slowPrint("Equipe " + t.getName() + " registrada com sucesso!", 50);
+                        servTeam.criarTeam(id, nome, membros);
+                        OutputUtils.slowPrint("Equipe " + t.getName() + " criada com sucesso!", 50);
                         System.out.println("Pokemons membros:");
                         int i = 0;
                         for (Pokemon pkmn: t.getPokemons()) {
@@ -468,13 +468,13 @@ public class Main {
                     break;
                 case 14:
                     sc.nextLine();
-                    String nomeModificacao = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
-                    nomeModificacao = Pattern
+                    String nomeEquipe = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
+                    nomeEquipe = Pattern
                                         .compile("\\b(\\w)")
-                                        .matcher(nomeModificacao)
+                                        .matcher(nomeEquipe)
                                         .replaceAll(m -> m.group(1).toUpperCase());
                     try {
-                        Team team = servTeam.buscarPorNome(nomeModificacao);                    
+                        Team team = servTeam.buscarPorNome(nomeEquipe);                    
                         while (true) {
                             Menu.exibirMenuModificacaoEquipe(20);
                             boolean flag = false;
@@ -655,12 +655,48 @@ public class Main {
                         optionStatistics = InputUtils.lerInt("Insira a opcao desejada: ", sc);
                         switch (optionStatistics) {
                             case 1:
+                                try {
+                                    Team team = servTeam.maiorBaseStatTotalMedio();
+                                    System.out.println("Equipe de maior BST medio: " + team.getName());
+                                    System.out.println("Valor do BST medio: " + team.baseStatTotalMedio());
+                                } catch (TeamNaoEncontradoException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
                             case 2:
+                                try {
+                                    Team team = servTeam.menorBaseStatTotalMedio();
+                                    System.out.println("Equipe de menor BST medio: " + team.getName());
+                                    System.out.println("Valor do BST medio: " + team.baseStatTotalMedio());
+                                } catch (TeamNaoEncontradoException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
                             case 3:
+                                sc.nextLine();
+                                String optionStat = InputUtils.lerString("Insira o stat desejado: ", sc);
+                                try {
+                                    Team team = servTeam.maiorStatMedio(optionStat);
+                                    System.out.println("Equipe de maior " + optionStat.toLowerCase() + " medio: " + team.getName());
+                                    System.out.println("Valor do stat "+ optionStat.toLowerCase() + " medio: " + team.statMedio(optionStat));
+                                } catch (TeamNaoEncontradoException e) {
+                                    System.out.println(e.getMessage());
+                                } catch (DadoInvalidoException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
                             case 4:
+                                sc.nextLine();
+                                optionStat = InputUtils.lerString("Insira o stat desejado: ", sc);
+                                try {
+                                    Team team = servTeam.menorStatMedio(optionStat);
+                                    System.out.println("Equipe de menor " + optionStat.toLowerCase() + " medio: " + team.getName());
+                                    System.out.println("Valor do stat "+ optionStat.toLowerCase() + " medio: " + team.statMedio(optionStat));
+                                } catch (TeamNaoEncontradoException e) {
+                                    System.out.println(e.getMessage());
+                                } catch (DadoInvalidoException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
                             case 0: break;
                             default: System.out.println("Opcao invalida!");

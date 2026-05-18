@@ -30,7 +30,7 @@ public class Menu {
         OutputUtils.slowPrint("| 8. Buscar golpe por nome                                |", delay);
         OutputUtils.slowPrint("| 9. Listar golpes por tipo                               |", delay);
         OutputUtils.slowPrint("| 10. Remover golpe                                       |", delay);
-        OutputUtils.slowPrint("| 11. Registrar equipe                                    |", delay);
+        OutputUtils.slowPrint("| 11. Criar equipe                                        |", delay);
         OutputUtils.slowPrint("| 12. Listar equipes                                      |", delay);
         OutputUtils.slowPrint("| 13. Buscar equipe por nome                              |", delay);
         OutputUtils.slowPrint("| 14. Adicionar a/remover da equipe                       |", delay);

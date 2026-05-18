@@ -29,7 +29,7 @@ public class TeamService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void registrarTeam(int id, String name, List<Pokemon> pokemons) throws DadoInvalidoException {
+    public void criarTeam(int id, String name, List<Pokemon> pokemons) throws DadoInvalidoException {
         if (!repository.existe(name)) {
             Team t = new TeamBuilder()
                         .id(id)
