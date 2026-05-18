@@ -42,7 +42,7 @@ public class Main {
         try {
             effect.extrairDeArquivo();
         } catch (IOException e) {
-            System.out.println("Nao foi possivel carregar o arquivo!" + "(" + e.getMessage() + ")");
+            System.out.println("Nao foi possivel carregar o arquivo! (" + e.getMessage() + ")");
         }
         if (arquivoMove.exists() && arquivoMove.length() > 0) {
             moves = repoMove.lerArquivo();
