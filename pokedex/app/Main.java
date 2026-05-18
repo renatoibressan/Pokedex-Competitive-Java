@@ -8,20 +8,18 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import pokedex.builder.*;
-import pokedex.dataset.loader.TeamDatasetLoader;
+import pokedex.dataset.loader.*;
 import pokedex.domain.enums.*;
 import pokedex.domain.interfaces.*;
 import pokedex.domain.models.*;
 import pokedex.exception.*;
 import pokedex.repository.file.*;
 import pokedex.service.*;
-import pokedex.ui.Menu;
-import pokedex.util.InputUtils;
-import pokedex.util.OutputUtils;
+import pokedex.ui.*;
+import pokedex.util.*;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        // TFD: POO c/ Prof. Dirson, CC, INF-UFG, 2026.1
         Menu.exibirMenuInicial();
         Scanner sc = new Scanner(System.in);
         int optionMenu = -1;
@@ -726,7 +724,27 @@ public class Main {
                     } while (optionStatistics != 0);
                     break;
                 case 19:
-                     try {
+                    try {
+                        String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
+                        while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {
+                            optionDelete = InputUtils.lerString("Opcao invalida!\nTem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
+                        }
+                        if (optionDelete.equalsIgnoreCase("s")) {
+                            servPkmn.excluirTodosPokemons();
+                            servMove.excluirTodosMoves();
+                            servTeam.excluirTodosTeams();
+                            System.out.println("Os dados foram excluidos com sucesso!");
+                        }
+                    } catch (PokemonNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    } catch (MoveNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    } catch (TeamNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 20:
+                    try {
                         String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
                         while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {
                             optionDelete = InputUtils.lerString("Opcao invalida!\nTem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
@@ -739,7 +757,7 @@ public class Main {
                                                 servTeam.contarListaTeams() + " equipes foram removidos com sucesso!");
                         }
                     } catch (IOException e) {
-                        System.out.println("Nao foi possivel limpar o arquivo!");
+                        System.out.println("Nao foi possivel limpar os arquivos! (" + e.getMessage() + ")");
                     }
                     break;
                 case 0:
@@ -762,7 +780,7 @@ public class Main {
             System.out.println(servPkmn.contarListaPokemons() + " Pokemons, " + servMove.contarListaMoves() + " golpes e " + 
                                 servTeam.contarListaTeams() + " equipes foram salvos com sucesso!");
         } catch (IOException e) {
-            System.out.println("Nao foi possivel escrever nos arquivos!");
+            System.out.println("Nao foi possivel escrever nos arquivos! (" + e.getMessage() + ")");
         }
         System.out.print("Encerrando o programa");
         Thread.sleep(500);

@@ -90,6 +90,11 @@ public class MoveService {
         }
         throw new MoveNaoEncontradoException("Golpe nao encontrado!");
     }
+    public void excluirTodosMoves() throws MoveNaoEncontradoException {
+        if (moves.isEmpty()) throw new MoveNaoEncontradoException("Lista de golpes vazia!");
+        repository.excluirTodos();
+        moves.clear();
+    }
     public int contarListaMoves() {
         return repository.contarQuantidade();
     }

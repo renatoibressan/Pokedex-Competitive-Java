@@ -13,5 +13,6 @@ public interface ObjectRepository<T> {
     default List<T> buscarPorTipo(Typing tipo) { return Collections.emptyList(); }
     public void remover(int id);
     public void inserirLista(List<T> lista);
+    public void excluirTodos();
     public int contarQuantidade();
 }

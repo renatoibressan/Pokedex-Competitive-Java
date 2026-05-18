@@ -65,6 +65,11 @@ public class TeamService {
         }
         throw new TeamNaoEncontradoException("Equipe nao encontrada!");
     }
+    public void excluirTodosTeams() throws TeamNaoEncontradoException {
+        if (teams.isEmpty()) throw new TeamNaoEncontradoException("Lista de equipes vazia!");
+        repository.excluirTodos();
+        teams.clear();
+    }
     public int contarListaTeams() {
         return repository.contarQuantidade();
     }

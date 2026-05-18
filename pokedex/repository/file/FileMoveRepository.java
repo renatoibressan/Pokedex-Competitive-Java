@@ -63,6 +63,10 @@ public class FileMoveRepository implements ObjectRepository<Move> {
         }
     }
     @Override
+    public void excluirTodos() {
+        moves.clear();
+    }
+    @Override
     public int contarQuantidade() {
         return moves.size();
     }

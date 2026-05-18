@@ -70,6 +70,11 @@ public class PokemonService {
         }
         throw new PokemonNaoEncontradoException("Pokemon nao encontrado!");
     }
+    public void excluirTodosPokemons() throws PokemonNaoEncontradoException {
+        if (pokemons.isEmpty()) throw new PokemonNaoEncontradoException("Lista de Pokemons vazia!");
+        repository.excluirTodos();
+        pokemons.clear();
+    }
     public int contarListaPokemons() {
         return repository.contarQuantidade();
     }

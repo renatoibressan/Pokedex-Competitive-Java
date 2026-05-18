@@ -38,7 +38,8 @@ public class Menu {
         System.out.println("| 16. Simular batalha 1v1                                 |");
         System.out.println("| 17. Estatisticas de Pokemons                            |");
         System.out.println("| 18. Estatisticas de equipes                             |");
-        System.out.println("| 19. Limpar os arquivos                                  |");
+        System.out.println("| 19. Excluir os dados                                    |");
+        System.out.println("| 20. Limpar os arquivos                                  |");
         System.out.println("| 0. Encerrar o programa                                  |");
         System.out.println("| ======================================================= |");
         System.out.println();

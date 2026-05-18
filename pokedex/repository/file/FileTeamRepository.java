@@ -53,6 +53,10 @@ public class FileTeamRepository implements ObjectRepository<Team> {
         }
     }
     @Override
+    public void excluirTodos() {
+        teams.clear();
+    }
+    @Override
     public int contarQuantidade() {
         return teams.size();
     }

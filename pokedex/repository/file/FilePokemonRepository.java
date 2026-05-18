@@ -63,6 +63,10 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
         }
     }
     @Override
+    public void excluirTodos() {
+        pkmns.clear();
+    }
+    @Override
     public int contarQuantidade() {
         return pkmns.size();
     }
