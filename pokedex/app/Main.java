@@ -159,7 +159,10 @@ public class Main {
                             System.out.println("Nao foi possivel cadastrar o Pokemon: " + e.getMessage());
                         }
                     }
-                    if (!tipoValido) break;
+                    if (!tipoValido) {
+                        System.out.println("Nao foi possivel cadastrar o Pokemon por falta de tipo valido!");
+                        break;
+                    }
                     int hp = InputUtils.lerInt("Insira o HP base do Pokemon: ", sc);
                     int atk = InputUtils.lerInt("Insira o ataque base do Pokemon: ", sc);
                     int def = InputUtils.lerInt("Insira a defesa base do Pokemon: ", sc);
@@ -257,8 +260,8 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + pkmn.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
-                            pokemons.remove(pkmn);
                             servPkmn.removerPokemon(pkmn.getName());
+                            pokemons.remove(pkmn);
                             System.out.println("Pokemon " + nomeRemocao + " removido com sucesso!");
                         }
                     } catch (PokemonNaoEncontradoException e) {
@@ -384,8 +387,8 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + move.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
-                            moves.remove(move);
                             servMove.removerMove(move.getName());
+                            moves.remove(move);
                             System.out.println("Pokemon " + nomeRemocao + " removido com sucesso!");
                         }
                     } catch (MoveNaoEncontradoException e) {
@@ -534,8 +537,8 @@ public class Main {
                             optionRemocao = InputUtils.lerString("Opcao invalida!\nCerteza que deseja remover " + team.getName() + "? (S/N | Esta acao nao tem volta): ", sc);
                         }
                         if (optionRemocao.equalsIgnoreCase("s")) {
-                            teams.remove(team);
                             servTeam.removerTeam(team.getName());
+                            teams.remove(team);
                             System.out.println("Equipe " + nomeRemocao + " removida com sucesso!");
                         }                  
                     } catch (TeamNaoEncontradoException e) {

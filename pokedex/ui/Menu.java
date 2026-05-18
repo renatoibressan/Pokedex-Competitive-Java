@@ -19,7 +19,7 @@ public class Menu {
     }
     public static void exibirMenuPrincipal() {
         System.out.println();
-        System.out.println("| ======================================================= |");
+        System.out.println("| ====================== MAIN MENU ====================== |");
         System.out.println("| 1. Cadastrar Pokemon                                    |");
         System.out.println("| 2. Listar Pokemons                                      |");
         System.out.println("| 3. Buscar Pokemon por nome                              |");
@@ -35,7 +35,7 @@ public class Menu {
         System.out.println("| 13. Buscar equipe por nome                              |");
         System.out.println("| 14. Adicionar a/remover da equipe                       |");
         System.out.println("| 15. Remover equipe                                      |");
-        System.out.println("| 16. Simular batalha                                     |");
+        System.out.println("| 16. Simular batalha (1 x 1)                             |");
         System.out.println("| 17. Estatisticas de Pokemons                            |");
         System.out.println("| 18. Estatisticas de equipes                             |");
         System.out.println("| 19. Limpar os arquivos                                  |");
