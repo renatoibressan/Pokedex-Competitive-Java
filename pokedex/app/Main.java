@@ -725,6 +725,7 @@ public class Main {
                     break;
                 case 19:
                     try {
+                        sc.nextLine();
                         String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
                         while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {
                             optionDelete = InputUtils.lerString("Opcao invalida!\nTem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
@@ -745,6 +746,7 @@ public class Main {
                     break;
                 case 20:
                     try {
+                        sc.nextLine();
                         String optionDelete = InputUtils.lerString("Tem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
                         while (!optionDelete.equalsIgnoreCase("s") && !optionDelete.equalsIgnoreCase("n")) {
                             optionDelete = InputUtils.lerString("Opcao invalida!\nTem certeza que deseja limpar os arquivos? (S/N | Esta acao nao tem volta): ", sc);
