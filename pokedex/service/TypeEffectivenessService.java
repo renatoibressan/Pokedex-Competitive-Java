@@ -29,7 +29,7 @@ public class TypeEffectivenessService {
         for (String linha : linhas) {
             linhaNumero++;
             try {
-                String[] partes = linha.split(";");
+                String[] partes = linha.split(",");
                 if (partes.length != 3) throw new IllegalArgumentException("Formato invalido!");
                 Typing atacante = Typing.fromString(partes[0]);
                 Typing defensor = Typing.fromString(partes[1]);

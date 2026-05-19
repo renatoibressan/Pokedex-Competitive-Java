@@ -20,8 +20,8 @@ public class FileUtils {
     public static List<String> ler(String caminho) throws IOException {
         List<String> colunas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
-            String linha;
             reader.readLine();
+            String linha;
             while ((linha = reader.readLine()) != null) {
                 colunas.add(linha);
             }
