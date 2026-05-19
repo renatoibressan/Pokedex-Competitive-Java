@@ -167,6 +167,7 @@ public class Main {
                     int spAtk = InputUtils.lerInt("Insira o ataque especial base do Pokemon: ", sc);
                     int spDef = InputUtils.lerInt("Insira a defesa especial base do Pokemon: ", sc);
                     int speed = InputUtils.lerInt("Insira a velocidade base do Pokemon: ", sc);
+                    int geracao = InputUtils.lerInt("Insira a geracao do Pokemon: ", sc);
                     try {
                         Stats stats = new StatsBuilder()
                                             .hp(hp)
@@ -184,7 +185,7 @@ public class Main {
                                         .statsBase(stats)
                                         .build();
                         if (pokemons == null || pokemons.isEmpty()) pokemons.add(p);
-                        servPkmn.cadastrarPokemon(id, nome, tipos, stats);
+                        servPkmn.cadastrarPokemon(id, nome, tipos, stats, geracao);
                         System.out.println("Pokemon " + p.getName() + " cadastrado com sucesso!");
                         System.out.println("Numero de Pokedex: #" + String.format("%04d", p.getId()));
                         System.out.print("Tipo(s): ");
@@ -195,12 +196,14 @@ public class Main {
                             i++;
                         }
                         System.out.println("\nBST: " + p.getBST());
+                        System.out.println("Geracao: " + p.getGeneration());
                     } catch (DadoInvalidoException e) {
                         System.out.println("Nao foi possivel cadastrar o Pokemon: " + e.getMessage());
                     }
                     break;
                 case 2:
-                    List<Pokemon> listaPkmns = servPkmn.listarPokemons();
+                    int geracaoBusca = InputUtils.lerInt("Insira a geracao do Pokemon para procura: ", sc);
+                    List<Pokemon> listaPkmns = servPkmn.listarPokemonsPorGeracao(geracaoBusca);
                      if (!listaPkmns.isEmpty()) {
                         OutputUtils.slowPrintln("---------------------------------------------------------", 5);
                         for (Pokemon pkmn : listaPkmns) {
@@ -212,7 +215,8 @@ public class Main {
                                 System.out.print(t);
                                 i++;
                             }
-                            OutputUtils.slowPrintln("\n---------------------------------------------------------", 5);
+                            System.out.println("\nBST: " + pkmn.getBST());
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 5);
                         }
                         System.out.println(servPkmn.contarListaPokemons() + " Pokemons listados com sucesso!");
                     } else System.out.println("Nao ha Pokemons para listar!");
@@ -249,6 +253,8 @@ public class Main {
                                     System.out.print(t);
                                     i++;
                                 }
+                                System.out.println("\nBST: " + pkmn.getBST());
+                                System.out.println("Geracao: " + pkmn.getGeneration());
                                 OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
                             }
                             System.out.println(listaPkmns.size() + " Pokemons listados com sucesso!");

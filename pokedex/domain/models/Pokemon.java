@@ -15,10 +15,11 @@ public class Pokemon {
     private String name;
     private List<Typing> types;
     private Stats baseStats;
-    private Stats ownStats;
+    private int generation;
+    private List<Move> moves;
     private Nature nature;
     private int level;
-    private List<Move> moves;
+    private Stats ownStats;
     public Pokemon() {
         this.types = new ArrayList<>();
         this.baseStats = new Stats();
@@ -62,11 +63,21 @@ public class Pokemon {
     public void setBaseStats(Stats baseStats) {
         this.baseStats = baseStats;
     }
-    public Stats getOwnStats() {
-        return ownStats;
+    public int getGeneration() {
+        return generation;
     }
-    public void setOwnStats(int level, Nature nature) throws DadoInvalidoException {
-        ownStats = baseStats.computeNewStats(level, nature);
+    public void setGeneration(int generation) throws DadoInvalidoException {
+        if (generation < 1) throw new DadoInvalidoException("Geracao invalida!");
+        this.generation = generation;
+    }
+    public List<Move> getMoves() {
+        return moves;
+    }
+    public void setMoves(List<Move> moves) throws DadoInvalidoException {
+        if (moves == null || moves.isEmpty()) throw new DadoInvalidoException("O Pokemon deve ter pelo menos 1 golpe!");
+        if (moves.size() > 4) throw new DadoInvalidoException("O Pokemon nao pode ter mais de 4 golpes!");
+        if (new HashSet<>(moves).size() != moves.size()) throw new DadoInvalidoException("Golpes duplicados nao sao permitidos!");
+        this.moves = moves;
     }
     public Nature getNature() {
         return nature;
@@ -81,14 +92,11 @@ public class Pokemon {
         if (level < 1 || level > 100) throw new DadoInvalidoException("O Pokemon deve ser de nivel 1 a 100!");
         this.level = level;
     }
-    public List<Move> getMoves() {
-        return moves;
+    public Stats getOwnStats() {
+        return ownStats;
     }
-    public void setMoves(List<Move> moves) throws DadoInvalidoException {
-        if (moves == null || moves.isEmpty()) throw new DadoInvalidoException("O Pokemon deve ter pelo menos 1 golpe!");
-        if (moves.size() > 4) throw new DadoInvalidoException("O Pokemon nao pode ter mais de 4 golpes!");
-        if (new HashSet<>(moves).size() != moves.size()) throw new DadoInvalidoException("Golpes duplicados nao sao permitidos!");
-        this.moves = moves;
+    public void setOwnStats(int level, Nature nature) throws DadoInvalidoException {
+        ownStats = baseStats.computeNewStats(level, nature);
     }
     public int getBST() {
         return baseStats.baseStatTotal();

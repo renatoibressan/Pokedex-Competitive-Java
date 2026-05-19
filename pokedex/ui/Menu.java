@@ -21,7 +21,7 @@ public class Menu {
         System.out.println();
         System.out.println("| ====================== MAIN MENU ====================== |");
         System.out.println("| 1. Cadastrar Pokemon                                    |");
-        System.out.println("| 2. Listar Pokemons                                      |");
+        System.out.println("| 2. Listar Pokemons por geracao                          |");
         System.out.println("| 3. Buscar Pokemon por nome                              |");
         System.out.println("| 4. Listar Pokemons por tipo                             |");
         System.out.println("| 5. Remover Pokemon                                      |");
@@ -64,6 +64,7 @@ public class Menu {
         System.out.println("Defesa especial: " + pkmn.getBaseStats().getSpecialDefense());
         System.out.println("Velocidade: " + pkmn.getBaseStats().getSpeed());
         System.out.println("BST: " + pkmn.getBST());
+        System.out.println("Geracao: " + pkmn.getGeneration());
         OutputUtils.slowPrintln("---------------------------------------------------------", delay);
         System.out.println();
     }

@@ -45,6 +45,14 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
                     .orElse(null);
     }
     @Override
+    public List<Pokemon> listarPorGeracao(int generation) {
+        List<Pokemon> lista = listar()
+                                .stream()
+                                .filter(p -> p.getGeneration() == generation)
+                                .collect(Collectors.toList());
+        return lista.isEmpty() ? ObjectRepository.super.listarPorGeracao(generation) : lista;
+    }
+    @Override
     public List<Pokemon> buscarPorTipo(Typing type) {
         List<Pokemon> lista = pkmns.values()
                                     .stream()
@@ -72,7 +80,7 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
     }
     public void escreverArquivo(List<Pokemon> pokemons) throws IOException {
         List<String> linhas = new ArrayList<>();
-        linhas.add("id,nome,tipos,stats base (hp/atk/def/spAtk/spDef/speed)");
+        linhas.add("id,nome,tipos,stats base (hp/atk/def/spAtk/spDef/speed),geracao");
         for (Pokemon p : pokemons) {
             String linha = p.toFileString();
             linhas.add(linha);

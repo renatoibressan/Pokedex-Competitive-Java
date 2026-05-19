@@ -2,12 +2,11 @@ package pokedex.dataset.loader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import pokedex.builder.TeamBuilder;
 import pokedex.dataset.parser.CsvParser;
-import pokedex.domain.models.Pokemon;
 import pokedex.domain.models.Team;
+import pokedex.dto.TeamDTO;
 import pokedex.exception.DadoInvalidoException;
 import pokedex.repository.file.FilePokemonRepository;
 
@@ -26,17 +25,13 @@ public class TeamDatasetLoader {
             linhaNumero++;
             Integer id = Integer.parseInt(coluna[0]);
             String name = coluna[1];
-            List<String> pkmnNames = parser.parsePokemonNames(coluna[2]);
-            List<Pokemon> pokemons = pkmnNames
-                                        .stream()
-                                        .map(repository::buscarPorNome)
-                                        .filter(Objects::nonNull)
-                                        .toList();
+            String pokemons = coluna[2];
+            TeamDTO dto = new TeamDTO(id, name, pokemons);
             try {
                 Team team = new TeamBuilder()
-                                .id(id)
-                                .nome(name)
-                                .pokemons(pokemons)
+                                .id(dto.id())
+                                .nome(dto.name())
+                                .pokemons(parser.parsePokemons(dto.pokemons(), repository))
                                 .build();
                 listaTeams.add(team);
             } catch (DadoInvalidoException e) {

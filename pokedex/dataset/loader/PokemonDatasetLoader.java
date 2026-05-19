@@ -24,13 +24,15 @@ public class PokemonDatasetLoader {
             String name = coluna[1];
             String types = coluna[2];
             String baseStats = coluna[3];
-            PokemonDTO dto = new PokemonDTO(id, name, types, baseStats);
+            Integer generation = Integer.parseInt(coluna[4]);
+            PokemonDTO dto = new PokemonDTO(id, name, types, baseStats, generation);
             try {
                 Pokemon pokemon = new PokemonBuilder()
                                         .id(dto.id())
                                         .nome(dto.name())
                                         .tipos(parser.parseTypes(dto.types()))
                                         .statsBase(parser.parseStats(dto.stats()))
+                                        .geracao(dto.generation())
                                         .build();
                 listaPokemons.add(pokemon);
             } catch (DadoInvalidoException e) {

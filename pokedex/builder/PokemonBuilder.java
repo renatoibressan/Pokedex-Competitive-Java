@@ -28,6 +28,10 @@ public class PokemonBuilder {
         pokemon.setTypes(tipos);
         return this;
     }
+    public PokemonBuilder geracao(int geracao) throws DadoInvalidoException {
+        pokemon.setGeneration(geracao);
+        return this;
+    }
     public Pokemon build() {
         return pokemon;
     }

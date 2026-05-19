@@ -11,7 +11,8 @@ public class PokemonSerializer {
                 String.valueOf(pokemon.getId()), 
                 pokemon.getName(), 
                 serializeTypes(pokemon), 
-                serializeStats(pokemon));
+                serializeStats(pokemon),
+                String.valueOf(pokemon.getGeneration()));
     }
     private static String serializeTypes(Pokemon pokemon) {
         return pokemon

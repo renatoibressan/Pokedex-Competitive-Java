@@ -4,5 +4,6 @@ public record PokemonDTO(
     Integer id, 
     String name, 
     String types, 
-    String stats
+    String stats,
+    Integer generation
 ) {}

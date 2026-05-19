@@ -30,13 +30,14 @@ public class PokemonService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void cadastrarPokemon(int id, String name, List<Typing> types, Stats stats) throws DadoInvalidoException {
+    public void cadastrarPokemon(int id, String name, List<Typing> types, Stats stats, int generation) throws DadoInvalidoException {
         if (!repository.existe(name)) {
             Pokemon p = new PokemonBuilder()
                             .id(id)
                             .nome(name)
                             .tipos(types)
                             .statsBase(stats)
+                            .geracao(generation)
                             .build();
             repository.salvar(p);
             pokemons.add(p);
@@ -44,9 +45,9 @@ public class PokemonService {
         }
         throw new DadoInvalidoException("Ja existe um Pokemon com o nome " + name + "!");
     }
-    public List<Pokemon> listarPokemons() {
+    public List<Pokemon> listarPokemonsPorGeracao(int generation) {
         return repository
-                .listar()
+                .listarPorGeracao(generation)
                 .stream()
                 .sorted(Comparator.comparingInt(Pokemon::getId))
                 .toList();

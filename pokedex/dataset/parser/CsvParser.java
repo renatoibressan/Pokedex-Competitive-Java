@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import pokedex.builder.StatsBuilder;
 import pokedex.domain.enums.Typing;
+import pokedex.domain.models.Pokemon;
 import pokedex.domain.models.Stats;
 import pokedex.exception.DadoInvalidoException;
+import pokedex.repository.interfaces.ObjectRepository;
 
 public class CsvParser {
     public List<String[]> parse(String filePath) {
@@ -26,11 +29,16 @@ public class CsvParser {
         }
         return colunas;
     }
-    public List<String> parsePokemonNames(String pokemons) {
-        return Arrays
-                .stream(pokemons.split("/"))
-                .map(String::trim)
-                .toList();
+    public List<Pokemon> parsePokemons(String pokemons, ObjectRepository<Pokemon> repository) {
+        List<String> pkmnNames =  Arrays
+                                    .stream(pokemons.split("/"))
+                                    .map(String::trim)
+                                    .toList();
+        return pkmnNames
+                    .stream()
+                    .map(repository::buscarPorNome)
+                    .filter(Objects::nonNull)
+                    .toList();
     }
     public List<Typing> parseTypes(String types) {
         return Arrays
