@@ -28,7 +28,7 @@ public class BattleService {
         Pokemon second = definirSegundo(p1, p2);
         Pokemon primeiro = new Pokemon(first);
         Pokemon segundo = new Pokemon(second);
-        OutputUtils.slowPrintln("---------------------------------------------------------", 50);
+        OutputUtils.slowPrintln("---------------------------------------------------------", 30);
         System.out.println("Batalha entre " + primeiro.getName() + " e " + segundo.getName() + " iniciada!");
         while (true) {
             turnos++;
@@ -73,7 +73,7 @@ public class BattleService {
                 if (vidaP2 <= 0) {
                     if (hpPerdido == segundo.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP1.getName() + " foi um OH-KO!");
                     if (turnos > 1) System.out.println("\nO Pokemon " + segundo.getName() + " desmaiou em " + turnos + " turnos!");
-                    OutputUtils.slowPrintln("---------------------------------------------------------", 50);
+                    OutputUtils.slowPrintln("---------------------------------------------------------", 30);
                     return primeiro;
                 }
             } else if (golpeP1 instanceof StatusMove golpeStatus) {
@@ -88,7 +88,7 @@ public class BattleService {
                 if (vidaP1 <= 0) {
                     if (hpPerdido == primeiro.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP2.getName() + " foi um OH-KO!");
                     if (turnos > 1) System.out.println("\nO Pokemon " + primeiro.getName() + " desmaiou em " + turnos + " turnos!");
-                    OutputUtils.slowPrintln("---------------------------------------------------------", 50);
+                    OutputUtils.slowPrintln("---------------------------------------------------------", 30);
                     return segundo;
                 }
             } else if (golpeP2 instanceof StatusMove golpeStatus) {

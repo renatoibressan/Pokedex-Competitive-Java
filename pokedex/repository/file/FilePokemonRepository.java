@@ -12,7 +12,7 @@ import pokedex.domain.models.Pokemon;
 import pokedex.repository.interfaces.ObjectRepository;
 import pokedex.util.FileUtils;
 
-public class FilePokemonRepository implements ObjectRepository<Pokemon> {
+public class FilePokemonRepository implements ObjectRepository<Pokemon, Integer> {
     private TreeMap<Integer, Pokemon> pkmns;
     private PokemonDatasetLoader loader;
     private String filePath;
@@ -45,12 +45,12 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon> {
                     .orElse(null);
     }
     @Override
-    public List<Pokemon> listarPorGeracao(int generation) {
+    public List<Pokemon> listarGrupo(Integer generation) {
         List<Pokemon> lista = listar()
                                 .stream()
                                 .filter(p -> p.getGeneration() == generation)
                                 .collect(Collectors.toList());
-        return lista.isEmpty() ? ObjectRepository.super.listarPorGeracao(generation) : lista;
+        return lista.isEmpty() ? ObjectRepository.super.listarGrupo(generation) : lista;
     }
     @Override
     public List<Pokemon> buscarPorTipo(Typing type) {

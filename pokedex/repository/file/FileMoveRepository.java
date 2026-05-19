@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 
 import pokedex.dataset.loader.MoveDatasetLoader;
 import pokedex.domain.enums.Typing;
+import pokedex.domain.interfaces.MoveCategory;
 import pokedex.domain.models.Move;
 import pokedex.repository.interfaces.ObjectRepository;
 import pokedex.util.FileUtils;
 
-public class FileMoveRepository implements ObjectRepository<Move> {
+public class FileMoveRepository implements ObjectRepository<Move, MoveCategory> {
     private TreeMap<Integer, Move> moves;
     private MoveDatasetLoader loader; 
     private String filePath;
@@ -43,6 +44,14 @@ public class FileMoveRepository implements ObjectRepository<Move> {
                     .filter(m -> m.getName().equalsIgnoreCase(name))
                     .findFirst()
                     .orElse(null);
+    }
+    @Override
+    public List<Move> listarGrupo(MoveCategory category) {
+        List<Move> lista = listar()
+                            .stream()
+                            .filter(m -> m.getCategory() == category)
+                            .collect(Collectors.toList());
+        return lista.isEmpty() ? ObjectRepository.super.listarGrupo(category) : lista;
     }
     @Override
     public List<Move> buscarPorTipo(Typing type) {

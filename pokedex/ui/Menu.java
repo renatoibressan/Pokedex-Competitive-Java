@@ -26,9 +26,9 @@ public class Menu {
         System.out.println("| 4. Buscar Pokemons por tipo                             |");
         System.out.println("| 5. Remover Pokemon                                      |");
         System.out.println("| 6. Registrar golpe                                      |");
-        System.out.println("| 7. Listar golpes                                        |");
+        System.out.println("| 7. Listar golpes por categoria                          |");
         System.out.println("| 8. Buscar golpe por nome                                |");
-        System.out.println("| 9. Listar golpes por tipo                               |");
+        System.out.println("| 9. Buscar golpes por tipo                               |");
         System.out.println("| 10. Remover golpe                                       |");
         System.out.println("| 11. Criar equipe                                        |");
         System.out.println("| 12. Listar equipes                                      |");

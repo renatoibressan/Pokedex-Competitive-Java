@@ -13,9 +13,9 @@ import pokedex.exception.PokemonNaoEncontradoException;
 import pokedex.repository.interfaces.ObjectRepository;
 
 public class PokemonService {
-    private ObjectRepository<Pokemon> repository;
+    private ObjectRepository<Pokemon, Integer> repository;
     private List<Pokemon> pokemons;
-    public PokemonService(ObjectRepository<Pokemon> repository) {
+    public PokemonService(ObjectRepository<Pokemon, Integer> repository) {
         this.repository = repository;
         pokemons = new ArrayList<>();
     }
@@ -47,7 +47,7 @@ public class PokemonService {
     }
     public List<Pokemon> listarPokemonsPorGeracao(int generation) {
         return repository
-                .listarPorGeracao(generation)
+                .listarGrupo(generation)
                 .stream()
                 .sorted(Comparator.comparingInt(Pokemon::getId))
                 .toList();

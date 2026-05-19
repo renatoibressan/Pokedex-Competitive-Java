@@ -16,9 +16,9 @@ import pokedex.exception.MoveNaoEncontradoException;
 import pokedex.repository.interfaces.ObjectRepository;
 
 public class MoveService {
-    private ObjectRepository<Move> repository;
+    private ObjectRepository<Move, MoveCategory> repository;
     private List<Move> moves;
-    public MoveService(ObjectRepository<Move> repository) {
+    public MoveService(ObjectRepository<Move, MoveCategory> repository) {
         this.repository = repository;
         moves = new ArrayList<>();
     }
@@ -64,9 +64,9 @@ public class MoveService {
         }
         throw new DadoInvalidoException("Ja existe um golpe com o nome " + name + "!");
     }
-    public List<Move> listarMoves() {
+    public List<Move> listarMovesPorCategoria(MoveCategory category) {
         return repository
-                .listar()
+                .listarGrupo(category)
                 .stream()
                 .sorted(Comparator.comparingInt(Move::getId))
                 .toList();

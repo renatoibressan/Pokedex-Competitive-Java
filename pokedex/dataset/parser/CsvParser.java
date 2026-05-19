@@ -29,7 +29,7 @@ public class CsvParser {
         }
         return colunas;
     }
-    public List<Pokemon> parsePokemons(String pokemons, ObjectRepository<Pokemon> repository) {
+    public List<Pokemon> parsePokemons(String pokemons, ObjectRepository<Pokemon, Integer> repository) {
         List<String> pkmnNames =  Arrays
                                     .stream(pokemons.split("/"))
                                     .map(String::trim)

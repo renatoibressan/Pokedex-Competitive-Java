@@ -12,9 +12,9 @@ import pokedex.exception.TeamNaoEncontradoException;
 import pokedex.repository.interfaces.ObjectRepository;
 
 public class TeamService {
-    private ObjectRepository<Team> repository;
+    private ObjectRepository<Team, Object> repository;
     private List<Team> teams;
-    public TeamService(ObjectRepository<Team> repository) {
+    public TeamService(ObjectRepository<Team, Object> repository) {
         this.repository = repository;
         teams = new ArrayList<>();
     }

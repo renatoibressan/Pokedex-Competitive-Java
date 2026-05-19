@@ -10,7 +10,7 @@ import pokedex.domain.models.Team;
 import pokedex.repository.interfaces.ObjectRepository;
 import pokedex.util.FileUtils;
 
-public class FileTeamRepository implements ObjectRepository<Team> {
+public class FileTeamRepository implements ObjectRepository<Team, Object> {
     private TreeMap<Integer, Team> teams;
     private TeamDatasetLoader loader;
     private String filePath;
