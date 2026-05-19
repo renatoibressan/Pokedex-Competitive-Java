@@ -21,18 +21,18 @@ public class Menu {
         System.out.println();
         System.out.println("| ====================== MAIN MENU ====================== |");
         System.out.println("| 1. Cadastrar Pokemon                                    |");
-        System.out.println("| 2. Listar Pokemons por geracao                          |");
-        System.out.println("| 3. Buscar Pokemon por nome                              |");
+        System.out.println("| 2. Buscar Pokemon por nome                              |");
+        System.out.println("| 3. Buscar Pokemons por geracao                          |");
         System.out.println("| 4. Buscar Pokemons por tipo                             |");
         System.out.println("| 5. Remover Pokemon                                      |");
         System.out.println("| 6. Registrar golpe                                      |");
-        System.out.println("| 7. Listar golpes por categoria                          |");
-        System.out.println("| 8. Buscar golpe por nome                                |");
+        System.out.println("| 7. Buscar golpe por nome                                |");
+        System.out.println("| 8. Buscar golpes por categoria                          |");
         System.out.println("| 9. Buscar golpes por tipo                               |");
         System.out.println("| 10. Remover golpe                                       |");
         System.out.println("| 11. Criar equipe                                        |");
-        System.out.println("| 12. Listar equipes                                      |");
-        System.out.println("| 13. Buscar equipe por nome                              |");
+        System.out.println("| 12. Buscar equipe por nome                              |");
+        System.out.println("| 13. Buscar equipes por treinador                        |");
         System.out.println("| 14. Adicionar a/remover da equipe                       |");
         System.out.println("| 15. Remover equipe                                      |");
         System.out.println("| 16. Simular batalha 1v1                                 |");
@@ -90,6 +90,7 @@ public class Menu {
             i++;
         }
         System.out.println("\nBST medio: " + team.baseStatTotalMedio());
+        System.out.println("Treinador(a): " + team.getTrainer());
         OutputUtils.slowPrintln("---------------------------------------------------------", delay);
         System.out.println();
     }

@@ -45,17 +45,17 @@ public class PokemonService {
         }
         throw new DadoInvalidoException("Ja existe um Pokemon com o nome " + name + "!");
     }
-    public List<Pokemon> listarPokemonsPorGeracao(int generation) {
-        return repository
-                .listarGrupo(generation)
-                .stream()
-                .sorted(Comparator.comparingInt(Pokemon::getId))
-                .toList();
-    }
     public Pokemon buscarPorNome(String name) throws PokemonNaoEncontradoException {
         Pokemon pkmn = repository.buscarPorNome(name);
         if (pkmn == null) throw new PokemonNaoEncontradoException("Pokemon nao encontrado!");
         return pkmn;
+    }
+    public List<Pokemon> buscarPorGeracao(int generation) {
+        return repository
+                .buscarGrupo(generation)
+                .stream()
+                .sorted(Comparator.comparingInt(Pokemon::getId))
+                .toList();
     }
     public List<Pokemon> buscarPorTipo(Typing type) {
         return repository.buscarPorTipo(type);

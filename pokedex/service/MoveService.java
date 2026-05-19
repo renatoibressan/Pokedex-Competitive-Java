@@ -64,17 +64,17 @@ public class MoveService {
         }
         throw new DadoInvalidoException("Ja existe um golpe com o nome " + name + "!");
     }
-    public List<Move> listarMovesPorCategoria(MoveCategory category) {
-        return repository
-                .listarGrupo(category)
-                .stream()
-                .sorted(Comparator.comparingInt(Move::getId))
-                .toList();
-    }
     public Move buscarPorNome(String name) throws MoveNaoEncontradoException {
         Move move = repository.buscarPorNome(name);
         if (move == null) throw new MoveNaoEncontradoException("Golpe nao encontrado!");
         return move;
+    }
+    public List<Move> buscarPorCategoria(MoveCategory category) {
+        return repository
+                .buscarGrupo(category)
+                .stream()
+                .sorted(Comparator.comparingInt(Move::getId))
+                .toList();
     }
     public List<Move> buscarPorTipo(Typing type) {
         return repository.buscarPorTipo(type);

@@ -19,6 +19,10 @@ public class TeamBuilder {
         team.setName(nome);
         return this;
     }
+    public TeamBuilder treinador(String treinador) {
+        team.setTrainer(treinador);
+        return this;
+    }
     public TeamBuilder pokemons(List<Pokemon> pokemons) throws DadoInvalidoException {
         team.setPokemons(pokemons);
         return this;

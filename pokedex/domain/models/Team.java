@@ -9,6 +9,7 @@ import pokedex.serializer.TeamSerializer;
 public class Team {
     private int id;
     private String name;
+    private String trainer;
     private List<Pokemon> pokemons;
     public Team() {
         this.pokemons = new ArrayList<>();
@@ -24,6 +25,12 @@ public class Team {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public String getTrainer() {
+        return trainer;
+    }
+    public void setTrainer(String trainer) {
+        this.trainer = trainer;
     }
     public List<Pokemon> getPokemons() {
         return pokemons;

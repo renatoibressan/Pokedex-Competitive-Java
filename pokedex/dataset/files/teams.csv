@@ -1,8 +1,8 @@
-id,nome,pokemons
-1,FireRed,Charizard/Raichu/Nidoking/Primeape/Vaporeon/Snorlax
-2,Emerald,Swampert/Swellow/Breloom/Manectric/Banette/Walrein
-3,Platinum,Empoleon/Luxray/Roserade/Garchomp/Lucario/Togekiss
-4,HeartGold,Typhlosion/Fearow/Lapras/Ampharos/Heracross/Donphan
-5,White,Samurott/Excadrill/Sigilyph/Galvantula/Chandelure/Haxorus
-6,White2,Emboar/Krookodile/Jellicent/Galvantula/Ferrothorn/Braviary
-7,X,Greninja/Charizard/Aerodactyl/Lucario/Gogoat/Heliolisk
+id,nome,treinador(a),pokemons
+1,FireRed,Ryan,Charizard/Raichu/Nidoking/Primeape/Vaporeon/Snorlax
+2,Emerald,Ryan,Swampert/Swellow/Breloom/Manectric/Banette/Walrein
+3,Platinum,Ryan,Empoleon/Luxray/Roserade/Garchomp/Lucario/Togekiss
+4,HeartGold,Ryan,Typhlosion/Fearow/Lapras/Ampharos/Heracross/Donphan
+5,White,Ryan,Samurott/Excadrill/Sigilyph/Galvantula/Chandelure/Haxorus
+6,White2,Reid,Emboar/Krookodile/Jellicent/Galvantula/Ferrothorn/Braviary
+7,X,Reid,Greninja/Charizard/Aerodactyl/Lucario/Gogoat/Heliolisk

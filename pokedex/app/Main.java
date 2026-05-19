@@ -226,26 +226,6 @@ public class Main {
                     }
                     break;
                 case 2:
-                    int geracaoBusca = InputUtils.lerInt("Insira a geracao do Pokemon para procura: ", sc);
-                    List<Pokemon> listaPkmns = servPkmn.listarPokemonsPorGeracao(geracaoBusca);
-                     if (!listaPkmns.isEmpty()) {
-                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
-                        for (Pokemon pkmn : listaPkmns) {
-                            System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
-                            System.out.print("Tipo(s): ");
-                            int i = 0;
-                            for (Typing t : pkmn.getTypes()) {
-                                if (i > 0) System.out.print("/");
-                                System.out.print(t);
-                                i++;
-                            }
-                            System.out.println("\nBST: " + pkmn.getBST());
-                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
-                        }
-                        System.out.println(listaPkmns.size() + " Pokemons listados com sucesso!");
-                    } else System.out.println("Nao ha Pokemons para listar!");
-                    break;
-                case 3:
                     sc.nextLine();
                     String nomeBusca = InputUtils.lerString("Insira o nome do Pokemon para procura: ", sc);
                     nomeBusca = Pattern
@@ -259,6 +239,26 @@ public class Main {
                     } catch (PokemonNaoEncontradoException e) {
                         System.out.println(e.getMessage());
                     }
+                    break;
+                case 3:
+                    int geracaoBusca = InputUtils.lerInt("Insira a geracao para procura: ", sc);
+                    List<Pokemon> listaPkmns = servPkmn.buscarPorGeracao(geracaoBusca);
+                        if (!listaPkmns.isEmpty()) {
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 10);
+                        for (Pokemon pkmn : listaPkmns) {
+                            System.out.println("Pokemon #" + String.format("%04d", pkmn.getId()) + ": " + pkmn.getName());
+                            System.out.print("Tipo(s): ");
+                            int i = 0;
+                            for (Typing t : pkmn.getTypes()) {
+                                if (i > 0) System.out.print("/");
+                                System.out.print(t);
+                                i++;
+                            }
+                            System.out.println("\nBST: " + pkmn.getBST());
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 10);
+                        }
+                        System.out.println(listaPkmns.size() + " Pokemons da geracao " + listaPkmns.getLast().getGeneration() + " listados com sucesso!");
+                    } else System.out.println("Nao ha Pokemons da geracao " + geracaoBusca + " para listar!");
                     break;
                 case 4:
                     sc.nextLine();
@@ -279,10 +279,10 @@ public class Main {
                                 }
                                 System.out.println("\nBST: " + pkmn.getBST());
                                 System.out.println("Geracao: " + pkmn.getGeneration());
-                                OutputUtils.slowPrintln("\n---------------------------------------------------------", 10);
+                                OutputUtils.slowPrintln("---------------------------------------------------------", 10);
                             }
-                            System.out.println(listaPkmns.size() + " Pokemons listados com sucesso!");
-                        } else System.out.println("Nao ha Pokemons de tipo " + tipo + " para listar!");
+                            System.out.println(listaPkmns.size() + " Pokemons do tipo " + tipo + " listados com sucesso!");
+                        } else System.out.println("Nao ha Pokemons do tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -369,15 +369,30 @@ public class Main {
                             System.out.println("Categoria: " + m.getCategory());
                         }
                     } catch (DadoInvalidoException e) {
-                            System.out.println("Nao foi possivel registrar o golpe: " + e.getMessage());
+                        System.out.println("Nao foi possivel registrar o golpe: " + e.getMessage());
                     }
                     break;
                 case 7:
                     sc.nextLine();
-                    String categoriaBusca = InputUtils.lerString("Insira a categoria do golpe para procura: ", sc);
+                    nomeBusca = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
+                    nomeBusca = Pattern
+                                    .compile("\\b(\\w)")
+                                    .matcher(nomeBusca)
+                                    .replaceAll(m -> m.group(1).toUpperCase());
+                    try {
+                        Move move = servMove.buscarPorNome(nomeBusca);
+                        Menu.exibirMenuGolpe(move, 40);
+                        System.out.println("Golpe " + nomeBusca + " encontrado com sucesso!");
+                    } catch (MoveNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 8:
+                    sc.nextLine();
+                    String categoriaBusca = InputUtils.lerString("Insira a categoria para procura (physical/special/status): ", sc);
                     try {
                         MoveCategory categoria = MoveCategory.fromString(categoriaBusca);
-                        List<Move> listaMoves= servMove.listarMovesPorCategoria(categoria);
+                        List<Move> listaMoves= servMove.buscarPorCategoria(categoria);
                         if (!listaMoves.isEmpty()) {
                             OutputUtils.slowPrintln("---------------------------------------------------------", 20);
                             for (Move move : listaMoves) {
@@ -392,25 +407,10 @@ public class Main {
                                 }
                                 OutputUtils.slowPrintln("---------------------------------------------------------", 20);
                             }
-                            System.out.println(listaMoves.size() + " golpes listados com sucesso!");
-                        } else System.out.println("Nao ha golpes para listar!");
+                            System.out.println(listaMoves.size() + " golpes da categoria " + listaMoves.getLast().getCategory() + " listados com sucesso!");
+                        } else System.out.println("Nao ha golpes da categoria " + categoria + " para listar!");
                     } catch (DadoInvalidoException e) {
-                            System.out.println("Nao foi possivel listar os golpes: " + e.getMessage());
-                    }
-                    break;
-                case 8:
-                    sc.nextLine();
-                    nomeBusca = InputUtils.lerString("Insira o nome do golpe para procura: ", sc);
-                    nomeBusca = Pattern
-                                    .compile("\\b(\\w)")
-                                    .matcher(nomeBusca)
-                                    .replaceAll(m -> m.group(1).toUpperCase());
-                    try {
-                        Move move = servMove.buscarPorNome(nomeBusca);
-                        Menu.exibirMenuGolpe(move, 40);
-                        System.out.println("Golpe " + nomeBusca + " encontrado com sucesso!");
-                    } catch (MoveNaoEncontradoException e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("Nao foi possivel listar os golpes: " + e.getMessage());
                     }
                     break;
                 case 9:
@@ -428,8 +428,8 @@ public class Main {
                                 if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
                                 OutputUtils.slowPrintln("---------------------------------------------------------", 20);
                             }
-                            System.out.println(listaMoves.size() + " golpes listados com sucesso!");
-                        } else System.out.println("Nao ha golpes de tipo " + tipo + " para listar!");
+                            System.out.println(listaMoves.size() + " golpes do tipo " + tipo + " listados com sucesso!");
+                        } else System.out.println("Nao ha golpes do tipo " + tipo + " para listar!");
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -466,6 +466,14 @@ public class Main {
                                 .compile("\\b(\\w)")
                                 .matcher(nome)
                                 .replaceAll(m -> m.group(1).toUpperCase());
+                    String treinador = InputUtils.lerString("Insira o nome do treinador: ", sc);
+                    while (treinador == null || treinador.isEmpty()) {
+                        treinador = InputUtils.lerString("Entrada invalida!\nInsira o nome do treinador: ", sc);
+                    }
+                    treinador = Pattern
+                                .compile("\\b(\\w)")
+                                .matcher(treinador)
+                                .replaceAll(m -> m.group(1).toUpperCase());
                     List<Pokemon> membros = new ArrayList<>();
                     for (int i = 1; i <= 6;) {
                         String nomePkmn = InputUtils.lerString("Insira o nome do Pokemon desejado ou 0 para fechar a lista de Pokemons (min.1, max.6): ", sc);
@@ -487,7 +495,7 @@ public class Main {
                                         .pokemons(membros)
                                         .build();
                         if (teams == null || teams.isEmpty()) teams.add(t);
-                        servTeam.criarTeam(id, nome, membros);
+                        servTeam.criarTeam(id, nome, treinador, membros);
                         System.out.println("Equipe " + t.getName() + " criada com sucesso!");
                         System.out.println("Pokemons membros:");
                         int i = 0;
@@ -497,12 +505,34 @@ public class Main {
                             i++;
                         }
                         System.out.println("\nBST medio: " + t.baseStatTotalMedio());
+                        System.out.println("Treinador(a): " + t.getTrainer());
                     } catch (DadoInvalidoException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case 12:
-                    List<Team> listaTeams = servTeam.listarTeams();
+                    sc.nextLine();
+                    nomeBusca = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
+                    nomeBusca = Pattern
+                                .compile("\\b(\\w)")
+                                .matcher(nomeBusca)
+                                .replaceAll(m -> m.group(1).toUpperCase());
+                    try {
+                        Team team = servTeam.buscarPorNome(nomeBusca);
+                        Menu.exibirMenuEquipe(team, 40);
+                        System.out.println("Equipe " + nomeBusca + " encontrada com sucesso!");               
+                    } catch (TeamNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 13:
+                    sc.nextLine();
+                    String treinadorBusca = InputUtils.lerString("Insira o nome do(a) treinador(a) para procura: ", sc);
+                    treinadorBusca = Pattern
+                                        .compile("\\b(\\w)")
+                                        .matcher(treinadorBusca)
+                                        .replaceAll(m -> m.group(1).toUpperCase());
+                    List<Team> listaTeams = servTeam.buscarPorTreinador(treinadorBusca);
                     if (!listaTeams.isEmpty()) {
                         OutputUtils.slowPrintln("---------------------------------------------------------", 30);
                         for (Team team : listaTeams) {
@@ -517,23 +547,8 @@ public class Main {
                             System.out.println("\nBST medio: " + team.baseStatTotalMedio());
                             OutputUtils.slowPrintln("---------------------------------------------------------", 30);
                         }
-                        System.out.println(servTeam.contarListaTeams() + " equipes listadas com sucesso!");
-                    } else System.out.println("Nao ha equipes para listar!");
-                    break;
-                case 13:
-                    sc.nextLine();
-                    nomeBusca = InputUtils.lerString("Insira o nome da equipe para procura: ", sc);
-                    nomeBusca = Pattern
-                                    .compile("\\b(\\w)")
-                                    .matcher(nomeBusca)
-                                    .replaceAll(m -> m.group(1).toUpperCase());
-                    try {
-                        Team team = servTeam.buscarPorNome(nomeBusca);
-                        Menu.exibirMenuEquipe(team, 40);
-                        System.out.println("Equipe " + nomeBusca + " encontrada com sucesso!");               
-                    } catch (TeamNaoEncontradoException e) {
-                        System.out.println(e.getMessage());
-                    }
+                        System.out.println(listaTeams.size() + " equipes do(a) treinador(a) " + listaTeams.getLast().getTrainer() + " listadas com sucesso!");
+                    } else System.out.println("Nao ha equipes do(a) treinador(a) " + treinadorBusca + " para listar!");
                     break;
                 case 14:
                     sc.nextLine();

@@ -12,9 +12,9 @@ import pokedex.exception.TeamNaoEncontradoException;
 import pokedex.repository.interfaces.ObjectRepository;
 
 public class TeamService {
-    private ObjectRepository<Team, Object> repository;
+    private ObjectRepository<Team, String> repository;
     private List<Team> teams;
-    public TeamService(ObjectRepository<Team, Object> repository) {
+    public TeamService(ObjectRepository<Team, String> repository) {
         this.repository = repository;
         teams = new ArrayList<>();
     }
@@ -29,11 +29,12 @@ public class TeamService {
                     .max()
                     .orElse(0) + 1;
     }
-    public void criarTeam(int id, String name, List<Pokemon> pokemons) throws DadoInvalidoException {
+    public void criarTeam(int id, String name, String trainer, List<Pokemon> pokemons) throws DadoInvalidoException {
         if (!repository.existe(name)) {
             Team t = new TeamBuilder()
                         .id(id)
                         .nome(name)
+                        .treinador(trainer)
                         .pokemons(pokemons)
                         .build();
             repository.salvar(t);
@@ -42,17 +43,17 @@ public class TeamService {
         }
         throw new DadoInvalidoException("Ja existe uma equipe com o nome " + name + "!");
     }
-    public List<Team> listarTeams() {
-        return repository
-                .listar()
-                .stream()
-                .sorted(Comparator.comparingInt(Team::getId))
-                .toList();
-    }
     public Team buscarPorNome(String nome) throws TeamNaoEncontradoException {
         Team team = repository.buscarPorNome(nome);
         if (team == null) throw new TeamNaoEncontradoException("Equipe nao encontrada!");
         return team;
+    }
+    public List<Team> buscarPorTreinador(String trainer) {
+        return repository
+                .buscarGrupo(trainer)
+                .stream()
+                .sorted(Comparator.comparingInt(Team::getId))
+                .toList();
     }
     public void removerTeam(String name) throws TeamNaoEncontradoException {
         for (Team t : teams) {

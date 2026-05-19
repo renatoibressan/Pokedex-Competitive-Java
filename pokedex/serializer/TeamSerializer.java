@@ -10,6 +10,7 @@ public class TeamSerializer {
         return String.join(",", 
                 String.valueOf(team.getId()), 
                 team.getName(), 
+                team.getTrainer(), 
                 serializePokemons(team));
     }
     private static String serializePokemons(Team team) {

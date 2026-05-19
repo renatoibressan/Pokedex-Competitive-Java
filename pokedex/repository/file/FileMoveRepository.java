@@ -2,6 +2,7 @@ package pokedex.repository.file;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -46,12 +47,12 @@ public class FileMoveRepository implements ObjectRepository<Move, MoveCategory> 
                     .orElse(null);
     }
     @Override
-    public List<Move> listarGrupo(MoveCategory category) {
+    public List<Move> buscarGrupo(MoveCategory category) {
         List<Move> lista = listar()
                             .stream()
                             .filter(m -> m.getCategory() == category)
                             .collect(Collectors.toList());
-        return lista.isEmpty() ? ObjectRepository.super.listarGrupo(category) : lista;
+        return lista.isEmpty() ? Collections.emptyList() : lista;
     }
     @Override
     public List<Move> buscarPorTipo(Typing type) {

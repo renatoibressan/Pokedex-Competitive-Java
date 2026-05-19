@@ -25,12 +25,14 @@ public class TeamDatasetLoader {
             linhaNumero++;
             Integer id = Integer.parseInt(coluna[0]);
             String name = coluna[1];
-            String pokemons = coluna[2];
-            TeamDTO dto = new TeamDTO(id, name, pokemons);
+            String trainer = coluna[2];
+            String pokemons = coluna[3];
+            TeamDTO dto = new TeamDTO(id, name, trainer, pokemons);
             try {
                 Team team = new TeamBuilder()
                                 .id(dto.id())
                                 .nome(dto.name())
+                                .treinador(dto.trainer())
                                 .pokemons(parser.parsePokemons(dto.pokemons(), repository))
                                 .build();
                 listaTeams.add(team);

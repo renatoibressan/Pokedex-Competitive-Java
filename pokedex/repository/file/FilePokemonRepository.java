@@ -2,6 +2,7 @@ package pokedex.repository.file;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -45,12 +46,12 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon, Integer>
                     .orElse(null);
     }
     @Override
-    public List<Pokemon> listarGrupo(Integer generation) {
+    public List<Pokemon> buscarGrupo(Integer generation) {
         List<Pokemon> lista = listar()
                                 .stream()
                                 .filter(p -> p.getGeneration() == generation)
                                 .collect(Collectors.toList());
-        return lista.isEmpty() ? ObjectRepository.super.listarGrupo(generation) : lista;
+        return lista.isEmpty() ? Collections.emptyList() : lista;
     }
     @Override
     public List<Pokemon> buscarPorTipo(Typing type) {
