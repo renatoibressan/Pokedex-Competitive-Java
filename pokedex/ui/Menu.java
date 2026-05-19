@@ -23,7 +23,7 @@ public class Menu {
         System.out.println("| 1. Cadastrar Pokemon                                    |");
         System.out.println("| 2. Listar Pokemons por geracao                          |");
         System.out.println("| 3. Buscar Pokemon por nome                              |");
-        System.out.println("| 4. Listar Pokemons por tipo                             |");
+        System.out.println("| 4. Buscar Pokemons por tipo                             |");
         System.out.println("| 5. Remover Pokemon                                      |");
         System.out.println("| 6. Registrar golpe                                      |");
         System.out.println("| 7. Listar golpes                                        |");

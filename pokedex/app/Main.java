@@ -108,6 +108,7 @@ public class Main {
                             if (optionTipoAnterior2.equalsIgnoreCase("s")) {
                                 Typing tipoAnterior2 = anterior.getTypes().getLast();
                                 tipos.add(tipoAnterior2);
+                                tipoValido = true;
                             } else {
                                 String optionTipoSec = InputUtils.lerString("Deseja inserir um tipo secundario? (S/N): ", sc);
                                     while (!optionTipoSec.equalsIgnoreCase("s") && !optionTipoSec.equalsIgnoreCase("n")) {
@@ -118,6 +119,7 @@ public class Main {
                                     try {
                                         Typing tipo2Pkmn = Typing.fromString(tipo2);
                                         tipos.add(tipo2Pkmn);
+                                        tipoValido = true;
                                     } catch (DadoInvalidoException e) {
                                         System.out.println(e.getMessage());
                                     }
@@ -133,6 +135,7 @@ public class Main {
                                 try {
                                     Typing tipo2Pkmn = Typing.fromString(tipo2);
                                     tipos.add(tipo2Pkmn);
+                                    tipoValido = true;
                                 } catch (DadoInvalidoException e) {
                                     System.out.println(e.getMessage());
                                 }
@@ -167,7 +170,27 @@ public class Main {
                     int spAtk = InputUtils.lerInt("Insira o ataque especial base do Pokemon: ", sc);
                     int spDef = InputUtils.lerInt("Insira a defesa especial base do Pokemon: ", sc);
                     int speed = InputUtils.lerInt("Insira a velocidade base do Pokemon: ", sc);
-                    int geracao = InputUtils.lerInt("Insira a geracao do Pokemon: ", sc);
+                    int geracao = 0;
+                    if (!pokemons.isEmpty()) {
+                        Pokemon anterior = pokemons.getLast();
+                        sc.nextLine();
+                        String optionGeracao = InputUtils.lerString("Deseja utilizar a geracao " + anterior.getGeneration() 
+                                                    + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
+                        while (!optionGeracao.equalsIgnoreCase("s") && !optionGeracao.equalsIgnoreCase("n")) {
+                            optionGeracao = InputUtils.lerString("Opcao invalida!\nDeseja utilizar a geracao " + anterior.getGeneration() 
+                                                    + " do Pokemon " + anterior.getName() + "? (S/N): ", sc);
+                        }
+                        if (optionGeracao.equalsIgnoreCase("s")) {
+                            int valor = anterior.getGeneration();
+                            geracao = valor;
+                        } else {
+                            int valor = InputUtils.lerInt("Insira a geracao do Pokemon: ", sc);
+                            geracao = valor;
+                        }
+                    } else {
+                        int valor = InputUtils.lerInt("Insira a geracao do Pokemon: ", sc);
+                        geracao = valor;
+                    }
                     try {
                         Stats stats = new StatsBuilder()
                                             .hp(hp)
@@ -183,6 +206,7 @@ public class Main {
                                         .nome(nome)
                                         .tipos(tipos)
                                         .statsBase(stats)
+                                        .geracao(geracao)
                                         .build();
                         if (pokemons == null || pokemons.isEmpty()) pokemons.add(p);
                         servPkmn.cadastrarPokemon(id, nome, tipos, stats, geracao);
