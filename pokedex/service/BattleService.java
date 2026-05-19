@@ -12,7 +12,6 @@ import pokedex.domain.models.Pokemon;
 import pokedex.domain.models.StatStages;
 import pokedex.domain.models.Stats;
 import pokedex.domain.models.StatusMove;
-import pokedex.domain.records.EffectSet;
 import pokedex.exception.DadoInvalidoException;
 import pokedex.util.InputUtils;
 import pokedex.util.OutputUtils;
@@ -77,7 +76,7 @@ public class BattleService {
                     return primeiro;
                 }
             } else if (golpeP1 instanceof StatusMove golpeStatus) {
-                modificarAtributo(primeiro, segundo, golpeStatus.getEffectSet());
+                modificarAtributo(primeiro, segundo, golpeStatus);
             }
             if (golpeP2 instanceof DamagingMove golpeDano) {
                 double dano = calcularDanoCompleto(segundo, primeiro, golpeDano);
@@ -92,15 +91,19 @@ public class BattleService {
                     return segundo;
                 }
             } else if (golpeP2 instanceof StatusMove golpeStatus) {
-                modificarAtributo(segundo, primeiro, golpeStatus.getEffectSet());
+                modificarAtributo(segundo, primeiro, golpeStatus);
             }
         }
     }
-    public void modificarAtributo(Pokemon self, Pokemon foe, EffectSet effectSet) throws DadoInvalidoException, InterruptedException {
-        Pokemon target = (effectSet.target() == Target.SELF) ? self : foe;
+    public void modificarAtributo(Pokemon self, Pokemon foe, StatusMove move) throws DadoInvalidoException, InterruptedException {
+        if (move.getEffectSet().target() == Target.FOE && temImunidade(move.getType(), foe.getTypes())) {
+            System.out.println("\nO golpe " + move.getName() + " nao fez efeito em " + foe.getName() + "!");
+            return;
+        }
+        Pokemon target = (move.getEffectSet().target() == Target.SELF) ? self : foe;
         Stats stats = target.getOwnStats();
-        int valor = effectSet.modifier();
-        switch (effectSet.stat()) {
+        int valor = move.getEffectSet().modifier();
+        switch (move.getEffectSet().stat()) {
             case ATTACK:
                 int anterior = stats.getStages().getAttackStage();
                 stats.getStages().addAttackStage(valor);
@@ -205,6 +208,9 @@ public class BattleService {
         if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) <= 0.5) System.out.println("\nO golpe " + move.getName() + " nao foi muito eficaz!");
         else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) >= 2) System.out.println("\nO golpe " + move.getName() + " foi super-eficaz!");
         return dano;
+    }
+    public boolean temImunidade(Typing attacker, List<Typing> defender) {
+        return (calcularEficaciaDeTipo(attacker, defender) == 0.0);
     }
     public double calcularEficaciaDeTipo(Typing attacker, List<Typing> defender) {
         double multiplicador = 1.0;
