@@ -66,8 +66,7 @@ public class BattleService {
             if (golpeP1 instanceof DamagingMove golpeDano) {
                 double dano = calcularDanoCompleto(primeiro, segundo, golpeDano);
                 int hpPerdido = (vidaP2 < (int)dano) ? vidaP2 : (int)dano;
-                if (hpPerdido == 0) System.out.println("\nO golpe " + golpeP1.getName() + " nao fez efeito em " + segundo.getName() + "!");
-                else System.out.println("\nO Pokemon " + segundo.getName() + " perdeu " + hpPerdido + " pontos de vida!");
+                if (hpPerdido != 0) System.out.println("\nO Pokemon " + segundo.getName() + " perdeu " + hpPerdido + " pontos de vida!");
                 vidaP2 -= (int)dano;
                 if (vidaP2 <= 0) {
                     if (hpPerdido == segundo.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP1.getName() + " foi um OH-KO!");
@@ -81,8 +80,7 @@ public class BattleService {
             if (golpeP2 instanceof DamagingMove golpeDano) {
                 double dano = calcularDanoCompleto(segundo, primeiro, golpeDano);
                 int hpPerdido = (vidaP1 < (int)dano) ? vidaP1 : (int)dano;
-                if (hpPerdido == 0) System.out.println("\nO golpe " + golpeP2.getName() + " nao fez efeito em " + primeiro.getName() + "!");
-                else System.out.println("\nO Pokemon " + primeiro.getName() + " perdeu " + hpPerdido + " pontos de vida!");
+                if (hpPerdido != 0) System.out.println("\nO Pokemon " + primeiro.getName() + " perdeu " + hpPerdido + " pontos de vida!");
                 vidaP1 -= (int)dano;
                 if (vidaP1 <= 0) {
                     if (hpPerdido == primeiro.getOwnStats().getHp()) System.out.println("\nO golpe " + golpeP2.getName() + " foi um OH-KO!");
@@ -202,11 +200,18 @@ public class BattleService {
                 (int)(velocidade * (2.0 / (2.0 - stages.getSpeedStage())));
     }
     public double calcularDanoCompleto(Pokemon attacker, Pokemon defender, DamagingMove move) throws InterruptedException {
-        double dano = (move.getCategory() == DamagingMoveCategory.PHYSICAL) ? calcularDanoFisico(attacker, defender, move) : calcularDanoEspecial(attacker, defender, move);
+        double dano = (move.getCategory() == DamagingMoveCategory.PHYSICAL) 
+                        ? calcularDanoFisico(attacker, defender, move) 
+                        : calcularDanoEspecial(attacker, defender, move);
         dano += calcularSTAB(attacker, move, dano);
         dano *= calcularEficaciaDeTipo(move.getType(), defender.getTypes());
-        if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) <= 0.5) System.out.println("\nO golpe " + move.getName() + " nao foi muito eficaz!");
-        else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) >= 2) System.out.println("\nO golpe " + move.getName() + " foi super-eficaz!");
+        if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) == 0.0) {
+            System.out.println("\nO golpe " + move.getName() + " nao fez efeito em " + defender.getName() + "!");
+        } else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) <= 0.5 && calcularEficaciaDeTipo(move.getType(), defender.getTypes()) > 0) {
+            System.out.println("\nO golpe " + move.getName() + " nao foi muito eficaz!");
+        } else if (calcularEficaciaDeTipo(move.getType(), defender.getTypes()) >= 2.0) {
+            System.out.println("\nO golpe " + move.getName() + " foi super-eficaz!");
+        }
         return dano;
     }
     public boolean temImunidade(Typing attacker, List<Typing> defender) {
