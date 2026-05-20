@@ -81,7 +81,7 @@ public class FilePokemonRepository implements ObjectRepository<Pokemon, Integer>
     }
     public void escreverArquivo(List<Pokemon> pokemons) throws IOException {
         List<String> linhas = new ArrayList<>();
-        linhas.add("id,nome,tipos,stats base (hp/atk/def/spAtk/spDef/speed),geracao");
+        linhas.add("id,nome,tipo(s),stats base (hp/atk/def/spAtk/spDef/speed),geracao");
         for (Pokemon p : pokemons) {
             String linha = p.toFileString();
             linhas.add(linha);
