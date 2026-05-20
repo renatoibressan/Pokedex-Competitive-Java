@@ -535,7 +535,7 @@ public class Main {
                                         .replaceAll(m -> m.group(1).toUpperCase());
                     List<Team> listaTeams = servTeam.buscarPorTreinador(treinadorBusca);
                     if (!listaTeams.isEmpty()) {
-                        OutputUtils.slowPrintln("--------------------------------------------------------------------------------------", 15);
+                        OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                         for (Team team : listaTeams) {
                             System.out.println("Dados da equipe " + team.getName() + ":");
                             System.out.println("Pokemons membros:");
@@ -546,7 +546,7 @@ public class Main {
                                 i++;
                             }
                             System.out.println("\nBST medio: " + team.baseStatTotalMedio());
-                            OutputUtils.slowPrintln("--------------------------------------------------------------------------------------", 15);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                         }
                         System.out.println(listaTeams.size() + " equipes do(a) treinador(a) " + listaTeams.getLast().getTrainer() + " listadas com sucesso!");
                     } else System.out.println("Nao ha equipes do(a) treinador(a) " + treinadorBusca + " para listar!");
