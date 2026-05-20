@@ -52,7 +52,7 @@ public class Menu {
         System.out.print("Tipo(s): ");
         int i = 0;
         for (Typing t : pkmn.getTypes()) {
-            if (i > 0) System.out.print("/");
+            if (i > 0) System.out.print("|");
             System.out.print(t);
             i++;
         }
@@ -85,8 +85,8 @@ public class Menu {
         System.out.println("Pokemons membros:");
         int i = 0;
         for (Pokemon pkmn : team.getPokemons()) {
-            if (i > 0) System.out.print(" / ");
-            System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
+            if (i > 0) System.out.print("|");
+            System.out.print(pkmn.getName());
             i++;
         }
         System.out.println("\nBST medio: " + team.baseStatTotalMedio());

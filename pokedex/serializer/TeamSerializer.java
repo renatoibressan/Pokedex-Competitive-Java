@@ -18,6 +18,6 @@ public class TeamSerializer {
                 .getPokemons()
                 .stream() 
                 .map(Pokemon::getName) 
-                .collect(Collectors.joining("/"));
+                .collect(Collectors.joining("|"));
     }
 }

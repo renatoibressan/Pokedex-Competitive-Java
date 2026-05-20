@@ -215,7 +215,7 @@ public class Main {
                         System.out.print("Tipo(s): ");
                         int i = 0;
                         for (Typing t : p.getTypes()) {
-                            if (i > 0) System.out.print("/");
+                            if (i > 0) System.out.print("|");
                             System.out.print(t);
                             i++;
                         }
@@ -234,7 +234,7 @@ public class Main {
                                     .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Pokemon pkmn = servPkmn.buscarPorNome(nomeBusca);
-                        Menu.exibirMenuPokemon(pkmn, 40);
+                        Menu.exibirMenuPokemon(pkmn, 30);
                         System.out.println("Pokemon " + nomeBusca + " encontrado com sucesso!");
                     } catch (PokemonNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -250,7 +250,7 @@ public class Main {
                             System.out.print("Tipo(s): ");
                             int i = 0;
                             for (Typing t : pkmn.getTypes()) {
-                                if (i > 0) System.out.print("/");
+                                if (i > 0) System.out.print("|");
                                 System.out.print(t);
                                 i++;
                             }
@@ -273,7 +273,7 @@ public class Main {
                                 System.out.print("Tipo(s): ");
                                 int i = 0;
                                 for (Typing t : pkmn.getTypes()) {
-                                    if (i > 0) System.out.print("/");
+                                    if (i > 0) System.out.print("|");
                                     System.out.print(t);
                                     i++;
                                 }
@@ -381,7 +381,7 @@ public class Main {
                                     .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Move move = servMove.buscarPorNome(nomeBusca);
-                        Menu.exibirMenuGolpe(move, 40);
+                        Menu.exibirMenuGolpe(move, 30);
                         System.out.println("Golpe " + nomeBusca + " encontrado com sucesso!");
                     } catch (MoveNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -394,7 +394,7 @@ public class Main {
                         MoveCategory categoria = MoveCategory.fromString(categoriaBusca);
                         List<Move> listaMoves= servMove.buscarPorCategoria(categoria);
                         if (!listaMoves.isEmpty()) {
-                            OutputUtils.slowPrintln("---------------------------------------------------------", 20);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
@@ -405,7 +405,7 @@ public class Main {
                                     System.out.println("Atributo modificado: " + statusMove.getEffectSet().stat());
                                     System.out.println("Modificador em estagios: " + statusMove.getEffectSet().modifier());
                                 }
-                                OutputUtils.slowPrintln("---------------------------------------------------------", 20);
+                                OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                             }
                             System.out.println(listaMoves.size() + " golpes da categoria " + listaMoves.getLast().getCategory() + " listados com sucesso!");
                         } else System.out.println("Nao ha golpes da categoria " + categoria + " para listar!");
@@ -420,13 +420,13 @@ public class Main {
                         Typing tipo = Typing.fromString(tipoBusca);
                         List<Move> listaMoves = servMove.buscarPorTipo(tipo);
                         if (!listaMoves.isEmpty()) {
-                            OutputUtils.slowPrintln("---------------------------------------------------------", 20);
+                            OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                             for (Move move : listaMoves) {
                                 System.out.println("Dados do golpe " + move.getName() + ":");
                                 System.out.println("Tipo: " + move.getType());
                                 System.out.println("Categoria: " + move.getCategory());
                                 if (move instanceof DamagingMove damagingMove) System.out.println("Dano base: " + damagingMove.getDamage());
-                                OutputUtils.slowPrintln("---------------------------------------------------------", 20);
+                                OutputUtils.slowPrintln("---------------------------------------------------------", 15);
                             }
                             System.out.println(listaMoves.size() + " golpes do tipo " + tipo + " listados com sucesso!");
                         } else System.out.println("Nao ha golpes do tipo " + tipo + " para listar!");
@@ -492,6 +492,7 @@ public class Main {
                         Team t = new TeamBuilder()
                                         .id(id)
                                         .nome(nome)
+                                        .treinador(treinador)
                                         .pokemons(membros)
                                         .build();
                         if (teams == null || teams.isEmpty()) teams.add(t);
@@ -499,9 +500,9 @@ public class Main {
                         System.out.println("Equipe " + t.getName() + " criada com sucesso!");
                         System.out.println("Pokemons membros:");
                         int i = 0;
-                        for (Pokemon pkmn: t.getPokemons()) {
-                            if (i > 0) System.out.print(" / ");
-                            System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
+                        for (Pokemon p: t.getPokemons()) {
+                            if (i > 0) System.out.print("|");
+                            System.out.print(p.getName());
                             i++;
                         }
                         System.out.println("\nBST medio: " + t.baseStatTotalMedio());
@@ -519,7 +520,7 @@ public class Main {
                                 .replaceAll(m -> m.group(1).toUpperCase());
                     try {
                         Team team = servTeam.buscarPorNome(nomeBusca);
-                        Menu.exibirMenuEquipe(team, 40);
+                        Menu.exibirMenuEquipe(team, 30);
                         System.out.println("Equipe " + nomeBusca + " encontrada com sucesso!");               
                     } catch (TeamNaoEncontradoException e) {
                         System.out.println(e.getMessage());
@@ -534,18 +535,18 @@ public class Main {
                                         .replaceAll(m -> m.group(1).toUpperCase());
                     List<Team> listaTeams = servTeam.buscarPorTreinador(treinadorBusca);
                     if (!listaTeams.isEmpty()) {
-                        OutputUtils.slowPrintln("---------------------------------------------------------", 30);
+                        OutputUtils.slowPrintln("--------------------------------------------------------------------------------------", 15);
                         for (Team team : listaTeams) {
                             System.out.println("Dados da equipe " + team.getName() + ":");
                             System.out.println("Pokemons membros:");
                             int i = 0;
                             for (Pokemon pkmn: team.getPokemons()) {
-                                if (i > 0) System.out.print(" / ");
-                                System.out.print(pkmn.getName() + " (#" + String.format("%04d", pkmn.getId()) + ")");
+                                if (i > 0) System.out.print("|");
+                                System.out.print(pkmn.getName());
                                 i++;
                             }
                             System.out.println("\nBST medio: " + team.baseStatTotalMedio());
-                            OutputUtils.slowPrintln("---------------------------------------------------------", 30);
+                            OutputUtils.slowPrintln("--------------------------------------------------------------------------------------", 15);
                         }
                         System.out.println(listaTeams.size() + " equipes do(a) treinador(a) " + listaTeams.getLast().getTrainer() + " listadas com sucesso!");
                     } else System.out.println("Nao ha equipes do(a) treinador(a) " + treinadorBusca + " para listar!");

@@ -1,8 +1,13 @@
 id,nome,treinador(a),pokemons
-1,FireRed,Ryan,Charizard/Raichu/Nidoking/Primeape/Vaporeon/Snorlax
-2,Emerald,Ryan,Swampert/Swellow/Breloom/Manectric/Banette/Walrein
-3,Platinum,Ryan,Empoleon/Luxray/Roserade/Garchomp/Lucario/Togekiss
-4,HeartGold,Ryan,Typhlosion/Fearow/Lapras/Ampharos/Heracross/Donphan
-5,White,Ryan,Samurott/Excadrill/Sigilyph/Galvantula/Chandelure/Haxorus
-6,White2,Reid,Emboar/Krookodile/Jellicent/Galvantula/Ferrothorn/Braviary
-7,X,Reid,Greninja/Charizard/Aerodactyl/Lucario/Gogoat/Heliolisk
+1,Kanto Ryan Team,Ryan,Charizard|Raichu|Nidoking|Primeape|Vaporeon|Snorlax
+2,Hoenn Ryan Team,Ryan,Swampert|Swellow|Breloom|Manectric|Banette|Walrein
+3,Sinnoh Ryan Team,Ryan,Empoleon|Luxray|Roserade|Garchomp|Lucario|Togekiss
+4,Johto Ryan Team,Ryan,Typhlosion|Fearow|Lapras|Ampharos|Heracross|Donphan
+5,Unova Ryan Team,Ryan,Samurott|Excadrill|Sigilyph|Galvantula|Chandelure|Haxorus
+6,Ultimate Ryan Team,Ryan,Swampert|Charizard|Garchomp|Lucario|Excadrill|Galvantula
+7,Kanto Green Team,Green,Venusaur|Raichu|Nidoqueen|Persian|Dodrio|Lapras
+8,Hoenn Green Team,Green,Blaziken|Crobat|Ludicolo|Gardevoir|Exploud|Flygon
+9,Ultimate Green Team,Green,Blaziken|Venusaur|Lapras|Crobat|Gardevoir|Flygon
+10,Unova Reid Team,Reid,Emboar|Krookodile|Jellicent|Galvantula|Ferrothorn|Braviary
+11,Kalos Reid Team,Reid,Greninja|Charizard|Aerodactyl|Lucario|Gogoat|Heliolisk
+12,Best Sinnoh Team,Renato,Infernape|Staraptor|Luxray|Roserade|Gastrodon|Weavile
